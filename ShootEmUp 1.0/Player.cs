@@ -26,6 +26,7 @@ namespace ShootEmUp_1._0
         public Rectangle myRectangle;
         Game1 myGame1;
         public Vector2 myPrevPos;
+        public Vector2 myBulletsSpawn;
 
 
         public Player(Game1 aGame, Texture2D aTexture)
@@ -33,7 +34,8 @@ namespace ShootEmUp_1._0
             myTexture = aTexture;
 
             myGame1 = aGame;
-            myOffset = ((aTexture.Bounds.Size.ToVector2() * 0.5f));
+            myOffset = ((myTexture.Bounds.Size.ToVector2() * 0.5f));
+            myBulletsSpawn = new Vector2(myTexture.Bounds.Size.X * 0.5f, myTexture.Bounds.Size.Y);
             myPosition = new Vector2((350-myTexture.Width), 0);
             myRectangle = new Rectangle((myOffset).ToPoint(), (aTexture.Bounds.Size.ToVector2()).ToPoint());
 

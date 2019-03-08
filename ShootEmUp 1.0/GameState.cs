@@ -29,6 +29,7 @@ namespace ShootEmUp_1._0
         float myDeltaTime;
 
         List<Bullet> myBullets;
+        List<Enemy> myEnemies;
 
 
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
@@ -45,6 +46,10 @@ namespace ShootEmUp_1._0
             {
                 new Bullet(0, new Vector2(1,0), myBullet, new Vector2(1000,1000), 1, Color.White),
             };
+            myEnemies = new List<Enemy>()
+            {
+                new Enemy(myEnemyTexture, 1f, new Vector2(1000,1000), 1),
+            };
             myPlayer = new Player(myGame, myPlayerTexture)
             {
                 myHp = myHealth,
@@ -59,6 +64,11 @@ namespace ShootEmUp_1._0
             {
                 myBullets[i].DrawBullet(aSpriteBatch);
             }
+            for (int i = 0; i < myEnemies.Count; i++)
+            {
+                myEnemies[i].Draw(aSpriteBatch);
+            }
+
 
             myPlayer.Draw(aSpriteBatch);
 
@@ -92,7 +102,7 @@ namespace ShootEmUp_1._0
 
         public void Shoot()
         {
-            myBullets.Add(new Bullet(5, new Vector2(0,1), myBullet, (myPlayer.myPosition+myPlayer.myOffset), 1, Color.White));
+            myBullets.Add(new Bullet(5, new Vector2(0,1), myBullet, (myPlayer.myPosition+myPlayer.myBulletsSpawn), 1, Color.White));
         }
     }
 }
