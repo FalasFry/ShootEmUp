@@ -9,16 +9,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ShootEmUp_1._0
 {
-    class MenuState : States
+    public class MenuState : States
     {
         Texture2D myMenuTexture;
         List<Components> myButtons;
 
         SpriteFont myButtonFont;
         Texture2D myButtonTexture;
+        GraphicsDeviceManager myManager;
 
-        public MenuState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent) : base(aGame, aGraphicsDevice, aContent)
+        public MenuState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
+            myManager = aManager;
             myButtonFont = aContent.Load<SpriteFont>("Font");
             myButtonTexture = aContent.Load<Texture2D>("Button");
 
@@ -52,7 +54,7 @@ namespace ShootEmUp_1._0
 
         private void StartButton_Click1(object sender, EventArgs e)
         {
-            myGame.ChangeState(new GameState(myGame, myGraphDevice, myContentManager));
+            myGame.ChangeState(new GameState(myGame, myGraphDevice, myContentManager, myManager));
         }
 
         public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)

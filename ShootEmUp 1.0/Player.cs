@@ -6,30 +6,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ShootEmUp_1._0
 {
-    class Player
+    public class Player
     {
-        public float mySpeed = 5;
+        public float mySpeed = 10;
         public float myRotation = 0;
         public float myAmmo = 20;
         public float myHp = 5;
         public float myAttackSpeed = 0.5f;
-        public float myAttackTimer;
+        public float myAttackTimer = 0;
         public bool myDead = false;
 
-        public Vector2 myPosition;
+        public Vector2 myPosition = new Vector2(10,10);
         public Vector2 myOffset;
         public Texture2D myTexture;
         public Rectangle myRectangle;
         Game1 myGame1;
+        public Vector2 myPrevPos;
 
 
-        public Player(Game aGame, Texture2D aTexture)
+        public Player(Game1 aGame, Texture2D aTexture)
         {
             myTexture = aTexture;
+
+            myGame1 = aGame;
+            myOffset = ((aTexture.Bounds.Size.ToVector2() * 0.5f));
+            myPosition = new Vector2((350-myTexture.Width), 0);
+            myRectangle = new Rectangle((myOffset).ToPoint(), (aTexture.Bounds.Size.ToVector2()).ToPoint());
+
         }
+
+
         public void Update(GameTime aGameTime)
         {
             Movement();
@@ -38,57 +48,65 @@ namespace ShootEmUp_1._0
         // Makes it so you move with wasd.
         public void Movement()
         {
+            
             KeyboardState keyState = Keyboard.GetState();
             Vector2 tempDir = new Vector2();
 
             if (keyState.IsKeyDown(Keys.A))
             {
-                tempDir.X = -1;
-
+                if(myPosition != new Vector2(0, myPosition.Y))
+                {
+                    tempDir.X = -1;
+                }
             }
             if (keyState.IsKeyDown(Keys.D))
             {
-                tempDir.X = 1;
+                if(myPosition != new Vector2((700 - myTexture.Width), myPosition.Y))
+                {
+                    tempDir.X = 1;
+                }
 
             }
             if (keyState.IsKeyDown(Keys.W))
-            {
-                tempDir.Y = -1;
+            { 
+                if(myPosition != new Vector2(myPosition.X, 0))
+                {
+                    tempDir.Y = -1;
+                }
 
             }
             if (keyState.IsKeyDown(Keys.S))
             {
-                tempDir.Y = 1;
+                if (myPosition != new Vector2(myPosition.X, ((900/2) - myTexture.Height)))
+                {
+                    tempDir.Y = 1;
+                }
 
             }
             if (tempDir.X > 1f || tempDir.Y > 1f)
             {
                 tempDir.Normalize();
             }
-
+            myPrevPos = tempDir;
             if (tempDir == Vector2.Zero)
             {
-                tempDir = new Vector2(1, 0);
+                tempDir = myPrevPos;
             }
+
             if (keyState.IsKeyDown(Keys.S) || keyState.IsKeyDown(Keys.W) || keyState.IsKeyDown(Keys.D) || keyState.IsKeyDown(Keys.A))
             {
                 myPosition += (tempDir * mySpeed);
             }
-
-            myRotation = (float)Math.Atan2(tempDir.X, tempDir.Y) * -1;
-
         }
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Begin();
 
             if (!myDead)
             {
                 aSpriteBatch.Draw(myTexture, myPosition + myOffset, null, Color.White, myRotation, myOffset, 1f, SpriteEffects.None, 0);
             }
 
-            aSpriteBatch.End();
         }
     }
 }

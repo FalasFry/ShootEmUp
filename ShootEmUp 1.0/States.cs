@@ -12,15 +12,15 @@ namespace ShootEmUp_1._0
 
         protected Game1 myGame;
 
-        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        public abstract void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch);
 
-        public abstract bool Update(GameTime gameTime);
+        public abstract bool Update(GameTime aGameTime);
 
-        public States(Game1 Game, GraphicsDevice graphicsDevice, ContentManager content)
+        public States(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent)
         {
-            myGame = Game;
-            myGraphDevice = graphicsDevice;
-            myContentManager = content;
+            myGame = aGame;
+            myGraphDevice = aGraphicsDevice;
+            myContentManager = aContent;
         }
     }
 }

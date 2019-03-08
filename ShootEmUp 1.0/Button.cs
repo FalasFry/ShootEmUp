@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ShootEmUp_1._0
 {
-    class Button : Components
+    public class Button : Components
     {
         Texture2D myTexture;
         SpriteFont myFont;

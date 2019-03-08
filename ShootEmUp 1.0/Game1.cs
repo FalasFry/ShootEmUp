@@ -31,7 +31,7 @@ namespace ShootEmUp_1._0
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
             base.Initialize();
-            myMenu = new MenuState(this, GraphicsDevice, Content);
+            myMenu = new MenuState(this, GraphicsDevice, Content, myGraphics);
             myCurState = myMenu;
             myStateStack.Push(myMenu);
         }

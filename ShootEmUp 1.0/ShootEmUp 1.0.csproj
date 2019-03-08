@@ -41,8 +41,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Bullet.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Components.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="MenuState.cs" />
