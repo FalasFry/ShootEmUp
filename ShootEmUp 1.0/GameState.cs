@@ -13,14 +13,12 @@ namespace ShootEmUp_1._0
 {
     public class GameState : States
     {
-        float myMoveTimer = 15;
-        float mySpeed = 1;
         public float myScore;
         float myHealth = 10;
 
         Player myPlayer;
         Texture2D myBullet;
-        Random myRng = new Random();
+        Random myRng;
         SpriteFont myFont;
         Texture2D myPowerupsTexture;
         Texture2D myEnemyTexture;
@@ -28,12 +26,17 @@ namespace ShootEmUp_1._0
 
         float myDeltaTime;
 
+        TimeSpan myPreviousSpawnTime;
+        TimeSpan myEnemySpawnTime;
+
         List<Bullet> myBullets;
         List<Enemy> myEnemies;
+        GraphicsDeviceManager myGraphics;
 
 
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
+            myGraphics = aManager;
             aManager.PreferredBackBufferHeight = 900;
             aManager.PreferredBackBufferWidth = 700;
             aManager.ApplyChanges();
@@ -41,6 +44,7 @@ namespace ShootEmUp_1._0
             myPowerupsTexture = aContent.Load<Texture2D>("ball");
             myPlayerTexture = aContent.Load<Texture2D>("PlayerShip");
             myBullet = aContent.Load<Texture2D>("BulletPixel");
+            myRng = new Random();
 
             myBullets = new List<Bullet>()
             {
@@ -82,10 +86,16 @@ namespace ShootEmUp_1._0
             KeyboardState tempKeyboard = Keyboard.GetState();
             myPlayer.Update(aGameTime);
 
+            Collision();
+            EnemySpawn(aGameTime);
 
             for (int i = 0; i < myBullets.Count; i++)
             {
                 myBullets[i].Update();
+            }
+            for (int i = 0; i < myEnemies.Count; i++)
+            {
+                myEnemies[i].Update(aGameTime);
             }
 
             if(tempMouse.LeftButton == ButtonState.Pressed || tempKeyboard.IsKeyDown(Keys.J))
@@ -97,12 +107,74 @@ namespace ShootEmUp_1._0
                 }
             }
             myPlayer.myAttackTimer -= myDeltaTime;
+
+
             return true;
+        }
+
+        public void Collision()
+        {
+            for (int i = 0; i < myBullets.Count; i++)
+            {
+                for (int j = 0; j < myEnemies.Count; j++)
+                {
+                    if (myBullets[i].myOwner == 1)
+                    {
+                        if (myBullets[i].myRectangle.Intersects(myEnemies[j].myRectangle))
+                        {
+                            DestroyEnemy(j);
+                            DestroyBullet(i);
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < myEnemies.Count; i++)
+            {
+                if (myEnemies[i].myRectangle.Intersects(myPlayer.myRectangle))
+                {
+                    DestroyEnemy(i);
+                }
+            }
         }
 
         public void Shoot()
         {
             myBullets.Add(new Bullet(5, new Vector2(0,1), myBullet, (myPlayer.myPosition+myPlayer.myBulletsSpawn), 1, Color.White));
+        }
+
+        public void EnemySpawn(GameTime aGameTime)
+        {
+            if (aGameTime.TotalGameTime - myPreviousSpawnTime > myEnemySpawnTime)
+            {
+                myEnemies.Add(new Enemy(myEnemyTexture, 1, new Vector2((myRng.Next(myEnemyTexture.Width, myGraphics.PreferredBackBufferWidth-myEnemyTexture.Width)), myGraphics.PreferredBackBufferHeight + 10), myRng.Next(1, 3)));
+
+                myPreviousSpawnTime = aGameTime.TotalGameTime;
+                float tempSpawnSeconds = 0;
+
+                if (aGameTime.ElapsedGameTime.TotalSeconds < 60)
+                {
+                    tempSpawnSeconds = myRng.Next(1, 5);
+                }
+                else if(aGameTime.ElapsedGameTime.TotalSeconds > 60 && aGameTime.ElapsedGameTime.TotalSeconds < 120)
+                {
+                    tempSpawnSeconds = myRng.Next(1, 4);
+                }
+                else if (aGameTime.ElapsedGameTime.TotalSeconds > 120)
+                {
+                    tempSpawnSeconds = myRng.Next(1, 2);
+                }
+                myEnemySpawnTime = TimeSpan.FromSeconds(tempSpawnSeconds);
+            }
+        }
+
+        public void DestroyEnemy(int index)
+        {
+            myEnemies.RemoveAt(index);
+        }
+        public void DestroyBullet(int index)
+        {
+            myBullets.RemoveAt(index);
         }
     }
 }

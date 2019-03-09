@@ -6,7 +6,7 @@ namespace ShootEmUp_1
 {
     public class Bullet
     {
-        public float mySpeed, myRotation = (float)(1.5f * Math.PI);
+        public float mySpeed, myRotation;
         public Vector2 myDir, myPosition, myOffset, myScale = new Vector2(1, 1);
         public Texture2D myTexture;
         public Rectangle myRectangle;
@@ -30,7 +30,7 @@ namespace ShootEmUp_1
         public void Update()
         {
             myPosition += (myDir * mySpeed);
-            myRectangle.Location = (myPosition - (myRectangle.Size.ToVector2() * 0.5f)).ToPoint();
+            myRectangle.Location = myPosition.ToPoint();
         }
 
         public void DrawBullet(SpriteBatch aSpriteBatch)
