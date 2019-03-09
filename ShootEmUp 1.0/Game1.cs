@@ -65,7 +65,7 @@ namespace ShootEmUp_1._0
 
         protected override void Draw(GameTime aGameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             myStateStack.Peek().Draw(aGameTime, mySpriteBatch);
             // TODO: Add your drawing code here
