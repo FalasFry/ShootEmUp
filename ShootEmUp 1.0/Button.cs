@@ -30,43 +30,43 @@ namespace ShootEmUp_1._0
             }
         }
 
-        public Button(SpriteFont Font, Texture2D Texture)
+        public Button(SpriteFont aFont, Texture2D aTexture)
         {
-            myTexture = Texture;
-            myFont = Font;
+            myTexture = aTexture;
+            myFont = aFont;
             AccessPaint = Color.Black;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
         {
-            Color colour = Color.White;
+            Color tempColor = Color.White;
 
             if(myIsHovering)
             {
-                colour = Color.Gray;
+                tempColor = Color.Gray;
             }
 
-            spriteBatch.Draw(myTexture, AccessRectangle, colour);
+            aSpriteBatch.Draw(myTexture, AccessRectangle, tempColor);
 
             if(!string.IsNullOrEmpty(AccessText))
             {
-                float x = AccessRectangle.X + (AccessRectangle.Width / 2) - (myFont.MeasureString(AccessText).X / 2);
-                float y = AccessRectangle.Y + (AccessRectangle.Height / 2) - (myFont.MeasureString(AccessText).Y / 2);
+                float tempX = AccessRectangle.X + (AccessRectangle.Width / 2) - (myFont.MeasureString(AccessText).X / 2);
+                float tempY = AccessRectangle.Y + (AccessRectangle.Height / 2) - (myFont.MeasureString(AccessText).Y / 2);
 
-                spriteBatch.DrawString(myFont, AccessText, new Vector2(x, y), AccessPaint);
+                aSpriteBatch.DrawString(myFont, AccessText, new Vector2(tempX, tempY), AccessPaint);
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime aGameTime)
         {
             myIsHovering = false;
 
             myPrevMouse = myCurMouse;
             myCurMouse = Mouse.GetState();
 
-            Rectangle mRect = new Rectangle(myCurMouse.X, myCurMouse.Y, 1, 1);
+            Rectangle tempRect = new Rectangle(myCurMouse.X, myCurMouse.Y, 1, 1);
 
-            if(mRect.Intersects(AccessRectangle))
+            if(tempRect.Intersects(AccessRectangle))
             {
                 myIsHovering = true;
                 if (myCurMouse.LeftButton == ButtonState.Released && myPrevMouse.LeftButton == ButtonState.Pressed)

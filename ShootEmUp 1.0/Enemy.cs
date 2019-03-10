@@ -14,22 +14,19 @@ namespace ShootEmUp_1._0
         public Texture2D myEnemyTexture;
         public Vector2 myPosition;
         public Rectangle myRectangle;
-        float myRotation;
-        float myScale;
         Vector2 myOffset;
-        float myEnemyType;
-        float mySpeed;
         Vector2 myDir;
         bool myMoveSelection;
         Vector2 myStartPos;
         Random rng;
         public Vector2 myBulletSpawn;
+
         int myMove;
-        Texture2D myEnemyBullet;
+        public float myEnemyType;
+        float mySpeed;
         float myDeltaTime;
-
-
-
+        float myRotation;
+        float myScale;
 
         public Enemy(Texture2D aTexture, float aScale, Vector2 aPosition, float anEnemyType)
         {
@@ -66,7 +63,6 @@ namespace ShootEmUp_1._0
             {
                 aSpriteBatch.Draw(myEnemyTexture, myPosition, null, Color.Red, myRotation, myOffset, 1f, SpriteEffects.None, 1);
             }
-
         }
 
         public void Update(GameTime aGameTime)
@@ -100,15 +96,13 @@ namespace ShootEmUp_1._0
             }
         }
 
-
-
         public void TypeTwoMove(Vector2 aPos)
         {
-            if (myPosition.X > 700-myEnemyTexture.Width || myPosition.X > aPos.X + 50)
+            if (myPosition.X > 700-myEnemyTexture.Width || myPosition.X > aPos.X + 100)
             {
                 myDir.X = -1;
             }
-            if (myPosition.X < 0 || myPosition.X < aPos.X - 50)
+            if (myPosition.X < 0 || myPosition.X < aPos.X - 100)
             {
                 myDir.X = 1;
             }

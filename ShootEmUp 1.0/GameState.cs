@@ -20,6 +20,7 @@ namespace ShootEmUp_1._0
 
         public List<Bullet> myBullets;
         public List<Enemy> myEnemies;
+        public List<PowerUp> myPowerUps;
 
         Player myPlayer;
         Random myRng;
@@ -36,7 +37,15 @@ namespace ShootEmUp_1._0
         float myDeltaTime;
         float myEnemyAttackTimer = 0;
         float myEnemyStartAttackTimer = 0.5f;
-        
+        float myTimer = 2;
+        float myPowerUpCoolDownSeconds = 10;
+        bool myPowerUpCoolDown;
+        int myPowerUpType = 0;
+        int myPowerUpIndex = 0;
+        string myPowerUp;
+        float myDisplayTextTimer = 2;
+        bool myShowText;
+
 
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
@@ -45,7 +54,7 @@ namespace ShootEmUp_1._0
             aManager.PreferredBackBufferWidth = 700;
             aManager.ApplyChanges();
             myEnemyTexture = aContent.Load<Texture2D>("EnemyShip");
-            myPowerupsTexture = aContent.Load<Texture2D>("ball");
+            myPowerupsTexture = aContent.Load<Texture2D>("PowerUp");
             myPlayerTexture = aContent.Load<Texture2D>("PlayerShip");
             myBullet = aContent.Load<Texture2D>("BulletPixel");
             myEnemyBullet = aContent.Load<Texture2D>("ball");
@@ -55,16 +64,12 @@ namespace ShootEmUp_1._0
 
             myBullets = new List<Bullet>();
             myEnemies = new List<Enemy>();
+            myPowerUps = new List<PowerUp>();
 
             myPlayer = new Player(myGame, myPlayerTexture)
             {
                 myHp = myHealth,
             };
-
-            for (int i = 0; i < 50; i++)
-            {
-                
-            }
         }
 
         public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
@@ -81,11 +86,28 @@ namespace ShootEmUp_1._0
             {
                 myEnemies[i].Draw(aSpriteBatch);
             }
+            for (int i = 0; i < myPowerUps.Count; i++)
+            {
+                myPowerUps[i].Draw(aSpriteBatch);
+            }
             
-            aSpriteBatch.DrawString(myFont, "HP Left: " +myHealth.ToString(), new Vector2(400, 0), Color.White);
+            aSpriteBatch.DrawString(myFont, "HP Left: " +myPlayer.myHp.ToString(), new Vector2(400, 0), Color.White);
             aSpriteBatch.DrawString(myFont, "Score: " + myScore, new Vector2(200, 0), Color.White);
 
             myPlayer.Draw(aSpriteBatch);
+
+            int tempTextOffsetX = 100;
+            int tempTextOffsetY = 50;
+            if (myPowerUpCoolDown)
+            {
+                string tempText = "PowerUp Time Left " + (int)myPowerUpCoolDownSeconds;
+                aSpriteBatch.DrawString(myFont, tempText, new Vector2((myGraphics.PreferredBackBufferWidth / 2 - tempTextOffsetX), myGraphics.PreferredBackBufferHeight / 2), Color.White);
+            }
+            if (myShowText)
+            {
+                string tempText = "You Got " + myPowerUp;
+                aSpriteBatch.DrawString(myFont, tempText, new Vector2((myGraphics.PreferredBackBufferWidth/2 - tempTextOffsetX), myGraphics.PreferredBackBufferHeight / 2 - tempTextOffsetY), Color.White);
+            }
 
             aSpriteBatch.End();
         }
@@ -103,6 +125,7 @@ namespace ShootEmUp_1._0
             OutOfBounds();
             Collision();
             EnemySpawn(aGameTime);
+            PowerUpSpawn();
             for (int i = 0; i < myBullets.Count; i++)
             {
                 myBullets[i].Update();
@@ -111,7 +134,22 @@ namespace ShootEmUp_1._0
             {
                 myEnemies[i].Update(aGameTime);
             }
+            for (int i = 0; i < myPowerUps.Count; i++)
+            {
+                myPowerUps[i].Update(aGameTime);
+            }
             #endregion
+
+            if(myShowText)
+            {
+                myDisplayTextTimer -= myDeltaTime;
+
+                if(myDisplayTextTimer <= 0)
+                {
+                    myShowText = false;
+                    myDisplayTextTimer = 2;
+                }
+            }
 
             #region Shooting
             if (tempMouse.LeftButton == ButtonState.Pressed || tempKeyboard.IsKeyDown(Keys.J))
@@ -124,11 +162,12 @@ namespace ShootEmUp_1._0
             }
             myPlayer.myAttackTimer -= myDeltaTime;
 
-            if(myHealth <= 0)
+            if(myPlayer.myHp <= 0)
             {
                 myPlayer.myDead = true;
-                myGame.ChangeState(new GameOverState(myGame, myGraphDevice, myContentManager));
+                myGame.ChangeState(new GameOverState(myGame, myGraphDevice, myContentManager, myScore, myGraphics));
             }
+
             myEnemyAttackTimer -= myDeltaTime;
             if(myEnemyAttackTimer <= 0)
             {
@@ -156,6 +195,7 @@ namespace ShootEmUp_1._0
                     }
                 }
             }
+
             for (int i = 0; i < myBullets.Count; i++)
             {
                 if (myBullets[i].myOwner == 2)
@@ -163,7 +203,7 @@ namespace ShootEmUp_1._0
                     if (myBullets[i].myRectangle.Intersects(myPlayer.myRectangle))
                     {
                         DestroyBullet(i);
-                        myHealth--;
+                        myPlayer.myHp--;
                     }
                 }
             }
@@ -173,8 +213,42 @@ namespace ShootEmUp_1._0
                 if (myEnemies[i].myRectangle.Intersects(myPlayer.myRectangle))
                 {
                     DestroyEnemy(i);
-                    myHealth--;
+                    myPlayer.myHp--;
                 }
+            }
+
+            for (int i = 0; i < myPowerUps.Count; i++)
+            {
+                if(myPowerUps[i].myRectangle.Intersects(myPlayer.myRectangle))
+                {
+                    if (myPowerUps[i].myPowerType == 1)
+                    {
+                        myPowerUp = "More AttackSpeed";
+                        myPlayer.myAttackSpeed = 0.1f;
+                        myPowerUpCoolDownSeconds = 5f;
+                        myPowerUpCoolDown = true;
+                    }
+                    if (myPowerUps[i].myPowerType == 2)
+                    {
+                        myPowerUp = "More Speed";
+                        myPlayer.mySpeed = 13;
+                        myPowerUpCoolDownSeconds = 10f;
+                        myPowerUpCoolDown = true;
+                    }
+                    if (myPowerUps[i].myPowerType == 3)
+                    {
+                        myPowerUp = "+5 HP";
+                        myPlayer.myHp += 5;
+                    }
+                    myShowText = true;
+                    myPowerUpType = myPowerUps[i].myPowerType;
+                    myPowerUpIndex = i;
+                    DestroyPowerUp(i);
+                }
+            }
+            if (myPowerUpCoolDown)
+            {
+                PowerUpTimer(myPowerUpType, myPowerUpIndex);
             }
         }
 
@@ -204,13 +278,9 @@ namespace ShootEmUp_1._0
 
                 if (aGameTime.ElapsedGameTime.TotalSeconds < 60)
                 {
-                    tempSpawnSeconds = myRng.Next(1, 4);
-                }
-                else if(aGameTime.ElapsedGameTime.TotalSeconds > 60 && aGameTime.ElapsedGameTime.TotalSeconds < 120)
-                {
                     tempSpawnSeconds = myRng.Next(1, 3);
                 }
-                else if (aGameTime.ElapsedGameTime.TotalSeconds > 120)
+                else if(aGameTime.ElapsedGameTime.TotalSeconds > 60)
                 {
                     tempSpawnSeconds = 1;
                 }
@@ -226,6 +296,11 @@ namespace ShootEmUp_1._0
         public void DestroyBullet(int index)
         {
             myBullets.RemoveAt(index);
+        }
+
+        public void DestroyPowerUp(int index)
+        {
+            myPowerUps.RemoveAt(index);
         }
 
         public void OutOfBounds()
@@ -244,6 +319,38 @@ namespace ShootEmUp_1._0
                 {
                     DestroyBullet(i);
                 }
+            }
+        }
+
+        public void PowerUpSpawn()
+        {
+            // Timer start as 0, thats why you always get a powerup at start.
+            if (myTimer > 0)
+            {
+                myTimer -= myDeltaTime;
+            }
+            if (myTimer <= 0)
+            {
+                myPowerUps.Add(new PowerUp(2f, myPowerupsTexture, new Vector2(myRng.Next(3,myGraphics.PreferredBackBufferWidth-myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight+20),myRng.Next(1,4) ,myPlayer, myGame));
+                myTimer = myRng.Next(15, 30);
+            }
+        }
+
+        public void PowerUpTimer(int aType, int index)
+        {
+            myPowerUpCoolDownSeconds -= myDeltaTime;
+
+            if (myPowerUpCoolDownSeconds <= 0)
+            {
+                if (aType == 2)
+                {
+                    myPlayer.mySpeed = 7;
+                }
+                if (aType == 1)
+                {
+                    myPlayer.myAttackSpeed = 0.5f;
+                }
+                myPowerUpCoolDown = false;
             }
         }
     }
