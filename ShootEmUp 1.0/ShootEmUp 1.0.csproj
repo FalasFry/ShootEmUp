@@ -46,6 +46,7 @@
     <Compile Include="Button.cs" />
     <Compile Include="Components.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyBasic.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameOverState.cs" />
     <Compile Include="GameState.cs" />

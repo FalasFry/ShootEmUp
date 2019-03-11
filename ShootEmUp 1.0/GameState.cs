@@ -19,7 +19,7 @@ namespace ShootEmUp_1._0
         Texture2D myBullet;
 
         public List<Bullet> myBullets;
-        public List<Enemy> myEnemies;
+        public List<EnemyBasic> myEnemies;
         public List<PowerUp> myPowerUps;
 
         Player myPlayer;
@@ -63,7 +63,7 @@ namespace ShootEmUp_1._0
             myStars = new ParticleGenerator(aContent.Load<Texture2D>("Star"), aManager.PreferredBackBufferWidth, 100);
 
             myBullets = new List<Bullet>();
-            myEnemies = new List<Enemy>();
+            myEnemies = new List<EnemyBasic>();
             myPowerUps = new List<PowerUp>();
 
             myPlayer = new Player(myGame, myPlayerTexture)
@@ -271,7 +271,16 @@ namespace ShootEmUp_1._0
         {
             if (aGameTime.TotalGameTime - myPreviousSpawnTime > myEnemySpawnTime)
             {
-                myEnemies.Add(new Enemy(myEnemyTexture, 1, new Vector2((myRng.Next(myEnemyTexture.Width, myGraphics.PreferredBackBufferWidth-myEnemyTexture.Width)), myGraphics.PreferredBackBufferHeight + 20), myRng.Next(1, 3)));
+                int tempType = myRng.Next(1, 3);
+                if(tempType == 1)
+                {
+                    myEnemies.Add(new EnemyEasy(myEnemyTexture, new Vector2(myRng.Next(myEnemyTexture.Width, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
+                }
+                if(tempType == 2)
+                {
+                    myEnemies.Add(new EnemyMoving(myEnemyTexture, new Vector2(myRng.Next(myEnemyTexture.Width, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
+                }
+ 
 
                 myPreviousSpawnTime = aGameTime.TotalGameTime;
                 float tempSpawnSeconds = 0;
