@@ -28,12 +28,21 @@ namespace ShootEmUp_1._0
             myTexture = aNewTexture;
             mySpawnWidth = aNewSpawWidth;
             myDensity = aNewDensity;
-            myDir = new Vector2(0, -7);
+            myDir = new Vector2(0, -4);
             myRng = new Random();
             myRng2 = new Random();
 
             for (int i = 0; i < 100; i++)
             {
+                int tempRng = myRng2.Next(1,4);
+                if(tempRng == 1)
+                {
+                    myDir.Y = -3;
+                }
+                if(tempRng == 2)
+                {
+                    myDir.Y = -5;
+                }
                 myStars.Add(new BackgroundStars(myTexture, new Vector2(myRng.Next(1, 701), myRng.Next(1, 901)), myDir));
             }
         }
@@ -73,7 +82,15 @@ namespace ShootEmUp_1._0
         public void CreateParticle()
         {
             double any = myRng.Next();
-
+            int tempSpeed = myRng.Next(1, 4);
+            if(tempSpeed == 1)
+            {
+                myDir.Y = -3;
+            }
+            else if(tempSpeed == 2)
+            {
+                myDir.Y = -5;
+            }
             myStars.Add(new BackgroundStars(myTexture, new Vector2(-50 + (float)myRng.NextDouble() * mySpawnWidth, 900), myDir));
         }
     }

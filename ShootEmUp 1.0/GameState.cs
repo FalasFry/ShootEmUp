@@ -20,10 +20,6 @@ namespace ShootEmUp_1._0
         public static Texture2D myEnemyBullet;
 
         public static List<GameObject> myGameObjects;
-        public List<Bullet> myBullets;
-        public List<EnemyBase> myEnemies;
-        public List<PowerUp> myPowerUps;
-        public List<EnemyBase> myBosses;
 
         Player myPlayer;
         Random myRng;
@@ -35,19 +31,15 @@ namespace ShootEmUp_1._0
         GraphicsDeviceManager myGraphics;
 
         public float myScore;
-        float myHealth = 10000;
         float myDeltaTime;
         float myEnemyAttackTimer = 0;
-        float myBossAS = 0.3f;
         float myTimer = 2;
-        float myPowerUpCoolDownSeconds = 10;
-        bool myPowerUpCoolDown;
-        int myPowerUpType = 0;
-        int myPowerUpIndex = 0;
-        string myPowerUp;
-        float myDisplayTextTimer = 2;
-        bool myShowText;
+        public static float myDisplayTextTimer = 2;
+        public static bool myShowText;
         float myBossTimer = 5;
+        public static float myPowerUpCoolDownSeconds = 10;
+        public static bool myPowerUpCoolDown;
+        public static string myPowerUp;
 
 
 
@@ -66,18 +58,11 @@ namespace ShootEmUp_1._0
             myRng = new Random();
             myStars = new ParticleGenerator(aContent.Load<Texture2D>("Star"), aManager.PreferredBackBufferWidth, 100);
 
-            myBullets = new List<Bullet>();
-            myEnemies = new List<EnemyBase>();
-            myPowerUps = new List<PowerUp>();
-            myBosses = new List<EnemyBase>();
             myGameObjects = new List<GameObject>();
 
 
 
-            myPlayer = new Player(myPlayerTexture)
-            {
-                myHp = myHealth,
-            };
+            myPlayer = new Player(myPlayerTexture);
 
             myGameObjects.Add(myPlayer);
         }
@@ -123,7 +108,6 @@ namespace ShootEmUp_1._0
 
             #region Updating
             OutOfBounds();
-            Collision();
             SpawnBoss();
             EnemySpawn(aGameTime);
 
@@ -179,88 +163,16 @@ namespace ShootEmUp_1._0
 
 
             #endregion
-
+            for (int i = 0; i < myGameObjects.Count; i++)
+            {
+                if(myGameObjects[i].myRemove)
+                {
+                    myGameObjects.RemoveAt(i);
+                    i--;
+                }
+            }
+                  
             return true;
-        }
-
-        public void Collision()
-        {
-            for (int i = 0; i < myBullets.Count; i++)
-            {
-                for (int j = 0; j < myBosses.Count; j++)
-                {
-                    if (myBullets[i].myOwner == 1)
-                    {
-                        if (myBullets[i].myRectangle.Intersects(myBosses[j].myRectangle) && myBosses[j].myHealth > 0)
-                        {
-                            myBosses[j].myHealth--;
-                            myGameObjects[i].myRemove = true;
-                            i--;
-                        }
-                    }
-                    if (myBosses[j].myHealth <= 0)
-                    {
-                        DestroyBoss(j);
-                        j--;
-                        myScore++;
-                    }
-                }
-            }
-            
-
-            for (int i = 0; i < myBullets.Count; i++)
-            {
-                if (myBullets[i].myOwner == 2)
-                {
-                    if (myBullets[i].myRectangle.Intersects(myPlayer.myRectangle))
-                    {
-                        myGameObjects[i].myRemove = true;
-                        myPlayer.myHp--;
-                    }
-                }
-            }
-
-            for (int i = 0; i < myEnemies.Count; i++)
-            {
-                if (myEnemies[i].myRectangle.Intersects(myPlayer.myRectangle))
-                {
-                    DestroyEnemy(i);
-                    myPlayer.myHp--;
-                }
-            }
-
-            for (int i = 0; i < myPowerUps.Count; i++)
-            {
-                if(myPowerUps[i].myRectangle.Intersects(myPlayer.myRectangle))
-                {
-                    if (myPowerUps[i].myPowerType == 1)
-                    {
-                        myPowerUp = "More AttackSpeed";
-                        myPlayer.myAttackSpeed = 0.1f;
-                        myPowerUpCoolDownSeconds = 5f;
-                        myPowerUpCoolDown = true;
-                    }
-                    if (myPowerUps[i].myPowerType == 2)
-                    {
-                        myPowerUp = "More Speed";
-                        myPlayer.mySpeed = 13;
-                        myPowerUpCoolDownSeconds = 10f;
-                        myPowerUpCoolDown = true;
-                    }
-                    if (myPowerUps[i].myPowerType == 3)
-                    {
-                        myPowerUp = "+5 HP";
-                        myPlayer.myHp += 5;
-                    }
-                    myShowText = true;
-                    myPowerUpType = myPowerUps[i].myPowerType;
-                    myPowerUpIndex = i;
-                }
-            }
-            if (myPowerUpCoolDown)
-            {
-                PowerUpTimer(myPowerUpType, myPowerUpIndex);
-            }
         }
 
         public void Shoot(int aDirX)
@@ -321,17 +233,12 @@ namespace ShootEmUp_1._0
 
         }
 
-        public void DestroyEnemy(int index)
-        {
-            myEnemies.RemoveAt(index);
-        }
-
-        public void DestroyBoss(int index)
-        {
-            float tempNr = 5;
-            myBossTimer = tempNr;
-            myBosses.RemoveAt(index);
-        }
+        //public void DestroyBoss(int index)
+        //{
+        //    float tempNr = 5;
+        //    myBossTimer = tempNr;
+        //    myBosses.RemoveAt(index);
+        //}
 
         public void DestroyGameObject(int index)
         {
@@ -342,7 +249,7 @@ namespace ShootEmUp_1._0
         {
             for (int i = 0; i < myGameObjects.Count; i++)
             {
-                if (myGameObjects[i].myPosition.Y >= myGraphics.PreferredBackBufferHeight + myBullet.Height || myGameObjects[i].myPosition.Y <= 0 - myGameObjects[i].myTexture.Height || myGameObjects[i].myPosition.X >= myGraphics.PreferredBackBufferWidth + myGameObjects[i].myTexture.Width || myGameObjects[i].myPosition.X <= 0 + myGameObjects[i].myTexture.Width) 
+                if (myGameObjects[i].myPosition.Y >= myGraphics.PreferredBackBufferHeight + myBullet.Height || myGameObjects[i].myPosition.Y <= 0 - myGameObjects[i].myTexture.Height || myGameObjects[i].myPosition.X >= myGraphics.PreferredBackBufferWidth + myGameObjects[i].myTexture.Width || myGameObjects[i].myPosition.X <= 0 - myGameObjects[i].myTexture.Width) 
                 {
                     myGameObjects[i].myRemove = true;
                 }
@@ -357,26 +264,8 @@ namespace ShootEmUp_1._0
             }
             if (myTimer <= 0)
             {
-                myPowerUps.Add(new PowerUp(2f, myPowerupsTexture, new Vector2(myRng.Next(3,myGraphics.PreferredBackBufferWidth-myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight+20),myRng.Next(1,4) ,myPlayer, myGame));
+                myGameObjects.Add(new PowerUp(2f, myPowerupsTexture, new Vector2(myRng.Next(3,myGraphics.PreferredBackBufferWidth-myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight+20),myRng.Next(1,4) ,myPlayer, myGame));
                 myTimer = myRng.Next(15, 30);
-            }
-        }
-
-        public void PowerUpTimer(int aType, int index)
-        {
-            myPowerUpCoolDownSeconds -= myDeltaTime;
-
-            if (myPowerUpCoolDownSeconds <= 0)
-            {
-                if (aType == 2)
-                {
-                    myPlayer.mySpeed = 7;
-                }
-                if (aType == 1)
-                {
-                    myPlayer.myAttackSpeed = 0.5f;
-                }
-                myPowerUpCoolDown = false;
             }
         }
     }

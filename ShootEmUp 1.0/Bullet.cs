@@ -35,10 +35,21 @@ namespace ShootEmUp_1._0
             {
                 if (GameState.myGameObjects[i] is EnemyBase)
                 {
-                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle))
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 1)
                     {
                         myRemove = true;
                         (GameState.myGameObjects[i] as EnemyBase).myHealth--;
+                    }
+                }
+            }
+            for (int i = 0; i < GameState.myGameObjects.Count; i++)
+            {
+                if (GameState.myGameObjects[i] is Player)
+                {
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2)
+                    {
+                        myRemove = true;
+                        (GameState.myGameObjects[i] as Player).myHp--;
                     }
                 }
             }

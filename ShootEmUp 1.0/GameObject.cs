@@ -25,8 +25,5 @@ namespace ShootEmUp_1._0
         {
             aSpriteBatch.Draw(myTexture, myPosition, null, myColor, myRotation, myOffset, myScale, SpriteEffects.None, 1);
         }
-
-
-
     }
 }

@@ -29,5 +29,13 @@ namespace ShootEmUp_1._0
             myRng = new Random();
         }
 
+        public void StayAlive()
+        {
+            if (myHealth <= 0)
+            {
+                myRemove = true;
+            }
+        }
+
     }
 }

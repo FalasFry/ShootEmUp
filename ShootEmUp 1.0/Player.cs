@@ -12,7 +12,7 @@ namespace ShootEmUp_1._0
 {
     class Player : GameObject
     {
-        public float myHp = 5;
+        public float myHp = 10000;
         public float myAttackSpeed = 0.5f;
         public float myAttackTimer = 0;
 
@@ -22,12 +22,12 @@ namespace ShootEmUp_1._0
 
         public Player(Texture2D aTexture)
         {
+            myRotation = 0;
             myTexture = aTexture;
             mySpeed = 7;
-            myOffset = ((myTexture.Bounds.Size.ToVector2() * 0.5f));
-            myBulletsSpawn = new Vector2(myTexture.Bounds.Size.X * 0.5f, myTexture.Bounds.Size.Y);
-            myPosition = new Vector2(300, 10);
-            myRectangle = new Rectangle((myOffset).ToPoint(), (aTexture.Bounds.Size.ToVector2()).ToPoint());
+            myPosition = new Vector2(300, myTexture.Height);
+            myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
+            myBulletsSpawn = new Vector2(myRectangle.Width * 0.5f, myRectangle.Height);
         }
 
         public override void Update(GameTime aGameTime)

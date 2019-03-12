@@ -14,6 +14,7 @@ namespace ShootEmUp_1._0
 
         public EnemyEasy(Texture2D aTexture, Vector2 aPosition)
         {
+            myRotation = 0;
             myPosition = aPosition;
             mySpeed = 5;
             myStartPos = myPosition;
@@ -34,7 +35,7 @@ namespace ShootEmUp_1._0
 
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
-
+            StayAlive();
             myAttackTimer -= tempDeltaTime;
             if (myAttackTimer <= 0)
             {
@@ -62,6 +63,7 @@ namespace ShootEmUp_1._0
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
             myColor = Color.Red;
+
             int tempRng = myRng.Next(1, 3);
             myDir = new Vector2(tempRng, -1);
         }
@@ -75,7 +77,7 @@ namespace ShootEmUp_1._0
             {
                 EnemyShoot();
             }
-
+            StayAlive();
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
 
@@ -116,7 +118,6 @@ namespace ShootEmUp_1._0
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
 
-
             int tempRng = myRng.Next(1, 3);
 
             if (tempRng == 1)
@@ -129,7 +130,6 @@ namespace ShootEmUp_1._0
             }
         }
 
-
         public override void Update(GameTime aGameTime)
         {
             myBossAS -= (float)aGameTime.ElapsedGameTime.TotalSeconds;
@@ -139,12 +139,11 @@ namespace ShootEmUp_1._0
                 BossShoot();
             }
 
-            if (myPosition.Y == 450 && myDir.X == 0)
+            if (myPosition.Y <= 600 && myDir.X == 0)
             {
                 myDir.X = myMoveDirX;
                 myDir.Y = 0;
             }
-
 
             if (myPosition.X > 600 - myTexture.Width)
             {
@@ -154,7 +153,7 @@ namespace ShootEmUp_1._0
             {
                 myDir.X = 1;
             }
-
+            StayAlive();
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
         }
