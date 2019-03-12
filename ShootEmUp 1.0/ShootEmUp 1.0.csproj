@@ -45,9 +45,10 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Components.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="EnemyBasic.cs" />
+    <Compile Include="EnemyTypes.cs" />
+    <Compile Include="EnemyBase.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="GameOverState.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="MenuState.cs" />

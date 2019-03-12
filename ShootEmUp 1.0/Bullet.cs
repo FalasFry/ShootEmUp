@@ -2,16 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ShootEmUp_1
+namespace ShootEmUp_1._0
 {
-    public class Bullet
+    class Bullet : GameObject
     {
-        public float mySpeed, myRotation;
-        public Vector2 myDir, myPosition, myOffset, myScale = new Vector2(1, 1);
-        public Texture2D myTexture;
-        public Rectangle myRectangle;
-        public float myDamage = 1;
-        public Color myColor;
+
         public float myOwner;
 
 
@@ -27,15 +22,26 @@ namespace ShootEmUp_1
             myColor = aPaint;
         }
 
-        public void Update()
+        public override void Update(GameTime aGameTime)
         {
+            Collision();
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
         }
 
-        public void DrawBullet(SpriteBatch aSpriteBatch)
+        public void Collision()
         {
-            aSpriteBatch.Draw(myTexture, myPosition, null, myColor, myRotation, myOffset, 1f, SpriteEffects.None, 1);
+            for (int i = 0; i < GameState.myGameObjects.Count; i++)
+            {
+                if (GameState.myGameObjects[i] is EnemyBase)
+                {
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle))
+                    {
+                        myRemove = true;
+                        (GameState.myGameObjects[i] as EnemyBase).myHealth--;
+                    }
+                }
+            }
         }
     }
 }

@@ -10,44 +10,32 @@ using System.Diagnostics;
 
 namespace ShootEmUp_1._0
 {
-    public class Player
+    class Player : GameObject
     {
-        public float mySpeed = 7;
-        public float myRotation = 0;
-        public float myAmmo = 20;
         public float myHp = 5;
         public float myAttackSpeed = 0.5f;
         public float myAttackTimer = 0;
-        public bool myDead = false;
 
-        public Vector2 myPosition;
-        public Vector2 myOffset;
-        public Texture2D myTexture;
-        public Rectangle myRectangle;
-        Game1 myGame1;
         public Vector2 myPrevPos;
         public Vector2 myBulletsSpawn;
 
 
-        public Player(Game1 aGame, Texture2D aTexture)
+        public Player(Texture2D aTexture)
         {
             myTexture = aTexture;
-
-            myGame1 = aGame;
+            mySpeed = 7;
             myOffset = ((myTexture.Bounds.Size.ToVector2() * 0.5f));
             myBulletsSpawn = new Vector2(myTexture.Bounds.Size.X * 0.5f, myTexture.Bounds.Size.Y);
-            myPosition = new Vector2((300), 10);
+            myPosition = new Vector2(300, 10);
             myRectangle = new Rectangle((myOffset).ToPoint(), (aTexture.Bounds.Size.ToVector2()).ToPoint());
         }
 
-
-        public void Update(GameTime aGameTime)
+        public override void Update(GameTime aGameTime)
         {
             Movement();
             myRectangle.Location = myPosition.ToPoint();
         }
 
-        // Makes it so you move with wasd.
         public void Movement()
         {
             KeyboardState keyState = Keyboard.GetState();
@@ -99,12 +87,6 @@ namespace ShootEmUp_1._0
             }
         }
 
-        public void Draw(SpriteBatch aSpriteBatch)
-        {
-            if (!myDead)
-            {
-                aSpriteBatch.Draw(myTexture, myPosition + myOffset, null, Color.White, myRotation, myOffset, 1f, SpriteEffects.None, 0);
-            }
-        }
+
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShootEmUp_1._0
 {
-    public class PowerUp
+    class PowerUp
     {
         float mySpeed;
         float myRotation;
