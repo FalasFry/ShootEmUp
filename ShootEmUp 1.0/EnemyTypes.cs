@@ -94,7 +94,7 @@ namespace ShootEmUp_1._0
         public EnemyBoss(Texture2D aTexture, float aShootWay)
         {
             myShootStyle = aShootWay;
-            myPosition = new Vector2(300, 900);
+            myPosition = new Vector2(270, 900);
             myHealth = 5;
             mySpeed = 3;
             myScale = 2;

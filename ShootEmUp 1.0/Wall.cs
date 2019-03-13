@@ -8,10 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ShootEmUp_1._0
 {
-    class Walls : GameObject
+    class Wall : GameObject
     {
-        public Walls(Texture2D aTexture)
+        public Wall(Texture2D aTexture, Vector2 aPosition)
         {
+            myPosition = aPosition;
             myTexture = aTexture;
             mySpeed = 7;
             myDir = new Vector2(0, -1);
@@ -39,7 +40,6 @@ namespace ShootEmUp_1._0
                     }
                 }
             }
-
         }
     }
 }

@@ -16,6 +16,7 @@ namespace ShootEmUp_1._0
         Texture2D myPowerupsTexture;
         Texture2D myEnemyTexture;
         Texture2D myPlayerTexture;
+        Texture2D myWallTexture;
 
         public static Texture2D myBullet;
         public static Texture2D myEnemyBullet;
@@ -54,6 +55,7 @@ namespace ShootEmUp_1._0
             myBullet = aContent.Load<Texture2D>("BulletPixel");
             myEnemyBullet = aContent.Load<Texture2D>("ball");
             myFont = aContent.Load<SpriteFont>("Font");
+            myWallTexture = aContent.Load<Texture2D>("Walls");
             myRng = new Random();
             myStars = new ParticleGenerator(aContent.Load<Texture2D>("Star"), aManager.PreferredBackBufferWidth, 100);
 
@@ -102,7 +104,7 @@ namespace ShootEmUp_1._0
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
             SpawnBoss();
-            //EnemySpawn(aGameTime);
+            EnemySpawn(aGameTime);
             PowerUpSpawn();
 
             for (int i = 0; i < myGameObjects.Count; i++)
@@ -152,6 +154,7 @@ namespace ShootEmUp_1._0
         {
             if (aGameTime.TotalGameTime - myPreviousSpawnTime > myEnemySpawnTime)
             {
+                //bool tempSpawnWalls = false;
                 int tempType = myRng.Next(1, 3);
                 if(tempType == 1)
                 {
@@ -172,7 +175,13 @@ namespace ShootEmUp_1._0
                 else if(aGameTime.ElapsedGameTime.TotalSeconds > 60)
                 {
                     tempSpawnSeconds = 1;
+                    //tempSpawnWalls = true;
                 }
+
+                //if(tempSpawnWalls)
+                //{
+                //    SpawnWalls();
+                //}
                 myEnemySpawnTime = TimeSpan.FromSeconds(tempSpawnSeconds);
             }
         }
@@ -221,6 +230,24 @@ namespace ShootEmUp_1._0
             {
                 myGameObjects.Add(new PowerUp(2f, myPowerupsTexture, new Vector2(myRng.Next(3,myGraphics.PreferredBackBufferWidth-myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight+20),myRng.Next(1,4) ,myPlayer, myGame));
                 myPowerUpSpawnTime = myRng.Next(15, 30);
+            }
+        }
+
+        public void SpawnWalls()
+        {
+            int tempSpawnWay = myRng.Next(1,3);
+
+            if(tempSpawnWay == 1)
+            {
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(0, myGraphics.PreferredBackBufferHeight + 20)));
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myWallTexture.Width, myGraphics.PreferredBackBufferHeight + 20)));
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myWallTexture.Width * 2, myGraphics.PreferredBackBufferHeight + 20)));
+            }
+            else if(tempSpawnWay == 2)
+            {
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - myWallTexture.Width, myGraphics.PreferredBackBufferHeight + 20)));
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - (myWallTexture.Width * 2), myGraphics.PreferredBackBufferHeight + 20)));
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - (myWallTexture.Width * 3), myGraphics.PreferredBackBufferHeight + 20)));
             }
         }
 
