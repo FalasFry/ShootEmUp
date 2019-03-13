@@ -97,11 +97,13 @@ namespace ShootEmUp_1._0
             myPosition = new Vector2(300, 900);
             myHealth = 5;
             mySpeed = 3;
+            myScale = 2;
             myDir = new Vector2(0, -1);
             myTexture = aTexture;
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
+
 
             int tempRng = myRng.Next(1, 3);
 

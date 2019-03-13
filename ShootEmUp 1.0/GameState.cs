@@ -102,7 +102,7 @@ namespace ShootEmUp_1._0
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
             SpawnBoss();
-            EnemySpawn(aGameTime);
+            //EnemySpawn(aGameTime);
             PowerUpSpawn();
 
             for (int i = 0; i < myGameObjects.Count; i++)

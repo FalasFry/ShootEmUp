@@ -12,7 +12,7 @@ namespace ShootEmUp_1._0
 {
     class Player : GameObject
     {
-        public float myHp = 20;
+        public float myHp = 2000;
         public float myAttackSpeed = 0.5f;
         public float myAttackTimer = 0;
 
