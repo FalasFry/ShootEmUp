@@ -10,13 +10,11 @@ namespace ShootEmUp_1._0
 {
     class PowerUp : GameObject
     {
-        public int myPowerType;
+        public static int myPowerType;
 
-        public float myDeltaTime;
         Player myPlayer;
 
-        public int myPowerUpType = 0;
-        public int myPowerUpIndex = 0;
+        public static int myPowerUpIndex = 0;
 
 
         public PowerUp(float aSpeed, Texture2D aTexture, Vector2 aStartPos, int aPowerType, Player aPlayer, Game1 aGame)
@@ -45,9 +43,10 @@ namespace ShootEmUp_1._0
         public override void Update(GameTime aGameTime)
         {
             Collision();
+
             myPosition += (myDir * mySpeed);
             myRectangle.Location = (myPosition).ToPoint();
-            myDeltaTime = (float)aGameTime.ElapsedGameTime.TotalSeconds;
+
         }
 
         public void Collision()
@@ -63,51 +62,29 @@ namespace ShootEmUp_1._0
                         if (myPowerType == 1)
                         {
                             GameState.myPowerUp = "More AttackSpeed";
-                            (GameState.myGameObjects[i] as Player).myAttackSpeed = 0.1f;
+                            myPlayer.myAttackSpeed = 0.1f;
                             GameState.myPowerUpCoolDownSeconds = 5f;
                             GameState.myPowerUpCoolDown = true;
                         }
                         if (myPowerType == 2)
                         {
                             GameState.myPowerUp = "More Speed";
-                            (GameState.myGameObjects[i] as Player).mySpeed = 13;
+                            myPlayer.mySpeed = 13;
                             GameState.myPowerUpCoolDownSeconds = 10f;
                             GameState.myPowerUpCoolDown = true;
                         }
                         if (myPowerType == 3)
                         {
-                            GameState.myPowerUp = "+5 HP";
-                            (GameState.myGameObjects[i] as Player).myHp += 5;
+                            GameState.myPowerUp = "+10 HP";
+                            (GameState.myGameObjects[i] as Player).myHp += 10;
                         }
                         GameState.myShowText = true;
-                        myPowerUpType = myPowerType;
                         myPowerUpIndex = i;
                         myRemove = true;
                     }
                 }
             }
-            if (GameState.myPowerUpCoolDown)
-            {
-                PowerUpTimer(myPowerUpType, myPowerUpIndex);
-            }
-        }
 
-        public void PowerUpTimer(int aType, int index)
-        {
-            GameState.myPowerUpCoolDownSeconds -= myDeltaTime;
-
-            if (GameState.myPowerUpCoolDownSeconds <= 0)
-            {
-                if (aType == 2)
-                {
-                    myPlayer.mySpeed = 7;
-                }
-                if (aType == 1)
-                {
-                    myPlayer.myAttackSpeed = 0.5f;
-                }
-                GameState.myPowerUpCoolDown = false;
-            }
         }
     }
 }

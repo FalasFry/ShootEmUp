@@ -12,7 +12,7 @@ namespace ShootEmUp_1._0
 {
     class Player : GameObject
     {
-        public float myHp = 10000;
+        public float myHp = 20;
         public float myAttackSpeed = 0.5f;
         public float myAttackTimer = 0;
 
@@ -32,8 +32,34 @@ namespace ShootEmUp_1._0
 
         public override void Update(GameTime aGameTime)
         {
+            MouseState tempMouse = Mouse.GetState();
+            KeyboardState tempKeyboard = Keyboard.GetState();
+
             Movement();
             myRectangle.Location = myPosition.ToPoint();
+
+            if (tempMouse.LeftButton == ButtonState.Pressed || tempKeyboard.IsKeyDown(Keys.J) || tempKeyboard.IsKeyDown(Keys.K) || tempKeyboard.IsKeyDown(Keys.L))
+            {
+                int tempDirX = 0;
+                if (tempKeyboard.IsKeyDown(Keys.K))
+                {
+                    tempDirX = 0;
+                }
+                if (tempKeyboard.IsKeyDown(Keys.J))
+                {
+                    tempDirX = -1;
+                }
+                if (tempKeyboard.IsKeyDown(Keys.L))
+                {
+                    tempDirX = 1;
+                }
+                if (myAttackTimer <= 0)
+                {
+                    Shoot(tempDirX);
+                    myAttackTimer = myAttackSpeed;
+                }
+            }
+            myAttackTimer -= GameState.myDeltaTime;
         }
 
         public void Movement()
@@ -87,6 +113,9 @@ namespace ShootEmUp_1._0
             }
         }
 
-
+        public void Shoot(int aDirX)
+        {
+            GameState.myGameObjects.Add(new Bullet(7, new Vector2(aDirX, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+        }
     }
 }

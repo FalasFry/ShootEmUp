@@ -11,7 +11,6 @@ namespace ShootEmUp_1._0
 {
     class EnemyEasy : EnemyBase
     {
-
         public EnemyEasy(Texture2D aTexture, Vector2 aPosition)
         {
             myRotation = 0;
@@ -23,30 +22,22 @@ namespace ShootEmUp_1._0
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
+            myBulletColor = Color.Cyan;
             myColor = Color.Cyan;
         }
 
-
-
         public override void Update(GameTime aGameTime)
         {
-            float tempDeltaTime;
-            tempDeltaTime = (float)aGameTime.ElapsedGameTime.TotalSeconds;
-
+            Collision();
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
             StayAlive();
-            myAttackTimer -= tempDeltaTime;
+            myAttackTimer -= GameState.myDeltaTime;
+
             if (myAttackTimer <= 0)
             {
                 EnemyShoot();
             }
-        }
-
-        public void EnemyShoot()
-        {
-            GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
-            myAttackTimer = myStartAttackTimer;
         }
     }
 
@@ -71,7 +62,8 @@ namespace ShootEmUp_1._0
         public override void Update(GameTime aGameTime)
         {
             TypeTwoMove(myStartPos);
-            
+            Collision();
+
             myAttackTimer -= (float)aGameTime.ElapsedGameTime.TotalSeconds;
             if (myAttackTimer <= 0)
             {
@@ -80,15 +72,8 @@ namespace ShootEmUp_1._0
             StayAlive();
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
-
         }
         
-        public void EnemyShoot()
-        {
-            GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
-            myAttackTimer = myStartAttackTimer;
-        }
-
         public void TypeTwoMove(Vector2 aPos)
         {
             if (myPosition.X > 700 - myTexture.Width || myPosition.X > aPos.X + 100)

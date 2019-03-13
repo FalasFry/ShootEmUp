@@ -19,7 +19,7 @@ namespace ShootEmUp_1._0
         
         List<BackgroundStars> myStars = new List<BackgroundStars>();
 
-        float myDeltaTime;
+        float myTime;
         float myTimer = 0.2f;
         Random myRng, myRng2;
 
@@ -51,11 +51,11 @@ namespace ShootEmUp_1._0
         {
             KeyboardState tempKeyBoard = Keyboard.GetState();
 
-            myDeltaTime += (float)aGameTime.ElapsedGameTime.TotalSeconds;
+            myTime += (float)aGameTime.ElapsedGameTime.TotalSeconds;
 
-            while(myDeltaTime > 0)
+            while(myTime > 0)
             {
-                myDeltaTime -= 1 / myDensity;
+                myTime -= 1 / myDensity;
                 CreateParticle();
             }
 

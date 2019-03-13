@@ -33,8 +33,38 @@ namespace ShootEmUp_1._0
         {
             if (myHealth <= 0)
             {
+                if(this is EnemyBoss)
+                {
+                    GameState.myScore += 5;
+                    GameState.myBossTimer = 5;
+                }
+                else
+                {
+                    GameState.myScore++;
+                }
                 myRemove = true;
             }
+        }
+
+        public void Collision()
+        {
+            for (int i = 0; i < GameState.myGameObjects.Count; i++)
+            {
+                if (GameState.myGameObjects[i] is Player)
+                {
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle))
+                    {
+                        (GameState.myGameObjects[i] as Player).myHp--;
+                        myRemove = true;
+                    }
+                }
+            }
+        }
+
+        public void EnemyShoot()
+        {
+            GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
+            myAttackTimer = myStartAttackTimer;
         }
 
     }

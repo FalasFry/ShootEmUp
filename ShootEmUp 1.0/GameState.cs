@@ -16,9 +16,9 @@ namespace ShootEmUp_1._0
         Texture2D myPowerupsTexture;
         Texture2D myEnemyTexture;
         Texture2D myPlayerTexture;
-        Texture2D myBullet;
-        public static Texture2D myEnemyBullet;
 
+        public static Texture2D myBullet;
+        public static Texture2D myEnemyBullet;
         public static List<GameObject> myGameObjects;
 
         Player myPlayer;
@@ -30,18 +30,15 @@ namespace ShootEmUp_1._0
         TimeSpan myEnemySpawnTime;
         GraphicsDeviceManager myGraphics;
 
-        public float myScore;
-        float myDeltaTime;
-        float myEnemyAttackTimer = 0;
-        float myTimer = 2;
+        public static float myScore;
+        public static float myDeltaTime;
+        float myPowerUpSpawnTime = 2;
         public static float myDisplayTextTimer = 2;
         public static bool myShowText;
-        float myBossTimer = 5;
+        public static float myBossTimer = 5;
         public static float myPowerUpCoolDownSeconds = 10;
         public static bool myPowerUpCoolDown;
         public static string myPowerUp;
-
-
 
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
@@ -49,6 +46,8 @@ namespace ShootEmUp_1._0
             aManager.PreferredBackBufferHeight = 900;
             aManager.PreferredBackBufferWidth = 700;
             aManager.ApplyChanges();
+            myScore = 0;
+
             myEnemyTexture = aContent.Load<Texture2D>("EnemyShip");
             myPowerupsTexture = aContent.Load<Texture2D>("PowerUp");
             myPlayerTexture = aContent.Load<Texture2D>("PlayerShip");
@@ -59,9 +58,6 @@ namespace ShootEmUp_1._0
             myStars = new ParticleGenerator(aContent.Load<Texture2D>("Star"), aManager.PreferredBackBufferWidth, 100);
 
             myGameObjects = new List<GameObject>();
-
-
-
             myPlayer = new Player(myPlayerTexture);
 
             myGameObjects.Add(myPlayer);
@@ -70,7 +66,6 @@ namespace ShootEmUp_1._0
         public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
         {
             aSpriteBatch.Begin();
-
             myStars.Draw(aSpriteBatch);
 
             for (int i = 0; i < myGameObjects.Count; i++)
@@ -80,7 +75,6 @@ namespace ShootEmUp_1._0
 
             aSpriteBatch.DrawString(myFont, "HP Left: " +myPlayer.myHp.ToString(), new Vector2(400, 0), Color.White);
             aSpriteBatch.DrawString(myFont, "Score: " + myScore, new Vector2(200, 0), Color.White);
-
 
             int tempTextOffsetX = 100;
             int tempTextOffsetY = 50;
@@ -104,25 +98,27 @@ namespace ShootEmUp_1._0
             MouseState tempMouse = Mouse.GetState();
             KeyboardState tempKeyboard = Keyboard.GetState();
 
-            myStars.Update(aGameTime, myGraphDevice);
-
             #region Updating
+            myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
             SpawnBoss();
             EnemySpawn(aGameTime);
-
             PowerUpSpawn();
 
             for (int i = 0; i < myGameObjects.Count; i++)
             {
                 myGameObjects[i].Update(aGameTime);
             }
+
+            if (GameState.myPowerUpCoolDown)
+            {
+                PowerUpTimer(PowerUp.myPowerType, PowerUp.myPowerUpIndex);
+            }
             #endregion
 
             if (myShowText)
             {
                 myDisplayTextTimer -= myDeltaTime;
-
                 if(myDisplayTextTimer <= 0)
                 {
                     myShowText = false;
@@ -130,39 +126,16 @@ namespace ShootEmUp_1._0
                 }
             }
 
-            #region Shooting
-            if (tempMouse.LeftButton == ButtonState.Pressed || tempKeyboard.IsKeyDown(Keys.J) || tempKeyboard.IsKeyDown(Keys.K) || tempKeyboard.IsKeyDown(Keys.L))
+            if(myScore <= 0)
             {
-                int tempDirX = 0;
-                if(tempKeyboard.IsKeyDown(Keys.K))
-                {
-                    tempDirX = 0;
-                }
-                if (tempKeyboard.IsKeyDown(Keys.J))
-                {
-                    tempDirX = -1;
-                }
-                if (tempKeyboard.IsKeyDown(Keys.L))
-                {
-                    tempDirX = 1;
-                }
-                if (myPlayer.myAttackTimer <= 0)
-                {
-                    Shoot(tempDirX);
-                    myPlayer.myAttackTimer = myPlayer.myAttackSpeed;
-                }
+                myScore = 0;
             }
-            myPlayer.myAttackTimer -= myDeltaTime;
 
             if(myPlayer.myHp <= 0)
             {
                 myGame.ChangeState(new GameOverState(myGame, myGraphDevice, myContentManager, myScore, myGraphics));
             }
 
-            myEnemyAttackTimer -= myDeltaTime;
-
-
-            #endregion
             for (int i = 0; i < myGameObjects.Count; i++)
             {
                 if(myGameObjects[i].myRemove)
@@ -173,11 +146,6 @@ namespace ShootEmUp_1._0
             }
                   
             return true;
-        }
-
-        public void Shoot(int aDirX)
-        {
-            myGameObjects.Add(new Bullet(7, new Vector2(aDirX,1), myBullet, (myPlayer.myPosition+myPlayer.myBulletsSpawn), 1, Color.White));
         }
 
         public void EnemySpawn(GameTime aGameTime)
@@ -194,7 +162,6 @@ namespace ShootEmUp_1._0
                     myGameObjects.Add(new EnemyMoving(myEnemyTexture, new Vector2(myRng.Next(myEnemyTexture.Width, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
                 }
  
-
                 myPreviousSpawnTime = aGameTime.TotalGameTime;
                 float tempSpawnSeconds = 0;
 
@@ -233,18 +200,6 @@ namespace ShootEmUp_1._0
 
         }
 
-        //public void DestroyBoss(int index)
-        //{
-        //    float tempNr = 5;
-        //    myBossTimer = tempNr;
-        //    myBosses.RemoveAt(index);
-        //}
-
-        public void DestroyGameObject(int index)
-        {
-            myGameObjects.RemoveAt(index);
-        }
-
         public void OutOfBounds()
         {
             for (int i = 0; i < myGameObjects.Count; i++)
@@ -258,14 +213,32 @@ namespace ShootEmUp_1._0
 
         public void PowerUpSpawn()
         {
-            if (myTimer > 0)
+            if (myPowerUpSpawnTime > 0)
             {
-                myTimer -= myDeltaTime;
+                myPowerUpSpawnTime -= myDeltaTime;
             }
-            if (myTimer <= 0)
+            if (myPowerUpSpawnTime <= 0)
             {
                 myGameObjects.Add(new PowerUp(2f, myPowerupsTexture, new Vector2(myRng.Next(3,myGraphics.PreferredBackBufferWidth-myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight+20),myRng.Next(1,4) ,myPlayer, myGame));
-                myTimer = myRng.Next(15, 30);
+                myPowerUpSpawnTime = myRng.Next(15, 30);
+            }
+        }
+
+        public void PowerUpTimer(int aType, int index)
+        {
+            GameState.myPowerUpCoolDownSeconds -= myDeltaTime;
+
+            if (GameState.myPowerUpCoolDownSeconds <= 0)
+            {
+                if (aType == 2)
+                {
+                    myPlayer.mySpeed = 7;
+                }
+                if (aType == 1)
+                {
+                    myPlayer.myAttackSpeed = 0.5f;
+                }
+                GameState.myPowerUpCoolDown = false;
             }
         }
     }

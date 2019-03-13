@@ -37,8 +37,8 @@ namespace ShootEmUp_1._0
                 {
                     if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 1)
                     {
-                        myRemove = true;
                         (GameState.myGameObjects[i] as EnemyBase).myHealth--;
+                        myRemove = true;
                     }
                 }
             }
@@ -48,8 +48,8 @@ namespace ShootEmUp_1._0
                 {
                     if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2)
                     {
-                        myRemove = true;
                         (GameState.myGameObjects[i] as Player).myHp--;
+                        myRemove = true;
                     }
                 }
             }
