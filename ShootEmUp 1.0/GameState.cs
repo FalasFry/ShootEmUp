@@ -205,6 +205,7 @@ namespace ShootEmUp_1._0
             if (myScore < 10)
             {
                 aSeconds = myRng.Next(3, 6);
+
                 myRound = "1";
             }
             else if (myScore >= 10 && myScore < 20)
@@ -218,15 +219,27 @@ namespace ShootEmUp_1._0
                 mySpawnWalls = true;
                 myRound = "3";
             }
-            else if(myScore >= 50 && myScore < 100)
+            else if(myScore >= 50 && myScore < 80)
             {
                 aSeconds = myRng.Next(1, 3);
                 myRound = "4";
             }
-            else if (myScore >= 100)
+            else if (myScore >= 80 && myScore < 100)
             {
                 aSeconds = 1;
                 myRound = "Endless";
+            }
+            else if(myScore >= 100)
+            {
+                for (int i = 0; i < myGameObjects.Count; i++)
+                {
+                    if(myGameObjects[i] is EnemyEasy || myGameObjects[i] is EnemyMoving)
+                    {
+                        myGameObjects[i].mySpeed = 6;
+                        (myGameObjects[i] as EnemyBase).myStartAttackTimer = 0.4f;
+                    }
+
+                }
             }
             myEnemySpawnTime = TimeSpan.FromSeconds(aSeconds);
         }

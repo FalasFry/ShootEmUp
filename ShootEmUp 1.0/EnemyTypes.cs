@@ -64,7 +64,7 @@ namespace ShootEmUp_1._0
             TypeTwoMove(myStartPos);
             Collision();
 
-            myAttackTimer -= (float)aGameTime.ElapsedGameTime.TotalSeconds;
+            myAttackTimer -= GameState.myDeltaTime;
             if (myAttackTimer <= 0)
             {
                 EnemyShoot();
@@ -118,7 +118,7 @@ namespace ShootEmUp_1._0
 
         public override void Update(GameTime aGameTime)
         {
-            myBossAS -= (float)aGameTime.ElapsedGameTime.TotalSeconds;
+            myBossAS -= GameState.myDeltaTime;
 
             if (myBossAS <= 0)
             {
