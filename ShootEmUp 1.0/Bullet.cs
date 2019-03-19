@@ -17,7 +17,7 @@ namespace ShootEmUp_1._0
             myDir = aDir;
             myTexture = aTexture;
             myPosition = aStartPos;
-            myOffset = ((myTexture.Bounds.Size.ToVector2()) / 2);
+            myOffset = (myTexture.Bounds.Size.ToVector2() / 2);
             myRectangle = new Rectangle((myOffset - myPosition).ToPoint(), new Point(20, 20));
             myColor = aPaint;
         }
@@ -41,14 +41,19 @@ namespace ShootEmUp_1._0
                         myRemove = true;
                     }
                 }
-            }
-            for (int i = 0; i < GameState.myGameObjects.Count; i++)
-            {
-                if (GameState.myGameObjects[i] is Player)
+                else if (GameState.myGameObjects[i] is Player)
                 {
                     if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2)
                     {
                         (GameState.myGameObjects[i] as Player).myHp--;
+                        myRemove = true;
+                    }
+                }
+                else if(GameState.myGameObjects[i] is Wall)
+                {
+                    if(GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 1)
+                    {
+                        (GameState.myGameObjects[i] as Wall).myRemove = true;
                         myRemove = true;
                     }
                 }

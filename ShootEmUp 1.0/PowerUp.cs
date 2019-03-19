@@ -25,19 +25,6 @@ namespace ShootEmUp_1._0
             myPowerType = aPowerType;
             myDir = new Vector2(0, -1);
             myRectangle = new Rectangle((myOffset - myPosition).ToPoint(), (myTexture.Bounds.Size.ToVector2()).ToPoint());
-
-            if (myPowerType == 1)
-            {
-                myColor = Color.Green;
-            }
-            if (myPowerType == 2)
-            {
-                myColor = Color.Yellow;
-            }
-            if (myPowerType == 3)
-            {
-                myColor = Color.Red;
-            }
         }
 
         public override void Update(GameTime aGameTime)
@@ -46,7 +33,6 @@ namespace ShootEmUp_1._0
 
             myPosition += (myDir * mySpeed);
             myRectangle.Location = (myPosition).ToPoint();
-
         }
 
         public void Collision()

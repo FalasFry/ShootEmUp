@@ -33,13 +33,15 @@ namespace ShootEmUp_1._0
 
         public static float myScore;
         public static float myDeltaTime;
-        float myPowerUpSpawnTime = 2;
-        public static float myDisplayTextTimer = 2;
+        float myTotalGameTime;
+        float myPowerUpSpawnTime;
+        public static float myDisplayTextTimer;
         public static bool myShowText;
-        public static float myBossTimer = 5;
-        public static float myPowerUpCoolDownSeconds = 10;
+        public static float myBossTimer;
+        public static float myPowerUpCoolDownSeconds;
         public static bool myPowerUpCoolDown;
         public static string myPowerUp;
+        float mySpawnWallsTimer;
 
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
@@ -47,7 +49,7 @@ namespace ShootEmUp_1._0
             aManager.PreferredBackBufferHeight = 900;
             aManager.PreferredBackBufferWidth = 700;
             aManager.ApplyChanges();
-            myScore = 0;
+            Reset();
 
             myEnemyTexture = aContent.Load<Texture2D>("EnemyShip");
             myPowerupsTexture = aContent.Load<Texture2D>("PowerUp");
@@ -97,6 +99,7 @@ namespace ShootEmUp_1._0
         public override bool Update(GameTime aGameTime)
         {
             myDeltaTime = (float)aGameTime.ElapsedGameTime.TotalSeconds;
+            myTotalGameTime += myDeltaTime;
             MouseState tempMouse = Mouse.GetState();
             KeyboardState tempKeyboard = Keyboard.GetState();
 
@@ -150,12 +153,28 @@ namespace ShootEmUp_1._0
             return true;
         }
 
+        public void Reset()
+        {
+            myScore = 0;
+            myPowerUpSpawnTime = 2;
+            myDisplayTextTimer = 2;
+            myShowText = false;
+            myBossTimer = 5;
+            myPowerUpCoolDownSeconds = 10;
+            myPowerUpCoolDown = false;
+            myPowerUp = "";
+            mySpawnWallsTimer = 5;
+            myTotalGameTime = 0;
+        }
+
         public void EnemySpawn(GameTime aGameTime)
         {
+            bool tempSpawnWalls = false;
+
             if (aGameTime.TotalGameTime - myPreviousSpawnTime > myEnemySpawnTime)
             {
-                //bool tempSpawnWalls = false;
                 int tempType = myRng.Next(1, 3);
+
                 if(tempType == 1)
                 {
                     myGameObjects.Add(new EnemyEasy(myEnemyTexture, new Vector2(myRng.Next(myEnemyTexture.Width, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
@@ -168,21 +187,23 @@ namespace ShootEmUp_1._0
                 myPreviousSpawnTime = aGameTime.TotalGameTime;
                 float tempSpawnSeconds = 0;
 
-                if (aGameTime.ElapsedGameTime.TotalSeconds < 60)
+                if (myScore < 10)
                 {
-                    tempSpawnSeconds = myRng.Next(1, 3);
+                    tempSpawnSeconds = myRng.Next(3, 6);
                 }
-                else if(aGameTime.ElapsedGameTime.TotalSeconds > 60)
+                else if(myScore >= 10 && myScore < 20)
                 {
-                    tempSpawnSeconds = 1;
-                    //tempSpawnWalls = true;
+                    tempSpawnSeconds = myRng.Next(3,5);
+                    tempSpawnWalls = true;
                 }
 
-                //if(tempSpawnWalls)
-                //{
-                //    SpawnWalls();
-                //}
                 myEnemySpawnTime = TimeSpan.FromSeconds(tempSpawnSeconds);
+            }
+            mySpawnWallsTimer -= myDeltaTime;
+            if (tempSpawnWalls && mySpawnWallsTimer <= 0)
+            {
+                SpawnWalls();
+                mySpawnWallsTimer = 5;
             }
         }
 
@@ -253,9 +274,9 @@ namespace ShootEmUp_1._0
 
         public void PowerUpTimer(int aType, int index)
         {
-            GameState.myPowerUpCoolDownSeconds -= myDeltaTime;
+            myPowerUpCoolDownSeconds -= myDeltaTime;
 
-            if (GameState.myPowerUpCoolDownSeconds <= 0)
+            if (myPowerUpCoolDownSeconds <= 0)
             {
                 if (aType == 2)
                 {
@@ -265,7 +286,7 @@ namespace ShootEmUp_1._0
                 {
                     myPlayer.myAttackSpeed = 0.5f;
                 }
-                GameState.myPowerUpCoolDown = false;
+                myPowerUpCoolDown = false;
             }
         }
     }
