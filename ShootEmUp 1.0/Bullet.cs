@@ -51,7 +51,7 @@ namespace ShootEmUp_1._0
                 }
                 else if(GameState.myGameObjects[i] is Wall)
                 {
-                    if(GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 1)
+                    if(GameState.myGameObjects[i].myRectangle.Intersects(myRectangle))
                     {
                         (GameState.myGameObjects[i] as Wall).myRemove = true;
                         myRemove = true;

@@ -39,6 +39,13 @@ namespace ShootEmUp_1._0
                         myRemove = true;
                     }
                 }
+                else if (GameState.myGameObjects[i] is EnemyBase)
+                {
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle))
+                    {
+                        myRemove = true;
+                    }
+                }
             }
         }
     }

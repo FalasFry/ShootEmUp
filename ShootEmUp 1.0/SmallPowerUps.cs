@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShootEmUp_1._0
 {
-    class PowerUp : GameObject
+    class SmallPowerUps : GameObject
     {
         public static int myPowerType;
 
@@ -17,7 +17,7 @@ namespace ShootEmUp_1._0
         public static int myPowerUpIndex = 0;
 
 
-        public PowerUp(float aSpeed, Texture2D aTexture, Vector2 aStartPos, int aPowerType, Player aPlayer, Game1 aGame)
+        public SmallPowerUps(float aSpeed, Texture2D aTexture, Vector2 aStartPos, int aPowerType, Player aPlayer, Game1 aGame)
         {
             mySpeed = aSpeed;
             myTexture = aTexture;
