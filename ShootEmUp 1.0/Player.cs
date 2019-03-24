@@ -18,12 +18,12 @@ namespace ShootEmUp_1._0
 
         public Vector2 myPrevPos;
         public Vector2 myBulletsSpawn;
-        float myUltimateCooldown;
+        public bool myNormalFire = true;
+        public bool myUltimate = false;
 
 
         public Player(Texture2D aTexture)
         {
-            myUltimateCooldown = 10;
             myRotation = 0;
             myTexture = aTexture;
             mySpeed = 7;
@@ -55,19 +55,27 @@ namespace ShootEmUp_1._0
                 {
                     tempDirX = 1;
                 }
+
                 if (myAttackTimer <= 0)
                 {
-                    Shoot(tempDirX);
+                    if (myNormalFire)
+                    {
+                        Shoot(tempDirX);
+                    }
+                    else if (!myNormalFire)
+                    {
+                        ShootAllAtOnce();
+                    }
                     myAttackTimer = myAttackSpeed;
                 }
             }
             myAttackTimer -= GameState.myDeltaTime;
 
-            myUltimateCooldown -= GameState.myDeltaTime;
-            if (tempKeyboard.IsKeyDown(Keys.R) && myUltimateCooldown <= 0)
+
+            if (tempKeyboard.IsKeyDown(Keys.R) && myUltimate)
             {
                 Ultimate();
-                myUltimateCooldown = 10;
+                myUltimate = false;
             }
         }
 
@@ -124,6 +132,13 @@ namespace ShootEmUp_1._0
         public void Shoot(int aDirX)
         {
             GameState.myGameObjects.Add(new Bullet(7, new Vector2(aDirX, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+        }
+
+        public void ShootAllAtOnce()
+        {
+            GameState.myGameObjects.Add(new Bullet(7, new Vector2(-1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+            GameState.myGameObjects.Add(new Bullet(7, new Vector2(1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+            GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
         }
 
         public void Ultimate()

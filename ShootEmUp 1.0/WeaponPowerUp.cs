@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShootEmUp_1._0
 {
-    class SmallPowerUps : GameObject
+    class WeaponPowerUp : GameObject
     {
         public static int myPowerType;
 
@@ -17,7 +17,7 @@ namespace ShootEmUp_1._0
         public static int myPowerUpIndex = 0;
 
 
-        public SmallPowerUps(float aSpeed, Texture2D aTexture, Vector2 aStartPos, int aPowerType, Player aPlayer, Game1 aGame)
+        public WeaponPowerUp(float aSpeed, Texture2D aTexture, Vector2 aStartPos, int aPowerType, Player aPlayer, Game1 aGame)
         {
             mySpeed = aSpeed;
             myTexture = aTexture;
@@ -47,22 +47,22 @@ namespace ShootEmUp_1._0
                     {
                         if (myPowerType == 1)
                         {
-                            GameState.myPowerUp = "More AttackSpeed";
-                            myPlayer.myAttackSpeed -= 0.4f;
+                            GameState.myPowerUp = "All At Once";
+                            myPlayer.myNormalFire = false;
                             GameState.myPowerUpCoolDownSeconds = 5f;
                             GameState.myPowerUpCoolDown = true;
                         }
                         if (myPowerType == 2)
                         {
-                            GameState.myPowerUp = "More Speed";
+                            GameState.myPowerUp = "Ultimate Ready";
                             myPlayer.mySpeed = 13;
                             GameState.myPowerUpCoolDownSeconds = 10f;
                             GameState.myPowerUpCoolDown = true;
                         }
                         if (myPowerType == 3)
                         {
-                            GameState.myPowerUp = "+10 HP";
-                            (GameState.myGameObjects[i] as Player).myHp += 10;
+                            GameState.myPowerUp = "+FireRate";
+                            myPlayer.myAttackSpeed -= 0.1f;
                         }
                         GameState.myShowText = true;
                         myPowerUpIndex = i;
