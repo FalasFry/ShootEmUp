@@ -45,24 +45,25 @@ namespace ShootEmUp_1._0
 
                     if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle))
                     {
-                        if (myPowerType == 1)
+                        if (myPowerType >= 1 && myPowerType <= 50)
                         {
                             GameState.myPowerUp = "All At Once";
                             myPlayer.myNormalFire = false;
-                            GameState.myPowerUpCoolDownSeconds = 5f;
                             GameState.myPowerUpCoolDown = true;
                         }
-                        if (myPowerType == 2)
+                        if (myPowerType > 50 && myPowerType <= 65)
                         {
                             GameState.myPowerUp = "Ultimate Ready";
-                            myPlayer.mySpeed = 13;
-                            GameState.myPowerUpCoolDownSeconds = 10f;
+                            myPlayer.myUltimate = true;
                             GameState.myPowerUpCoolDown = true;
                         }
-                        if (myPowerType == 3)
+                        if (myPowerType > 65 && myPowerType <= 100)
                         {
                             GameState.myPowerUp = "+FireRate";
-                            myPlayer.myAttackSpeed -= 0.1f;
+                            if (myPlayer.myAttackSpeed >= 0.1)
+                            {
+                                myPlayer.myAttackSpeed -= 0.1f;
+                            }
                         }
                         GameState.myShowText = true;
                         myPowerUpIndex = i;

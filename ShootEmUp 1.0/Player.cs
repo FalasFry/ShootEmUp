@@ -34,11 +34,15 @@ namespace ShootEmUp_1._0
 
         public override void Update(GameTime aGameTime)
         {
+            Movement();
+            FireCheck();
+            myRectangle.Location = myPosition.ToPoint();
+        }
+
+        public void FireCheck()
+        {
             MouseState tempMouse = Mouse.GetState();
             KeyboardState tempKeyboard = Keyboard.GetState();
-
-            Movement();
-            myRectangle.Location = myPosition.ToPoint();
 
             if (tempMouse.LeftButton == ButtonState.Pressed || tempKeyboard.IsKeyDown(Keys.J) || tempKeyboard.IsKeyDown(Keys.K) || tempKeyboard.IsKeyDown(Keys.L))
             {
@@ -70,7 +74,6 @@ namespace ShootEmUp_1._0
                 }
             }
             myAttackTimer -= GameState.myDeltaTime;
-
 
             if (tempKeyboard.IsKeyDown(Keys.R) && myUltimate)
             {

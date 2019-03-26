@@ -14,6 +14,7 @@ namespace ShootEmUp_1._0
     class GameState : States
     {
         Texture2D myPowerupsTexture;
+        Texture2D myCharachterPuTexture;
         Texture2D myEnemyTexture;
         Texture2D myPlayerTexture;
         Texture2D myWallTexture;
@@ -35,6 +36,7 @@ namespace ShootEmUp_1._0
         public static float myDeltaTime;
         float myTotalGameTime;
         float myPowerUpSpawnTime;
+        float myCharachterPuSpawnTime;
         public static float myDisplayTextTimer;
         public static bool myShowText;
         public static float myBossTimer;
@@ -60,6 +62,8 @@ namespace ShootEmUp_1._0
             myEnemyBullet = aContent.Load<Texture2D>("ball");
             myFont = aContent.Load<SpriteFont>("Font");
             myWallTexture = aContent.Load<Texture2D>("Walls");
+            myCharachterPuTexture = aContent.Load<Texture2D>("MarioStar");
+
             myRng = new Random();
             myStars = new ParticleGenerator(aContent.Load<Texture2D>("Star"), aManager.PreferredBackBufferWidth, 100);
 
@@ -110,9 +114,10 @@ namespace ShootEmUp_1._0
             #region Updating
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            SpawnBoss();
-            EnemySpawn(aGameTime);
-            PowerUpSpawn();
+            //SpawnBoss();
+            //EnemySpawn(aGameTime);
+            //PowerUpSpawn();
+            SuperUpSpawn();
 
             for (int i = 0; i < myGameObjects.Count; i++)
             {
@@ -121,7 +126,7 @@ namespace ShootEmUp_1._0
 
             if (GameState.myPowerUpCoolDown)
             {
-                PowerUpTimer(SmallPowerUps.myPowerType, SmallPowerUps.myPowerUpIndex);
+                PowerUpTimer(SmallPowerUps.myPowerType, SmallPowerUps.myPowerUpIndex, myPlayer.myAttackSpeed);
             }
             #endregion
 
@@ -161,6 +166,7 @@ namespace ShootEmUp_1._0
         {
             myScore = 0;
             myPowerUpSpawnTime = 2;
+            myCharachterPuSpawnTime = 20;
             myDisplayTextTimer = 2;
             myShowText = false;
             myBossTimer = 5;
@@ -307,6 +313,19 @@ namespace ShootEmUp_1._0
             }
         }
 
+        public void SuperUpSpawn()
+        {
+            if (myCharachterPuSpawnTime > 0)
+            {
+                myCharachterPuSpawnTime -= myDeltaTime;
+            }
+            if (myCharachterPuSpawnTime <= 0)
+            {
+                myGameObjects.Add(new WeaponPowerUp(2f, myCharachterPuTexture, new Vector2(myRng.Next(3, myGraphics.PreferredBackBufferWidth - myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight + 20), myRng.Next(1, 101), myPlayer, myGame));
+                myCharachterPuSpawnTime = myRng.Next(20, 51);
+            }
+        }
+
         public void SpawnWalls()
         {
             int tempSpawnWay = myRng.Next(1,3);
@@ -325,7 +344,7 @@ namespace ShootEmUp_1._0
             }
         }
 
-        public void PowerUpTimer(int aType, int index)
+        public void PowerUpTimer(int aType, int index, float aNormalFireSpeed)
         {
             myPowerUpCoolDownSeconds -= myDeltaTime;
 
@@ -337,7 +356,7 @@ namespace ShootEmUp_1._0
                 }
                 if (aType == 1)
                 {
-                    myPlayer.myAttackSpeed = 0.5f;
+                    myPlayer.myAttackSpeed = aNormalFireSpeed;
                 }
                 myPowerUpCoolDown = false;
             }
