@@ -37,6 +37,13 @@ namespace ShootEmUp_1._0
             };
             myStartButton.Click += StartButton_Click1;
 
+            Button myCustomButtom = new Button(myButtonFont, myButtonTexture)
+            {
+                AccessText = "Customize",
+                AccessPos = new Vector2(325, 390),
+            };
+            myCustomButtom.Click += MyCustomButtom_Click;
+
             Button myQuitButton = new Button(myButtonFont, myButtonTexture)
             {
                 AccessText = "Quit",
@@ -47,8 +54,14 @@ namespace ShootEmUp_1._0
             myButtons = new List<Components>()
             {
                 myStartButton,
+                myCustomButtom,
                 myQuitButton,
             };
+        }
+
+        private void MyCustomButtom_Click(object sender, EventArgs e)
+        {
+            myGame.ChangeState(new CustomizeState(myGame, myGraphDevice, myContentManager));
         }
 
         private void QuitButton_Click(object sender, EventArgs e)

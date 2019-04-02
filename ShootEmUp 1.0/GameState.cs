@@ -57,7 +57,9 @@ namespace ShootEmUp_1._0
 
             myEnemyTexture = aContent.Load<Texture2D>("EnemyShip");
             myPowerupsTexture = aContent.Load<Texture2D>("PowerUp");
-            myPlayerTexture = aContent.Load<Texture2D>("PlayerShip");
+
+            myPlayerTexture = CustomizeState.myTexture;
+
             myBullet = aContent.Load<Texture2D>("BulletPixel");
             myEnemyBullet = aContent.Load<Texture2D>("ball");
             myFont = aContent.Load<SpriteFont>("Font");
@@ -68,7 +70,15 @@ namespace ShootEmUp_1._0
             myStars = new ParticleGenerator(aContent.Load<Texture2D>("Star"), aManager.PreferredBackBufferWidth, 100);
 
             myGameObjects = new List<GameObject>();
-            myPlayer = new Player(myPlayerTexture);
+
+            if (myPlayerTexture != null)
+            {
+                myPlayer = new Player(myPlayerTexture);
+            }
+            else if(myPlayerTexture == null)
+            {
+                myPlayer = new Player(aContent.Load<Texture2D>("PlayerShip"));
+            }
 
             myGameObjects.Add(myPlayer);
         }
@@ -112,11 +122,12 @@ namespace ShootEmUp_1._0
             KeyboardState tempKeyboard = Keyboard.GetState();
 
             #region Updating
+
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            //SpawnBoss();
-            //EnemySpawn(aGameTime);
-            //PowerUpSpawn();
+            SpawnBoss();
+            EnemySpawn(aGameTime);
+            PowerUpSpawn();
             SuperUpSpawn();
 
             for (int i = 0; i < myGameObjects.Count; i++)
