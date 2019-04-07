@@ -92,29 +92,22 @@ namespace ShootEmUp_1._0
                 if(myTimer <= 0 && anI < aList.Count - 1)
                 {
                     myTimer = 1;
-                    if (myTexture == myTexturesList[0])
+                    for (int i = 0; i < myTexturesList.Count; i++)
                     {
-                        myTexture = myTexturesList[1];
+                        if (myTexture == myTexturesList[i])
+                        {
+                            if (i < myTexturesList.Count - 1)
+                            {
+                                myTexture = myTexturesList[i + 1];
+                                return;
+                            }
+                            else if (i >= myTexturesList.Count - 1)
+                            {
+                                myTexture = myTexturesList[0];
+                                return;
+                            }
+                        }
                     }
-                    else if (myTexture == myTexturesList[1])
-                    {
-                        myTexture = myTexturesList[0];
-                    }
-
-                    //for (int i = 0; i < myTexturesList.Count; i++)
-                    //{
-                    //    if(myTexture == myTexturesList[i])
-                    //    {
-                    //        if (i < myTexturesList.Count - 1)
-                    //        {
-                    //            myTexture = myTexturesList[i + 1];
-                    //        }
-                    //        else if (i >= myTexturesList.Count - 1)
-                    //        {
-                    //            myTexture = myTexturesList[0];
-                    //        }
-                    //    }
-                    //}
                 }
             }
         }
