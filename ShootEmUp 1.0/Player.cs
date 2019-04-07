@@ -34,11 +34,15 @@ namespace ShootEmUp_1._0
 
         public override void Update(GameTime aGameTime)
         {
+            Movement();
+            FireCheck();
+            myRectangle.Location = myPosition.ToPoint();
+        }
+
+        public void FireCheck()
+        {
             MouseState tempMouse = Mouse.GetState();
             KeyboardState tempKeyboard = Keyboard.GetState();
-
-            Movement();
-            myRectangle.Location = myPosition.ToPoint();
 
             if (tempMouse.LeftButton == ButtonState.Pressed || tempKeyboard.IsKeyDown(Keys.J) || tempKeyboard.IsKeyDown(Keys.K) || tempKeyboard.IsKeyDown(Keys.L))
             {
@@ -70,7 +74,6 @@ namespace ShootEmUp_1._0
                 }
             }
             myAttackTimer -= GameState.myDeltaTime;
-
 
             if (tempKeyboard.IsKeyDown(Keys.R) && myUltimate)
             {
@@ -136,9 +139,21 @@ namespace ShootEmUp_1._0
 
         public void ShootAllAtOnce()
         {
-            GameState.myGameObjects.Add(new Bullet(7, new Vector2(-1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
-            GameState.myGameObjects.Add(new Bullet(7, new Vector2(1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
-            GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+            Random tempRng = new Random();
+            int tempRandom = tempRng.Next(1, 3);
+
+            if (tempRandom == 1)
+            {
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+            }
+            else if(tempRandom == 2)
+            {
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(-50, 0)) , 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(50, 0)), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+            }
         }
 
         public void Ultimate()
