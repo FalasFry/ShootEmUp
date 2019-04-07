@@ -14,7 +14,8 @@ namespace ShootEmUp_1._0
     class GameState : States
     {
         Texture2D myPowerupsTexture;
-        Texture2D myEnemyTexture;
+        public static Texture2D myEnemyTexture;
+        public static Texture2D myEnemyTexture2;
         Texture2D myPlayerTexture;
         Texture2D myWallTexture;
 
@@ -54,6 +55,7 @@ namespace ShootEmUp_1._0
             Reset();
 
             myEnemyTexture = aContent.Load<Texture2D>("EnemyShip");
+            myEnemyTexture2 = aContent.Load<Texture2D>("EnemyShip2");
             myPowerupsTexture = aContent.Load<Texture2D>("PowerUp");
             myPlayerTexture = aContent.Load<Texture2D>("PlayerShip");
             myBullet = aContent.Load<Texture2D>("BulletPixel");

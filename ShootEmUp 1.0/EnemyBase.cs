@@ -15,18 +15,27 @@ namespace ShootEmUp_1._0
         public Random myRng;
         public Vector2 myBulletSpawn;
 
+        public List<Texture2D> myTexturesList;
+
         public float myHealth;
         public float myShootStyle;
         public Color myBulletColor = Color.White;
         public float myAttackTimer = 0;
         public float myStartAttackTimer = 0.5f;
         public Texture2D myBulletTexture;
+        float myTimer = 1;
 
         public EnemyBase()
         {
             myHealth = 1;
             myScale = 1;
             myRng = new Random();
+
+            myTexturesList = new List<Texture2D>()
+            {
+                GameState.myEnemyTexture,
+                GameState.myEnemyTexture2,
+            };
         }
 
         public void StayAlive()
@@ -67,5 +76,47 @@ namespace ShootEmUp_1._0
             myAttackTimer = myStartAttackTimer;
         }
 
+        public void Animation(List<Texture2D> aList, int anI)
+        {
+            bool tempBool = false;
+
+            if (anI < aList.Count)
+            {
+                tempBool = true;
+            }
+
+            if(tempBool)
+            {
+                myTimer -= GameState.myDeltaTime;
+
+                if(myTimer <= 0 && anI < aList.Count - 1)
+                {
+                    myTimer = 1;
+                    if (myTexture == myTexturesList[0])
+                    {
+                        myTexture = myTexturesList[1];
+                    }
+                    else if (myTexture == myTexturesList[1])
+                    {
+                        myTexture = myTexturesList[0];
+                    }
+
+                    //for (int i = 0; i < myTexturesList.Count; i++)
+                    //{
+                    //    if(myTexture == myTexturesList[i])
+                    //    {
+                    //        if (i < myTexturesList.Count - 1)
+                    //        {
+                    //            myTexture = myTexturesList[i + 1];
+                    //        }
+                    //        else if (i >= myTexturesList.Count - 1)
+                    //        {
+                    //            myTexture = myTexturesList[0];
+                    //        }
+                    //    }
+                    //}
+                }
+            }
+        }
     }
 }

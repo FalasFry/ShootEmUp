@@ -119,6 +119,7 @@ namespace ShootEmUp_1._0
         public override void Update(GameTime aGameTime)
         {
             myBossAS -= GameState.myDeltaTime;
+            Animation(myTexturesList, 0);
 
             if (myBossAS <= 0)
             {
