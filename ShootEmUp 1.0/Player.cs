@@ -158,8 +158,7 @@ namespace ShootEmUp_1._0
 
         public void Ultimate()
         {
-            myScale = 5;
-            myHp += 10;
+            myHp += 100;
         }
     }
 }

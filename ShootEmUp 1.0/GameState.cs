@@ -15,7 +15,8 @@ namespace ShootEmUp_1._0
     {
         Texture2D myPowerupsTexture;
         Texture2D myCharachterPuTexture;
-        Texture2D myEnemyTexture;
+        public static Texture2D myEnemyTexture;
+        public static Texture2D myEnemyTexture2;
         Texture2D myPlayerTexture;
         Texture2D myWallTexture;
 
@@ -56,10 +57,9 @@ namespace ShootEmUp_1._0
             Reset();
 
             myEnemyTexture = aContent.Load<Texture2D>("EnemyShip");
+            myEnemyTexture2 = aContent.Load<Texture2D>("EnemyShip2");
             myPowerupsTexture = aContent.Load<Texture2D>("PowerUp");
-
             myPlayerTexture = CustomizeState.myTexture;
-
             myBullet = aContent.Load<Texture2D>("BulletPixel");
             myEnemyBullet = aContent.Load<Texture2D>("ball");
             myFont = aContent.Load<SpriteFont>("Font");
