@@ -76,40 +76,6 @@ namespace ShootEmUp_1._0
             myAttackTimer = myStartAttackTimer;
         }
 
-        public void Animation(List<Texture2D> aList, int anI)
-        {
-            bool tempBool = false;
 
-            if (anI < aList.Count)
-            {
-                tempBool = true;
-            }
-
-            if(tempBool)
-            {
-                myTimer -= GameState.myDeltaTime;
-
-                if(myTimer <= 0 && anI < aList.Count - 1)
-                {
-                    myTimer = 1;
-                    for (int i = 0; i < myTexturesList.Count; i++)
-                    {
-                        if (myTexture == myTexturesList[i])
-                        {
-                            if (i < myTexturesList.Count - 1)
-                            {
-                                myTexture = myTexturesList[i + 1];
-                                return;
-                            }
-                            else if (i >= myTexturesList.Count - 1)
-                            {
-                                myTexture = myTexturesList[0];
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

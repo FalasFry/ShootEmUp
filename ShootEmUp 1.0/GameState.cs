@@ -137,7 +137,7 @@ namespace ShootEmUp_1._0
 
             if (GameState.myPowerUpCoolDown)
             {
-                PowerUpTimer(SmallPowerUps.myPowerType, SmallPowerUps.myPowerUpIndex, myPlayer.myAttackSpeed);
+                PowerUpTimer(SmallPowerUps.myPowerType, SmallPowerUps.myPowerUpIndex, myPlayer.myBaseAttackSpeed);
             }
             #endregion
 

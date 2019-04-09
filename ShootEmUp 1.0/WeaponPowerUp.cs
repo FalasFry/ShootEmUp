@@ -48,26 +48,34 @@ namespace ShootEmUp_1._0
                         if (myPowerType >= 1 && myPowerType <= 50)
                         {
                             GameState.myPowerUp = "All At Once";
+                            Random tempRng = new Random();
+                            myPlayer.myFireType = tempRng.Next(1, 3);
                             myPlayer.myNormalFire = false;
-                            GameState.myPowerUpCoolDown = true;
+
                         }
                         if (myPowerType > 50 && myPowerType <= 65)
                         {
                             GameState.myPowerUp = "Ultimate Ready";
                             myPlayer.myUltimate = true;
-                            GameState.myPowerUpCoolDown = true;
                         }
                         if (myPowerType > 65 && myPowerType <= 100)
                         {
-                            GameState.myPowerUp = "+FireRate";
                             if (myPlayer.myAttackSpeed >= 0.1)
                             {
+                                GameState.myPowerUp = "+FireRate";
                                 myPlayer.myAttackSpeed -= 0.1f;
+                                myPlayer.myBaseAttackSpeed = myPlayer.myAttackSpeed;
+                            }
+                            else
+                            {
+                                GameState.myPowerUp = "Already Maxed";
+                                myPlayer.myAttackSpeed = myPlayer.myBaseAttackSpeed;
                             }
                         }
                         GameState.myShowText = true;
                         myPowerUpIndex = i;
                         myRemove = true;
+                        return;
                     }
                 }
             }

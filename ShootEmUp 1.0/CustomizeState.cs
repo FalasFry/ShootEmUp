@@ -26,9 +26,9 @@ namespace ShootEmUp_1._0
         float myDeltaTime;
 
         bool myBaseBool = true;
-        bool myFirst = true;
-        bool mySecond;
-        bool myThird;
+        public static bool myFirst = true;
+        public static bool mySecond;
+        public static bool myThird;
 
         int mySelected = 0;
         

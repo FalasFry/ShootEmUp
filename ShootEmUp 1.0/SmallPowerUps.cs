@@ -48,7 +48,7 @@ namespace ShootEmUp_1._0
                         if (myPowerType == 1)
                         {
                             GameState.myPowerUp = "More AttackSpeed";
-                            myPlayer.myAttackSpeed -= 0.4f;
+                            myPlayer.myAttackSpeed = 0.1f;
                             GameState.myPowerUpCoolDownSeconds = 5f;
                             GameState.myPowerUpCoolDown = true;
                         }

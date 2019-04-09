@@ -13,6 +13,7 @@ namespace ShootEmUp_1._0
     {
         Texture2D myMenuTexture;
         List<Components> myButtons;
+        HighScore myHs;
 
         SpriteFont myButtonFont;
         Texture2D myButtonTexture;
@@ -29,6 +30,8 @@ namespace ShootEmUp_1._0
             myManager.PreferredBackBufferHeight = 480;
             myManager.PreferredBackBufferWidth = 800;
             myManager.ApplyChanges();
+
+            myHs = new HighScore();
 
             Button myStartButton = new Button(myButtonFont, myButtonTexture)
             {

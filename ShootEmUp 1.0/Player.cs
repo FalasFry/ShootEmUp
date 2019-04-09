@@ -20,6 +20,8 @@ namespace ShootEmUp_1._0
         public Vector2 myBulletsSpawn;
         public bool myNormalFire = true;
         public bool myUltimate = false;
+        public int myFireType;
+        public float myBaseAttackSpeed;
 
 
         public Player(Texture2D aTexture)
@@ -30,6 +32,7 @@ namespace ShootEmUp_1._0
             myPosition = new Vector2(300, myTexture.Height);
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletsSpawn = new Vector2(myRectangle.Width * 0.5f, myRectangle.Height);
+            myBaseAttackSpeed = myAttackSpeed;
         }
 
         public override void Update(GameTime aGameTime)
@@ -68,7 +71,7 @@ namespace ShootEmUp_1._0
                     }
                     else if (!myNormalFire)
                     {
-                        ShootAllAtOnce();
+                        ShootAllAtOnce(myFireType);
                     }
                     myAttackTimer = myAttackSpeed;
                 }
@@ -137,18 +140,15 @@ namespace ShootEmUp_1._0
             GameState.myGameObjects.Add(new Bullet(7, new Vector2(aDirX, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
         }
 
-        public void ShootAllAtOnce()
+        public void ShootAllAtOnce(int aRandom)
         {
-            Random tempRng = new Random();
-            int tempRandom = tempRng.Next(1, 3);
-
-            if (tempRandom == 1)
+            if (aRandom == 1)
             {
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn) + new Vector2(-50, 0), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn) + new Vector2(50, 0), 1, Color.White));
                 GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
             }
-            else if(tempRandom == 2)
+            else if(aRandom == 2)
             {
                 GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(-50, 0)) , 1, Color.White));
                 GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(50, 0)), 1, Color.White));

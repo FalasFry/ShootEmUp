@@ -18,12 +18,49 @@ namespace ShootEmUp_1._0
         public Color myColor = Color.White;
         public float myScale = 1;
         public bool myRemove = false;
+        float myTimer = 1;
 
         public abstract void Update(GameTime aGameTime);
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
             aSpriteBatch.Draw(myTexture, myPosition, null, myColor, myRotation, myOffset, myScale, SpriteEffects.None, 1);
+        }
+
+        public void Animation(List<Texture2D> aList, int anI)
+        {
+            bool tempBool = false;
+
+            if (anI < aList.Count)
+            {
+                tempBool = true;
+            }
+
+            if (tempBool)
+            {
+                myTimer -= GameState.myDeltaTime;
+
+                if (myTimer <= 0 && anI < aList.Count - 1)
+                {
+                    myTimer = 1;
+                    for (int i = 0; i < aList.Count; i++)
+                    {
+                        if (myTexture == aList[i])
+                        {
+                            if (i < aList.Count - 1)
+                            {
+                                myTexture = aList[i + 1];
+                                return;
+                            }
+                            else if (i >= aList.Count - 1)
+                            {
+                                myTexture = aList[0];
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
