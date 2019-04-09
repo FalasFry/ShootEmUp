@@ -144,8 +144,8 @@ namespace ShootEmUp_1._0
         {
             if (aRandom == 1)
             {
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn) + new Vector2(-50, 0), 1, Color.White));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn) + new Vector2(50, 0), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(-1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
                 GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
             }
             else if(aRandom == 2)

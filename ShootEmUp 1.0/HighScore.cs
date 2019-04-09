@@ -4,31 +4,63 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ShootEmUp_1._0
 {
     class HighScore
     {
         StreamReader myReader;
+        static string myPath;
+        string[] myText;
 
         public HighScore()
         {
-            string myPath = Path.GetFullPath("/Content/test.txt");
-            string[] myLine = File.ReadAllLines(myPath);
+            myPath = Path.GetFullPath("test.txt");
 
-            if(myLine.Contains("First True"))
+            if (File.Exists(myPath))
             {
-                CustomizeState.myFirst = true;
-            }
-            if (myLine.Contains("Second True"))
-            {
-                CustomizeState.mySecond = true;
-            }
-            if (myLine.Contains("Third True"))
-            {
-                CustomizeState.myThird = true;
+                string[] tempLines = File.ReadAllLines(myPath);
+                myText = tempLines;
+
+                if (myText.Contains("First True"))
+                {
+                    CustomizeState.myFirst = true;
+                }
+                if (myText.Contains("Second True"))
+                {
+                    CustomizeState.mySecond = true;
+                }
+                if (myText.Contains("Third True"))
+                {
+                    CustomizeState.myThird = true;
+                }
             }
         }
+
+        public static void End()
+        {
+            List<string> tempLines = new List<string>();
+
+            if(CustomizeState.myFirst)
+            {
+                tempLines.Add("First True");
+            }
+            if (CustomizeState.mySecond)
+            {
+                tempLines.Add("Second True");
+            }
+            if (CustomizeState.myThird)
+            {
+                tempLines.Add("Third True");
+            }
+            File.WriteAllLines(myPath, tempLines.ToArray());
+            if (tempLines.Count == 0)
+            {
+                string[] tempArray = { "First False", "Second False", "Third False" };
+
+                File.WriteAllLines(myPath, tempArray);
+            }
+        }
+        
     }
 }

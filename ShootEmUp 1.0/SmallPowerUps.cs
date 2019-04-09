@@ -64,6 +64,7 @@ namespace ShootEmUp_1._0
                             GameState.myPowerUp = "+10 HP";
                             (GameState.myGameObjects[i] as Player).myHp += 10;
                         }
+                        GameState.myPowerUpCount++;
                         GameState.myShowText = true;
                         myPowerUpIndex = i;
                         myRemove = true;

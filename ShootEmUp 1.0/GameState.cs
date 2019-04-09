@@ -48,6 +48,9 @@ namespace ShootEmUp_1._0
         bool mySpawnWalls;
         string myRound;
 
+        public static int myPowerUpCount = 0;
+        public static int myWallsDestroyed = 0;
+
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
             myGraphics = aManager;
@@ -169,7 +172,24 @@ namespace ShootEmUp_1._0
                     i--;
                 }
             }
-                  
+
+            #region Customise
+
+            if (myPowerUpCount >= 5)
+            {
+                CustomizeState.myFirst = true;
+            }
+            if(myScore >= 50)
+            {
+                CustomizeState.mySecond = true;
+            }
+            if(myWallsDestroyed >= 10)
+            {
+                CustomizeState.myThird = true;
+            }
+
+            #endregion
+
             return true;
         }
 
@@ -188,6 +208,8 @@ namespace ShootEmUp_1._0
             myTotalGameTime = 0;
             mySpawnWalls = false;
             myRound = "1";
+            myPowerUpCount = 0;
+            myWallsDestroyed = 0;
         }
 
         public void EnemySpawn(GameTime aGameTime)
@@ -248,14 +270,14 @@ namespace ShootEmUp_1._0
             }
             else if(myScore >= 100)
             {
+                aSeconds = 1;
                 for (int i = 0; i < myGameObjects.Count; i++)
                 {
                     if(myGameObjects[i] is EnemyEasy || myGameObjects[i] is EnemyMoving)
                     {
-                        myGameObjects[i].mySpeed = 6;
+                        myGameObjects[i].mySpeed += (1*0.1f);
                         (myGameObjects[i] as EnemyBase).myStartAttackTimer = 0.4f;
                     }
-
                 }
             }
             myEnemySpawnTime = TimeSpan.FromSeconds(aSeconds);

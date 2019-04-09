@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,6 @@ namespace ShootEmUp_1._0
         Player myPlayer;
 
         public static int myPowerUpIndex = 0;
-
 
         public WeaponPowerUp(float aSpeed, Texture2D aTexture, Vector2 aStartPos, int aPowerType, Player aPlayer, Game1 aGame)
         {
@@ -72,6 +72,7 @@ namespace ShootEmUp_1._0
                                 myPlayer.myAttackSpeed = myPlayer.myBaseAttackSpeed;
                             }
                         }
+                        GameState.myPowerUpCount++;
                         GameState.myShowText = true;
                         myPowerUpIndex = i;
                         myRemove = true;

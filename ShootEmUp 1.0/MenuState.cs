@@ -69,6 +69,7 @@ namespace ShootEmUp_1._0
 
         private void QuitButton_Click(object sender, EventArgs e)
         {
+            HighScore.End();
             myGame.Exit();
         }
 
