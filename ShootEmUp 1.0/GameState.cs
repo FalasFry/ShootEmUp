@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
 
 namespace ShootEmUp_1._0
 {
@@ -44,6 +43,7 @@ namespace ShootEmUp_1._0
         public static float myPowerUpCoolDownSeconds;
         public static bool myPowerUpCoolDown;
         public static string myPowerUp;
+        public static bool myUltimateCoolDown;
         float mySpawnWallsTimer;
         bool mySpawnWalls;
         string myRound;
@@ -138,10 +138,15 @@ namespace ShootEmUp_1._0
                 myGameObjects[i].Update(aGameTime);
             }
 
-            if (GameState.myPowerUpCoolDown)
+            if (myPowerUpCoolDown)
             {
-                PowerUpTimer(SmallPowerUps.myPowerType, SmallPowerUps.myPowerUpIndex, myPlayer.myBaseAttackSpeed);
+                PowerUpTimer(SmallPowerUps.myPowerType, myPlayer.myBaseAttackSpeed);
             }
+            if(myUltimateCoolDown)
+            {
+                PowerUpTimer(3, myPlayer.myBaseAttackSpeed);
+            }
+
             #endregion
 
             if (myShowText)
@@ -266,17 +271,31 @@ namespace ShootEmUp_1._0
             else if (myScore >= 80 && myScore < 100)
             {
                 aSeconds = 1;
-                myRound = "Endless";
+                myRound = "5";
             }
-            else if(myScore >= 100)
+            else if(myScore >= 100 && myScore < 150)
             {
-                aSeconds = 1;
+                aSeconds = 0.5f;
+                myRound = "6";
                 for (int i = 0; i < myGameObjects.Count; i++)
                 {
                     if(myGameObjects[i] is EnemyEasy || myGameObjects[i] is EnemyMoving)
                     {
                         myGameObjects[i].mySpeed += (1*0.1f);
-                        (myGameObjects[i] as EnemyBase).myStartAttackTimer = 0.4f;
+                        (myGameObjects[i] as EnemyBase).myStartAttackTimer = 0.3f;
+                    }
+                }
+            }
+            else if(myScore >= 150)
+            {
+                aSeconds = 0.3f;
+                myRound = "Endless";
+                for (int i = 0; i < myGameObjects.Count; i++)
+                {
+                    if (myGameObjects[i] is EnemyEasy || myGameObjects[i] is EnemyMoving)
+                    {
+                        myGameObjects[i].mySpeed += (1 * 0.1f);
+                        (myGameObjects[i] as EnemyBase).myStartAttackTimer = 0.2f;
                     }
                 }
             }
@@ -377,7 +396,7 @@ namespace ShootEmUp_1._0
             }
         }
 
-        public void PowerUpTimer(int aType, int index, float aNormalFireSpeed)
+        public void PowerUpTimer(int aType, float aNormalFireSpeed)
         {
             myPowerUpCoolDownSeconds -= myDeltaTime;
 
@@ -391,6 +410,11 @@ namespace ShootEmUp_1._0
                 {
                     myPlayer.myAttackSpeed = aNormalFireSpeed;
                 }
+                if(aType == 3)
+                {
+                    myPlayer.myAttackSpeed = aNormalFireSpeed;
+                }
+                myUltimateCoolDown = false;
                 myPowerUpCoolDown = false;
             }
         }

@@ -55,16 +55,19 @@ namespace ShootEmUp_1._0
                         }
                         if (myPowerType > 50 && myPowerType <= 65)
                         {
-                            GameState.myPowerUp = "Ultimate Ready";
-                            myPlayer.myUltimate = true;
+                            GameState.myPowerUp = "ULTIMATE";
+                            myPlayer.myHp += 100;
+                            myPlayer.myAttackSpeed = 0f;
+                            GameState.myPowerUpCoolDownSeconds = 10f;
+                            GameState.myUltimateCoolDown = true;
                         }
                         if (myPowerType > 65 && myPowerType <= 100)
                         {
-                            if (myPlayer.myAttackSpeed >= 0.1)
+                            if (myPlayer.myBaseAttackSpeed > 0.1)
                             {
                                 GameState.myPowerUp = "+FireRate";
-                                myPlayer.myAttackSpeed -= 0.1f;
-                                myPlayer.myBaseAttackSpeed = myPlayer.myAttackSpeed;
+                                myPlayer.myBaseAttackSpeed -= 0.1f;
+                                myPlayer.myAttackSpeed = myPlayer.myBaseAttackSpeed;
                             }
                             else
                             {

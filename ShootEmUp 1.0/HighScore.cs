@@ -54,6 +54,7 @@ namespace ShootEmUp_1._0
                 tempLines.Add("Third True");
             }
             File.WriteAllLines(myPath, tempLines.ToArray());
+
             if (tempLines.Count == 0)
             {
                 string[] tempArray = { "First False", "Second False", "Third False" };

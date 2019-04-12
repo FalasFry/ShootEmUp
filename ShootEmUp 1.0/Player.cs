@@ -77,12 +77,6 @@ namespace ShootEmUp_1._0
                 }
             }
             myAttackTimer -= GameState.myDeltaTime;
-
-            if (tempKeyboard.IsKeyDown(Keys.R) && myUltimate)
-            {
-                Ultimate();
-                myUltimate = false;
-            }
         }
 
         public void Movement()
@@ -103,7 +97,6 @@ namespace ShootEmUp_1._0
                 {
                     tempDir.X = 1;
                 }
-
             }
             if (tempKeyState.IsKeyDown(Keys.W))
             { 
@@ -154,11 +147,6 @@ namespace ShootEmUp_1._0
                 GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(50, 0)), 1, Color.White));
                 GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
             }
-        }
-
-        public void Ultimate()
-        {
-            myHp += 100;
         }
     }
 }

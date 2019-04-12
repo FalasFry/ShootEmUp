@@ -54,6 +54,7 @@ namespace ShootEmUp_1._0
                     if(GameState.myGameObjects[i].myRectangle.Intersects(myRectangle))
                     {
                         (GameState.myGameObjects[i] as Wall).myRemove = true;
+                        GameState.myWallsDestroyed++;
                         myRemove = true;
                     }
                 }
