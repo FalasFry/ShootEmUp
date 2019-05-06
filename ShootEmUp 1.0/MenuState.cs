@@ -13,7 +13,7 @@ namespace ShootEmUp_1._0
     {
         Texture2D myMenuTexture;
         List<Components> myButtons;
-        HighScore myHs;
+        SaveColors myHs;
 
         SpriteFont myButtonFont;
         Texture2D myButtonTexture;
@@ -31,7 +31,7 @@ namespace ShootEmUp_1._0
             myManager.PreferredBackBufferWidth = 800;
             myManager.ApplyChanges();
 
-            myHs = new HighScore();
+            myHs = new SaveColors();
 
             Button myStartButton = new Button(myButtonFont, myButtonTexture)
             {
@@ -69,7 +69,7 @@ namespace ShootEmUp_1._0
 
         private void QuitButton_Click(object sender, EventArgs e)
         {
-            HighScore.End();
+            SaveColors.End();
             myGame.Exit();
         }
 

@@ -50,7 +50,7 @@ namespace ShootEmUp_1._0
 
         private void MyQuitButton_Click(object sender, EventArgs e)
         {
-            HighScore.End();
+            SaveColors.End();
             myGame.Exit();
         }
 

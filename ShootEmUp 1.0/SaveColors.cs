@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ShootEmUp_1._0
 {
-    class HighScore
+    class SaveColors
     {
         StreamReader myReader;
         static string myPath;
         string[] myText;
 
-        public HighScore()
+        public SaveColors()
         {
             myPath = Path.GetFullPath("test.txt");
 
@@ -62,6 +62,5 @@ namespace ShootEmUp_1._0
                 File.WriteAllLines(myPath, tempArray);
             }
         }
-        
     }
 }

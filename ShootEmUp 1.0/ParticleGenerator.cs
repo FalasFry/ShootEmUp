@@ -16,6 +16,7 @@ namespace ShootEmUp_1._0
         float mySpawnWidth;
         float myDensity;
         Vector2 myDir;
+        Color myColor = Color.White;
         
         List<BackgroundStars> myStars = new List<BackgroundStars>();
 
@@ -38,12 +39,14 @@ namespace ShootEmUp_1._0
                 if(tempRng == 1)
                 {
                     myDir.Y = -3;
+
                 }
                 if(tempRng == 2)
                 {
                     myDir.Y = -5;
                 }
-                myStars.Add(new BackgroundStars(myTexture, new Vector2(myRng.Next(1, 701), myRng.Next(1, 901)), myDir));
+
+                myStars.Add(new BackgroundStars(myTexture, new Vector2(myRng.Next(1, 701), myRng.Next(1, 901)), myDir, myColor));
             }
         }
 
@@ -63,7 +66,7 @@ namespace ShootEmUp_1._0
             {
                 myStars[i].Update();
 
-                if(myStars[i].accessPosition.Y > aGraphics.Viewport.Height)
+                if(myStars[i].accessPosition.Y < 0)
                 {
                     myStars.RemoveAt(i);
                     i--;
@@ -91,7 +94,7 @@ namespace ShootEmUp_1._0
             {
                 myDir.Y = -5;
             }
-            myStars.Add(new BackgroundStars(myTexture, new Vector2(-50 + (float)myRng.NextDouble() * mySpawnWidth, 900), myDir));
+            myStars.Add(new BackgroundStars(myTexture, new Vector2(-50 + (float)myRng.NextDouble() * mySpawnWidth, 900), myDir, myColor));
         }
     }
 }

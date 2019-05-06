@@ -19,21 +19,25 @@ namespace ShootEmUp_1._0
             get { return myPosition; }
         }
 
-        public BackgroundStars(Texture2D aTexture, Vector2 aNewPos, Vector2 aNewVel)
+        Color myColor;
+
+        public BackgroundStars(Texture2D aTexture, Vector2 aNewPos, Vector2 aNewVel, Color aColor)
         {
             myTexture = aTexture;
             myPosition = aNewPos;
             myVelocity = aNewVel;
+            myColor = aColor;
         }
 
         public void Update()
         {
             myPosition += myVelocity;
+
         }
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Draw(myTexture, myPosition, Color.White);
+            aSpriteBatch.Draw(myTexture, myPosition, myColor);
         }
     }
 }
