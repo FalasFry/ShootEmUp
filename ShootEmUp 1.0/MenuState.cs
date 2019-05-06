@@ -13,7 +13,7 @@ namespace ShootEmUp_1._0
     {
         Texture2D myMenuTexture;
         List<Components> myButtons;
-        SaveColors myHs;
+        SaveColors myUnlockables;
 
         SpriteFont myButtonFont;
         Texture2D myButtonTexture;
@@ -31,7 +31,7 @@ namespace ShootEmUp_1._0
             myManager.PreferredBackBufferWidth = 800;
             myManager.ApplyChanges();
 
-            myHs = new SaveColors();
+            myUnlockables = new SaveColors();
 
             Button myStartButton = new Button(myButtonFont, myButtonTexture)
             {

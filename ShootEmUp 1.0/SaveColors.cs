@@ -9,7 +9,6 @@ namespace ShootEmUp_1._0
 {
     class SaveColors
     {
-        StreamReader myReader;
         static string myPath;
         string[] myText;
 
