@@ -14,6 +14,7 @@ namespace ShootEmUp_1._0
         Texture2D myMenuTexture;
         List<Components> myButtons;
         SaveColors myUnlockables;
+        MapEditor mymap;
 
         SpriteFont myButtonFont;
         Texture2D myButtonTexture;
@@ -32,6 +33,7 @@ namespace ShootEmUp_1._0
             myManager.ApplyChanges();
 
             myUnlockables = new SaveColors();
+            mymap = new MapEditor();
 
             Button myStartButton = new Button(myButtonFont, myButtonTexture)
             {
@@ -70,6 +72,7 @@ namespace ShootEmUp_1._0
         private void QuitButton_Click(object sender, EventArgs e)
         {
             SaveColors.End();
+            MapEditor.End();
             myGame.Exit();
         }
 

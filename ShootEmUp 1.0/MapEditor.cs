@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,10 @@ namespace ShootEmUp_1._0
     {
         static string myPath;
         string[] myText;
-
+        string[] mySplitted;
+        Color myBackColor;
+        
+        string[] myThemesNames;
         public MapEditor()
         {
             myPath = Path.GetFullPath("Map.txt");
@@ -21,45 +25,31 @@ namespace ShootEmUp_1._0
                 string[] tempLines = File.ReadAllLines(myPath);
                 myText = tempLines;
 
-                if (myText.Contains("Background: "))
-                {
+                mySplitted = myText[0].Split(':');
 
-                }
-                if (myText.Contains("Second True"))
+                if (mySplitted[0] == "Background")
                 {
-
-                }
-                if (myText.Contains("Third True"))
-                {
-
+                    if (mySplitted[1] == "blue")
+                    {
+                        Game1.myColor = Color.CornflowerBlue;
+                    }
+                    else if (mySplitted[1] == "black")
+                    {
+                        Game1.myColor = Color.Black;
+                    }
                 }
             }
         }
+        public static void End()
+        {
+            string[] tempWrite = {""};
 
-        //public static void End()
-        //{
-        //    List<string> tempLines = new List<string>();
+            if (!File.Exists(myPath))
+            {
+               tempWrite[0] = "Background:black";
+               File.WriteAllLines(myPath, tempWrite);
+            }
 
-        //    if (CustomizeState.myFirst)
-        //    {
-        //        tempLines.Add("First True");
-        //    }
-        //    if (CustomizeState.mySecond)
-        //    {
-        //        tempLines.Add("Second True");
-        //    }
-        //    if (CustomizeState.myThird)
-        //    {
-        //        tempLines.Add("Third True");
-        //    }
-        //    File.WriteAllLines(myPath, tempLines.ToArray());
-
-        //    if (tempLines.Count == 0)
-        //    {
-        //        string[] tempArray = { "First False", "Second False", "Third False" };
-
-        //        File.WriteAllLines(myPath, tempArray);
-        //    }
-        //}
+        }
     }
 }

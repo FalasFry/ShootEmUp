@@ -15,6 +15,7 @@ namespace ShootEmUp_1._0
         MenuState myMenu;
         public States myCurState;
         Stack<States> myStateStack;
+        public static Color myColor = Color.White;
 
 
         public Game1()
@@ -65,7 +66,7 @@ namespace ShootEmUp_1._0
 
         protected override void Draw(GameTime aGameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(myColor);
 
             myStateStack.Peek().Draw(aGameTime, mySpriteBatch);
             // TODO: Add your drawing code here

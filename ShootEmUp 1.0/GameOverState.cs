@@ -51,6 +51,7 @@ namespace ShootEmUp_1._0
         private void MyQuitButton_Click(object sender, EventArgs e)
         {
             SaveColors.End();
+            MapEditor.End();
             myGame.Exit();
         }
 
