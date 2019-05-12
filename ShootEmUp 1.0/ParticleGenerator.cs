@@ -21,7 +21,6 @@ namespace ShootEmUp_1._0
         List<BackgroundStars> myStars = new List<BackgroundStars>();
 
         float myTime;
-        float myTimer = 0.2f;
         Random myRng, myRng2;
 
         public ParticleGenerator(Texture2D aNewTexture, float aNewSpawWidth, float aNewDensity)
@@ -46,7 +45,7 @@ namespace ShootEmUp_1._0
                     myDir.Y = -5;
                 }
 
-                myStars.Add(new BackgroundStars(myTexture, new Vector2(myRng.Next(1, 701), myRng.Next(1, 901)), myDir, myColor));
+                myStars.Add(new BackgroundStars(myTexture, new Vector2(myRng.Next(1, 701), myRng.Next(1, 901)), myDir, myColor, myRng.Next(1,3)));
             }
         }
 
@@ -94,7 +93,7 @@ namespace ShootEmUp_1._0
             {
                 myDir.Y = -5;
             }
-            myStars.Add(new BackgroundStars(myTexture, new Vector2(-50 + (float)myRng.NextDouble() * mySpawnWidth, 900), myDir, myColor));
+            myStars.Add(new BackgroundStars(myTexture, new Vector2(-50 + (float)myRng.NextDouble() * mySpawnWidth, 900), myDir, myColor, myRng2.Next(1,3)));
         }
     }
 }

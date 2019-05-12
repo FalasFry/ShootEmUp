@@ -80,14 +80,7 @@ namespace ShootEmUp_1._0
         private void TempResetButton_Click(object sender, EventArgs e)
         {
             SkillTree.Reset();
-            myValues = new List<string>()
-            {
-                Convert.ToString(SkillTree.myUnlockSupers),
-                Convert.ToString(SkillTree.mySpeedMult),
-                Convert.ToString(SkillTree.myFirerateMult),
-                Convert.ToString(SkillTree.mySlowerEnemiesMult),
-                Convert.ToString(SkillTree.myHealthUpgrade),
-            };
+            Reset();
         }
 
         public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
@@ -188,14 +181,7 @@ namespace ShootEmUp_1._0
                     }
                 }
 
-                myValues = new List<string>()
-                {
-                    Convert.ToString(SkillTree.myUnlockSupers),
-                    Convert.ToString(SkillTree.mySpeedMult),
-                    Convert.ToString(SkillTree.myFirerateMult),
-                    Convert.ToString(SkillTree.mySlowerEnemiesMult),
-                    Convert.ToString(SkillTree.myHealthUpgrade),
-                };
+                Reset();
             }
             myPrevState = tempKeys;
         }
@@ -213,6 +199,18 @@ namespace ShootEmUp_1._0
             {
                 mySelected++;
             }
+        }
+
+        void Reset()
+        {
+            myValues = new List<string>()
+            {
+                Convert.ToString(SkillTree.myUnlockSupers),
+                Convert.ToString(SkillTree.mySpeedMult),
+                Convert.ToString(SkillTree.myFirerateMult),
+                Convert.ToString(SkillTree.mySlowerEnemiesMult),
+                Convert.ToString(SkillTree.myHealthUpgrade),
+            };
         }
     }
 }

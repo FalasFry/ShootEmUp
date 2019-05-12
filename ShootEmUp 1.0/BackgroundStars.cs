@@ -13,6 +13,7 @@ namespace ShootEmUp_1._0
         Texture2D myTexture;
         Vector2 myPosition;
         Vector2 myVelocity;
+        float myScale;
 
         public Vector2 accessPosition
         {
@@ -21,23 +22,23 @@ namespace ShootEmUp_1._0
 
         Color myColor;
 
-        public BackgroundStars(Texture2D aTexture, Vector2 aNewPos, Vector2 aNewVel, Color aColor)
+        public BackgroundStars(Texture2D aTexture, Vector2 aNewPos, Vector2 aNewVel, Color aColor, float aScale)
         {
             myTexture = aTexture;
             myPosition = aNewPos;
             myVelocity = aNewVel;
             myColor = aColor;
+            myScale = aScale;
         }
 
         public void Update()
         {
             myPosition += myVelocity;
-
         }
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Draw(myTexture, myPosition, myColor);
+            aSpriteBatch.Draw(myTexture, myPosition, null, myColor, 0, new Vector2(), myScale, SpriteEffects.None, 1);
         }
     }
 }
