@@ -52,7 +52,7 @@ namespace ShootEmUp_1._0
         {
             SaveColors.End();
             MapEditor.End();
-            SkillTree.End();
+            SkillTree.Update();
             myGame.Exit();
         }
 

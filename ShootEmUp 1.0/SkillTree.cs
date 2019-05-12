@@ -22,7 +22,6 @@ namespace ShootEmUp_1._0
 
         public SkillTree()
         {
-
             myPath = Path.GetFullPath("Skills.txt");
 
             if (File.Exists(myPath))
@@ -36,29 +35,19 @@ namespace ShootEmUp_1._0
                     mySplitted[i] = myText[i].Split(':')[1];
                 }
 
-
                 myUnlockSupers = Convert.ToBoolean(mySplitted[0]);
                 mySpeedMult = Convert.ToInt32(mySplitted[1]);
                 myFirerateMult = Convert.ToInt32(mySplitted[2]);
                 mySlowerEnemiesMult = Convert.ToInt32(mySplitted[4]);
                 myHealthUpgrade = Convert.ToInt32(mySplitted[4]);
-
             }
             else if(!File.Exists(myPath))
             {
-                string[] tempText =
-                {
-                    "Unlock SuperPowerups:false",
-                    "Upgrade Speed:0",
-                    "Upgrade Firerate:0",
-                    "Slower enemies:0",
-                    "More health:0"
-                };
-                File.WriteAllLines(myPath, tempText);
+                Reset();
             }
         }
 
-        public static void End()
+        public static void Update()
         {
             string[] tempArray =
             {
@@ -69,6 +58,25 @@ namespace ShootEmUp_1._0
                 "More health:" +myHealthUpgrade
             };
             File.WriteAllLines(myPath, tempArray);
+        }
+
+        public static void Reset()
+        {
+            string[] tempText =
+            {
+                "Unlock SuperPowerups:False",
+                "Upgrade Speed:0",
+                "Upgrade Firerate:0",
+                "Slower enemies:0",
+                "More health:0"
+            };
+            File.WriteAllLines(myPath, tempText);
+
+            myUnlockSupers = false;
+            mySpeedMult = 0;
+            myFirerateMult = 0;
+            mySlowerEnemiesMult = 0;
+            myHealthUpgrade = 0;
         }
     }
 }
