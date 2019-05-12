@@ -57,6 +57,7 @@
     <Compile Include="MenuState.cs" />
     <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="SkillTree.cs" />
     <Compile Include="SmallPowerUps.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

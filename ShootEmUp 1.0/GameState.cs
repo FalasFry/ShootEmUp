@@ -51,6 +51,8 @@ namespace ShootEmUp_1._0
         public static int myPowerUpCount = 0;
         public static int myWallsDestroyed = 0;
 
+        public static bool mySuperPowerUpUnlocked = false;
+
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
             myGraphics = aManager;
@@ -84,6 +86,7 @@ namespace ShootEmUp_1._0
             }
 
             myGameObjects.Add(myPlayer);
+            mySuperPowerUpUnlocked = SkillTree.myUnlockSupers;
         }
 
         public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
@@ -131,7 +134,11 @@ namespace ShootEmUp_1._0
             SpawnBoss();
             EnemySpawn(aGameTime);
             PowerUpSpawn();
-            SuperUpSpawn();
+
+            if (mySuperPowerUpUnlocked)
+            {
+                SuperUpSpawn();
+            }
 
             for (int i = 0; i < myGameObjects.Count; i++)
             {
@@ -215,6 +222,7 @@ namespace ShootEmUp_1._0
             myRound = "1";
             myPowerUpCount = 0;
             myWallsDestroyed = 0;
+            mySuperPowerUpUnlocked = false;
         }
 
         public void EnemySpawn(GameTime aGameTime)

@@ -13,9 +13,7 @@ namespace ShootEmUp_1._0
         static string myPath;
         string[] myText;
         string[] mySplitted;
-        Color myBackColor;
         
-        string[] myThemesNames;
         public MapEditor()
         {
             myPath = Path.GetFullPath("Map.txt");

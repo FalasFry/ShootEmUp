@@ -12,8 +12,11 @@ namespace ShootEmUp_1._0
 {
     class Player : GameObject
     {
-        public float myHp = 100;
-        public float myAttackSpeed = 0.5f;
+        public static float myFirerateUpgrade;
+        public static float myHealthUpgrade;
+
+        public float myHp = 0;
+        public float myAttackSpeed = 0;
         public float myAttackTimer = 0;
 
         public Vector2 myPrevPos;
@@ -24,6 +27,7 @@ namespace ShootEmUp_1._0
         public float myBaseAttackSpeed;
 
 
+
         public Player(Texture2D aTexture)
         {
             myRotation = 0;
@@ -32,6 +36,12 @@ namespace ShootEmUp_1._0
             myPosition = new Vector2(300, myTexture.Height);
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletsSpawn = new Vector2(myRectangle.Width * 0.5f, myRectangle.Height);
+
+            myHealthUpgrade = 10 * SkillTree.myHealthUpgrade;
+            myHp = 100 + myHealthUpgrade;
+
+            myFirerateUpgrade = 0.05f * SkillTree.myFirerateMult;
+            myAttackSpeed = 0.5f - myFirerateUpgrade;
             myBaseAttackSpeed = myAttackSpeed;
         }
 
