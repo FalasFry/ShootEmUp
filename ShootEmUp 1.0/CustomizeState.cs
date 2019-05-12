@@ -21,9 +21,6 @@ namespace ShootEmUp_1._0
         KeyboardState myPrevState;
         Vector2 myPos;
         SpriteFont myFont;
-        bool myWait = false;
-        float myTimer = 0.5f;
-        float myDeltaTime;
 
         bool myBaseBool = true;
         public static bool myFirst;
@@ -31,7 +28,7 @@ namespace ShootEmUp_1._0
         public static bool myThird;
 
         int mySelected = 0;
-        
+
         public CustomizeState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent) : base(aGame, aGraphicsDevice, aContent)
         {
             myBlue = aContent.Load<Texture2D>("PlayerShipBlue");
@@ -67,7 +64,7 @@ namespace ShootEmUp_1._0
 
             for (int i = 0; i < myBools.Count; i++)
             {
-                if(mySelected == i)
+                if (mySelected == i)
                 {
                     aSpriteBatch.DrawString(myFont, "Unlocked " + myBools[i], myPos + new Vector2(-30, 200), Color.White);
                 }
@@ -80,7 +77,7 @@ namespace ShootEmUp_1._0
         {
             KeyboardState tempKeys = Keyboard.GetState();
             MoveSelection();
-            
+
             Selection();
 
             if (tempKeys.IsKeyDown(Keys.Escape))
@@ -89,9 +86,13 @@ namespace ShootEmUp_1._0
                 myGame.PopStack();
             }
 
-            if(tempKeys.IsKeyDown(Keys.Enter))
+            if (tempKeys.IsKeyDown(Keys.Enter))
             {
-                if(mySelected == 1 && myFirst)
+                if(mySelected == 0)
+                {
+                    myGame.PopStack();
+                }
+                if (mySelected == 1 && myFirst)
                 {
                     myGame.PopStack();
                 }
@@ -99,7 +100,7 @@ namespace ShootEmUp_1._0
                 {
                     myGame.PopStack();
                 }
-                if(mySelected == 3 && myThird)
+                if (mySelected == 3 && myThird)
                 {
                     myGame.PopStack();
                 }
@@ -114,7 +115,7 @@ namespace ShootEmUp_1._0
         {
             for (int i = 0; i < myTextures.Count; i++)
             {
-                if(mySelected == i)
+                if (mySelected == i)
                 {
                     myTexture = myTextures[i];
                     return;
@@ -138,3 +139,4 @@ namespace ShootEmUp_1._0
         }
     }
 }
+

@@ -37,6 +37,10 @@ namespace ShootEmUp_1._0
                     }
                 }
             }
+            else if(!File.Exists(myPath))
+            {
+                Game1.myColor = Color.Black;
+            }
         }
         public static void End()
         {

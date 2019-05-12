@@ -10,7 +10,7 @@ namespace ShootEmUp_1._0
 {
     abstract class EnemyBase : GameObject
     {
-
+        public float mySlowerMovements;
         public Vector2 myStartPos;
         public Random myRng;
         public Vector2 myBulletSpawn;
@@ -23,13 +23,13 @@ namespace ShootEmUp_1._0
         public float myAttackTimer = 0;
         public float myStartAttackTimer = 0.5f;
         public Texture2D myBulletTexture;
-        float myTimer = 1;
 
         public EnemyBase()
         {
             myHealth = 1;
             myScale = 1;
             myRng = new Random();
+            mySlowerMovements = -1f * SkillTree.mySlowerEnemiesMult * 0.15f;
 
             myTexturesList = new List<Texture2D>()
             {
@@ -45,7 +45,7 @@ namespace ShootEmUp_1._0
                 if(this is EnemyBoss)
                 {
                     GameState.myScore += 5;
-                    GameState.myBossTimer = 5;
+                    GameState.myBossTimer = myRng.Next(15,20);
                 }
                 else
                 {

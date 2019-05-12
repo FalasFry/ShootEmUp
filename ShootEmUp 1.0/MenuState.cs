@@ -15,6 +15,7 @@ namespace ShootEmUp_1._0
         List<Components> myButtons;
         SaveColors myUnlockables;
         MapEditor mymap;
+        SkillTree mySkillTree;
 
         SpriteFont myButtonFont;
         Texture2D myButtonTexture;
@@ -34,34 +35,48 @@ namespace ShootEmUp_1._0
 
             myUnlockables = new SaveColors();
             mymap = new MapEditor();
+            mySkillTree = new SkillTree();
 
-            Button myStartButton = new Button(myButtonFont, myButtonTexture)
+            Button tempStartButton = new Button(myButtonFont, myButtonTexture)
             {
                 AccessText = "Start Game",
-                AccessPos = new Vector2(325, 190),
+                AccessPos = new Vector2(325, 90),
             };
-            myStartButton.Click += StartButton_Click1;
+            tempStartButton.Click += StartButton_Click1;
 
-            Button myCustomButtom = new Button(myButtonFont, myButtonTexture)
+            Button tempCustomButtom = new Button(myButtonFont, myButtonTexture)
             {
                 AccessText = "Customize",
-                AccessPos = new Vector2(325, 390),
-            };
-            myCustomButtom.Click += MyCustomButtom_Click;
-
-            Button myQuitButton = new Button(myButtonFont, myButtonTexture)
-            {
-                AccessText = "Quit",
                 AccessPos = new Vector2(325, 290),
             };
-            myQuitButton.Click += QuitButton_Click;
+            tempCustomButtom.Click += MyCustomButtom_Click;
+
+            Button tempSkillButton = new Button(myButtonFont, myButtonTexture)
+            {
+                AccessText = "SkillTree",
+                AccessPos = new Vector2(325, 390),
+            };
+            tempSkillButton.Click += TempSkillButton_Click;
+
+            Button tempQuitButton = new Button(myButtonFont, myButtonTexture)
+            {
+                AccessText = "Quit",
+                AccessPos = new Vector2(325, 190),
+            };
+            tempQuitButton.Click += QuitButton_Click;
 
             myButtons = new List<Components>()
             {
-                myStartButton,
-                myCustomButtom,
-                myQuitButton,
+                tempStartButton,
+                tempCustomButtom,
+                tempSkillButton,
+                tempQuitButton,
             };
+        }
+
+        private void TempSkillButton_Click(object sender, EventArgs e)
+        {
+            myGame.ChangeState(new SkillTreeState(myGame, myGraphDevice, myContentManager));
         }
 
         private void MyCustomButtom_Click(object sender, EventArgs e)
@@ -73,6 +88,7 @@ namespace ShootEmUp_1._0
         {
             SaveColors.End();
             MapEditor.End();
+            SkillTree.End();
             myGame.Exit();
         }
 

@@ -45,7 +45,7 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Components.cs" />
-    <Compile Include="CustomizeState.cs" />
+    <Compile Include="SkillTreeState.cs" />
     <Compile Include="EnemyTypes.cs" />
     <Compile Include="EnemyBase.cs" />
     <Compile Include="Game1.cs" />
@@ -58,6 +58,7 @@
     <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="SkillTree.cs" />
+    <Compile Include="CustomizeState.cs" />
     <Compile Include="SmallPowerUps.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

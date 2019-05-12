@@ -15,7 +15,7 @@ namespace ShootEmUp_1._0
         {
             myRotation = 0;
             myPosition = aPosition;
-            mySpeed = 5;
+            mySpeed = 5 + mySlowerMovements;
             myStartPos = myPosition;
             myDir = new Vector2(0, -1);
             myTexture = aTexture;
@@ -47,7 +47,7 @@ namespace ShootEmUp_1._0
         public EnemyMoving(Texture2D aTexture, Vector2 aPosition)
         {
             myPosition = aPosition;
-            mySpeed = 5;
+            mySpeed = 5 + mySlowerMovements;
             myBulletColor = Color.Cyan;
             myStartPos = myPosition;
             myBulletTexture = GameState.myEnemyBullet;

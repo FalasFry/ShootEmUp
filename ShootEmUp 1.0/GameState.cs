@@ -212,7 +212,7 @@ namespace ShootEmUp_1._0
             myCharachterPuSpawnTime = 20;
             myDisplayTextTimer = 2;
             myShowText = false;
-            myBossTimer = 5;
+            myBossTimer = 10;
             myPowerUpCoolDownSeconds = 10;
             myPowerUpCoolDown = false;
             myPowerUp = "";
