@@ -12,7 +12,6 @@ namespace ShootEmUp_1._0
 {
     class SkillTreeState : States
     {
-
         KeyboardState myPrevState;
         SpriteFont myFont;
         Texture2D myButtonTexture;
@@ -67,6 +66,7 @@ namespace ShootEmUp_1._0
                 new Vector2(25, 225),
             };
 
+            #region ResetButton
             Button tempResetButton = new Button(myFont, myButtonTexture)
             {
                 AccessText = "RESET",
@@ -75,8 +75,9 @@ namespace ShootEmUp_1._0
             tempResetButton.Click += TempResetButton_Click;
             myButtons = new List<Components>()
             {
-                tempResetButton,
+                //tempResetButton,
             };
+            #endregion
         }
 
         private void TempResetButton_Click(object sender, EventArgs e)
@@ -147,7 +148,7 @@ namespace ShootEmUp_1._0
                 myGame.PopStack();
             }
 
-            if (tempKeys.IsKeyDown(Keys.Enter) && myPrevState.IsKeyUp(Keys.Enter))
+            if (tempKeys.IsKeyDown(Keys.Enter) && myPrevState.IsKeyUp(Keys.Enter) && myPoints > 0)
             {
                 if (mySelected == 0)
                 {
@@ -184,7 +185,7 @@ namespace ShootEmUp_1._0
                         SkillTree.myHealthUpgrade++;
                     }
                 }
-
+                SkillTree.myPointsToSpend--;
                 Reset();
             }
             myPrevState = tempKeys;
@@ -215,6 +216,8 @@ namespace ShootEmUp_1._0
                 Convert.ToString(SkillTree.mySlowerEnemiesMult),
                 Convert.ToString(SkillTree.myHealthUpgrade),
             };
+
+            myPoints = SkillTree.myPointsToSpend;
         }
     }
 }

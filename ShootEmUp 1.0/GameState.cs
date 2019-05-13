@@ -164,6 +164,12 @@ namespace ShootEmUp_1._0
                 SuperPowerUpTimer(myPlayer.myBaseAttackSpeed);
             }
 
+            if(SkillTree.myPointMeter <= 0)
+            {
+                SkillTree.myPointsToSpend++;
+                SkillTree.myPointMeter = 100;
+            }
+
             #endregion
 
             if (myShowText)

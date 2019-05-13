@@ -20,6 +20,7 @@ namespace ShootEmUp_1._0
         public static int mySlowerEnemiesMult;
         public static int myHealthUpgrade;
         public static int myPointsToSpend;
+        public static int myPointMeter = 100;
 
         public SkillTree()
         {
@@ -42,6 +43,7 @@ namespace ShootEmUp_1._0
                 mySlowerEnemiesMult = Convert.ToInt32(mySplitted[4]);
                 myHealthUpgrade = Convert.ToInt32(mySplitted[4]);
                 myPointsToSpend = Convert.ToInt32(mySplitted[5]);
+                myPointMeter = Convert.ToInt32(mySplitted[6]);
             }
             else if(!File.Exists(myPath))
             {
@@ -59,6 +61,7 @@ namespace ShootEmUp_1._0
                 "Slowe enemies:" +mySlowerEnemiesMult,
                 "More health:" +myHealthUpgrade,
                 "Points:" +myPointsToSpend,
+                "Points Remaining:" +myPointMeter,
             };
             File.WriteAllLines(myPath, tempArray);
         }
@@ -72,7 +75,8 @@ namespace ShootEmUp_1._0
                 "Upgrade Firerate:0",
                 "Slower enemies:0",
                 "More health:0",
-                "Points:0"
+                "Points:0",
+                "Points Remaining:100", 
             };
             File.WriteAllLines(myPath, tempText);
 
@@ -82,6 +86,7 @@ namespace ShootEmUp_1._0
             mySlowerEnemiesMult = 0;
             myHealthUpgrade = 0;
             myPointsToSpend = 0;
+            myPointMeter = 100;
         }
     }
 }

@@ -50,7 +50,9 @@ namespace ShootEmUp_1._0
                 else
                 {
                     GameState.myScore++;
+
                 }
+                SkillTree.myPointMeter--;
                 myRemove = true;
             }
         }
