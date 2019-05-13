@@ -132,7 +132,7 @@ namespace ShootEmUp_1._0
             myDeltaTime = (float)aGameTime.ElapsedGameTime.TotalSeconds;
             myTotalGameTime += myDeltaTime;
             MouseState tempMouse = Mouse.GetState();
-            KeyboardState tempKeyboard = Keyboard.GetState();
+            KeyboardState tempKeys = Keyboard.GetState();
 
             #region Updating
 
@@ -181,6 +181,8 @@ namespace ShootEmUp_1._0
                     myDisplayTextTimer = 2;
                 }
             }
+
+
 
             if (myScore <= 0)
             {
