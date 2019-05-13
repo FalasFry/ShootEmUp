@@ -87,7 +87,7 @@ namespace ShootEmUp_1._0
                     {
                         ShootAllAtOnce(myFireType);
                     }
-                    myAttackTimer = myBaseAttackSpeed;
+                    myAttackTimer = myAttackSpeed;
                 }
             }
             myAttackTimer -= GameState.myDeltaTime;

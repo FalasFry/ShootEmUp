@@ -63,7 +63,7 @@ namespace ShootEmUp_1._0
                         }
                         if (myPowerType > 65 && myPowerType <= 100)
                         {
-                            if (myPlayer.myBaseAttackSpeed > 0.1)
+                            if (myPlayer.myBaseAttackSpeed > 0.2f)
                             {
                                 GameState.myPowerUp = "+FireRate";
                                 myPlayer.myBaseAttackSpeed -= 0.1f;
@@ -71,7 +71,7 @@ namespace ShootEmUp_1._0
                             }
                             else
                             {
-                                GameState.myPowerUp = "Already Maxed";
+                                GameState.myPowerUp = "Max FireRate Already";
                                 myPlayer.myAttackSpeed = myPlayer.myBaseAttackSpeed;
                             }
                         }

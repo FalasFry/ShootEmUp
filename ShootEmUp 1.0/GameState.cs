@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -128,7 +129,7 @@ namespace ShootEmUp_1._0
 
         public override bool Update(GameTime aGameTime)
         {
-            Console.Write(myPlayer.myBaseAttackSpeed);
+            Debug.Write(myPlayer.myBaseAttackSpeed);
             myDeltaTime = (float)aGameTime.ElapsedGameTime.TotalSeconds;
             myTotalGameTime += myDeltaTime;
             MouseState tempMouse = Mouse.GetState();
@@ -138,10 +139,10 @@ namespace ShootEmUp_1._0
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            //SpawnBoss();
-            //EnemySpawn(aGameTime);
+            SpawnBoss();
+            EnemySpawn(aGameTime);
 
-            //PowerUpSpawn();
+            PowerUpSpawn();
             if (mySuperPowerUpUnlocked)
             {
                 SuperUpSpawn();
@@ -216,7 +217,7 @@ namespace ShootEmUp_1._0
         {
             myScore = 0;
             myPowerUpSpawnTime = 10;
-            myCharachterPuSpawnTime = 2;
+            myCharachterPuSpawnTime = 30;
             myDisplayTextTimer = 2;
             myShowText = false;
             myBossTimer = 10;
@@ -390,7 +391,7 @@ namespace ShootEmUp_1._0
             if (myCharachterPuSpawnTime <= 0)
             {
                 myGameObjects.Add(new WeaponPowerUp(2f, myCharachterPuTexture, new Vector2(myRng.Next(3, myGraphics.PreferredBackBufferWidth - myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight + 20), myRng.Next(1, 101), myPlayer, myGame));
-                myCharachterPuSpawnTime = myRng.Next(2, 5);
+                myCharachterPuSpawnTime = myRng.Next(35, 50);
             }
         }
 
@@ -432,7 +433,7 @@ namespace ShootEmUp_1._0
         }
         public void SuperPowerUpTimer(float aNormalFireSpeed)
         {
-            myPowerUpCoolDownSeconds -= myDeltaTime;
+            mySuperPowerCoolDownSeconds -= myDeltaTime;
 
             if (mySuperPowerCoolDownSeconds <= 0)
             {
