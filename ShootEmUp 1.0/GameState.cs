@@ -129,7 +129,6 @@ namespace ShootEmUp_1._0
 
         public override bool Update(GameTime aGameTime)
         {
-            Debug.Write(myPlayer.myBaseAttackSpeed);
             myDeltaTime = (float)aGameTime.ElapsedGameTime.TotalSeconds;
             myTotalGameTime += myDeltaTime;
             MouseState tempMouse = Mouse.GetState();
@@ -142,8 +141,11 @@ namespace ShootEmUp_1._0
             SpawnBoss();
             EnemySpawn(aGameTime);
 
-            PowerUpSpawn();
-            if (mySuperPowerUpUnlocked)
+            if (!myUltimateCoolDown)
+            {
+                PowerUpSpawn();
+            }
+            if (mySuperPowerUpUnlocked && !myPowerUpCoolDown)
             {
                 SuperUpSpawn();
             }

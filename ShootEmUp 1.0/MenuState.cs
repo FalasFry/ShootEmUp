@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace ShootEmUp_1._0
 {
     public class MenuState : States
     {
+        KeyboardState myPrevState;
+
         Texture2D myMenuTexture;
         List<Components> myButtons;
         SaveColors myUnlockables;
@@ -20,6 +23,8 @@ namespace ShootEmUp_1._0
         SpriteFont myButtonFont;
         Texture2D myButtonTexture;
         GraphicsDeviceManager myManager;
+
+        int myChangeToBlue;
 
         public MenuState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
@@ -111,10 +116,26 @@ namespace ShootEmUp_1._0
 
         public override bool Update(GameTime aGameTime)
         {
+            KeyboardState tempKeys = Keyboard.GetState();
             for (int i = 0; i < myButtons.Count; i++)
             {
                 myButtons[i].Update(aGameTime);
             }
+
+            if(tempKeys.IsKeyDown(Keys.L) && myPrevState.IsKeyUp(Keys.B) && myChangeToBlue == 0)
+            {
+                myChangeToBlue = 2;
+            }
+            
+
+            if (myChangeToBlue == 2)
+            {
+                Game1.myColor = Color.CornflowerBlue;
+                ParticleGenerator.myColor = Color.Yellow;
+                myChangeToBlue = 0;
+            }
+
+            myPrevState = tempKeys;
             return true;
         }
     }
