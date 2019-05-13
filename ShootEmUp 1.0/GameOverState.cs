@@ -26,26 +26,25 @@ namespace ShootEmUp_1._0
             myButtonTexture = aContent.Load<Texture2D>("Button");
             myManager = aManager;
 
-            Button myRestartButton = new Button(myFont, myButtonTexture)
+            Button tempRestartButton = new Button(myFont, myButtonTexture)
             {
                 AccessText = "Restart Game",
                 AccessPos = new Vector2(300, 280),
             };
-            myRestartButton.Click += myRestartButton_Click1;
+            tempRestartButton.Click += myRestartButton_Click1;
             
-            Button myQuitButton = new Button(myFont, myButtonTexture)
+            Button tempQuitButton = new Button(myFont, myButtonTexture)
             {
                 AccessText = "Quit Game",
                 AccessPos = new Vector2(300, 340),
             };
-            myQuitButton.Click += MyQuitButton_Click;
+            tempQuitButton.Click += MyQuitButton_Click;
 
             myButtons = new List<Button>()
             {
-                myRestartButton,
-                myQuitButton,
+                tempRestartButton,
+                tempQuitButton,
             };
-            
         }
 
         private void MyQuitButton_Click(object sender, EventArgs e)

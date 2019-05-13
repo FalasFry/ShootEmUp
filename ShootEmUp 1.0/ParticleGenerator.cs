@@ -16,7 +16,7 @@ namespace ShootEmUp_1._0
         float mySpawnWidth;
         float myDensity;
         Vector2 myDir;
-        Color myColor = Color.White;
+        public static Color myColor = Color.White;
         
         List<BackgroundStars> myStars = new List<BackgroundStars>();
 
@@ -38,7 +38,6 @@ namespace ShootEmUp_1._0
                 if(tempRng == 1)
                 {
                     myDir.Y = -3;
-
                 }
                 if(tempRng == 2)
                 {

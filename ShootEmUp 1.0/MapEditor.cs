@@ -30,10 +30,17 @@ namespace ShootEmUp_1._0
                     if (mySplitted[1] == "blue")
                     {
                         Game1.myColor = Color.CornflowerBlue;
+                        ParticleGenerator.myColor = Color.Yellow;
                     }
                     else if (mySplitted[1] == "black")
                     {
                         Game1.myColor = Color.Black;
+                        ParticleGenerator.myColor = Color.White;
+                    }
+                    else if(mySplitted[1] == "red")
+                    {
+                        Game1.myColor = Color.Black;
+                        ParticleGenerator.myColor = Color.Red;
                     }
                 }
             }

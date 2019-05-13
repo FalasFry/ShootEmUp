@@ -18,6 +18,7 @@ namespace ShootEmUp_1._0
         Texture2D myButtonTexture;
 
         int mySelected = 0;
+        int myPoints;
 
         List<string> myStrings;
         List<string> myValues;
@@ -31,6 +32,7 @@ namespace ShootEmUp_1._0
             myFont = aContent.Load<SpriteFont>("Font");
             myButtonTexture = aContent.Load<Texture2D>("button");
             myGraphDevice = aGraphicsDevice;
+            myPoints = SkillTree.myPointsToSpend;
 
             myStrings = new List<string>()
             {
@@ -98,6 +100,8 @@ namespace ShootEmUp_1._0
                     aSpriteBatch.DrawString(myFont, myStrings[i], myPos[i], Color.Yellow);
                 }
             }
+
+            aSpriteBatch.DrawString(myFont, "Points: " + myPoints, new Vector2(410 - (myButtonTexture.Width / 2), 400 - myButtonTexture.Height) ,Color.White);
 
             for (int i = 0; i < myValues.Count; i++)
             {

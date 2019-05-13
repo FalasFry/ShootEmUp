@@ -14,7 +14,7 @@ namespace ShootEmUp_1._0
         Texture2D myMenuTexture;
         List<Components> myButtons;
         SaveColors myUnlockables;
-        MapEditor mymap;
+        MapEditor myMap;
         SkillTree mySkillTree;
 
         SpriteFont myButtonFont;
@@ -34,7 +34,7 @@ namespace ShootEmUp_1._0
             myManager.ApplyChanges();
 
             myUnlockables = new SaveColors();
-            mymap = new MapEditor();
+            myMap = new MapEditor();
             mySkillTree = new SkillTree();
 
             Button tempStartButton = new Button(myButtonFont, myButtonTexture)

@@ -58,7 +58,7 @@ namespace ShootEmUp_1._0
                             GameState.myPowerUp = "ULTIMATE";
                             myPlayer.myHp += 100;
                             myPlayer.myAttackSpeed = 0f;
-                            GameState.myPowerUpCoolDownSeconds = 10f;
+                            GameState.mySuperPowerCoolDownSeconds = 10f;
                             GameState.myUltimateCoolDown = true;
                         }
                         if (myPowerType > 65 && myPowerType <= 100)

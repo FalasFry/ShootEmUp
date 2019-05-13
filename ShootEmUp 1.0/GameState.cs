@@ -41,6 +41,7 @@ namespace ShootEmUp_1._0
         public static bool myShowText;
         public static float myBossTimer;
         public static float myPowerUpCoolDownSeconds;
+        public static float mySuperPowerCoolDownSeconds;
         public static bool myPowerUpCoolDown;
         public static string myPowerUp;
         public static bool myUltimateCoolDown;
@@ -80,7 +81,7 @@ namespace ShootEmUp_1._0
             {
                 myPlayer = new Player(myPlayerTexture);
             }
-            else if(myPlayerTexture == null)
+            else if (myPlayerTexture == null)
             {
                 myPlayer = new Player(aContent.Load<Texture2D>("PlayerShip"));
             }
@@ -99,7 +100,7 @@ namespace ShootEmUp_1._0
                 myGameObjects[i].Draw(aSpriteBatch);
             }
 
-            aSpriteBatch.DrawString(myFont, "HP Left: " +myPlayer.myHp.ToString(), new Vector2(400, 0), Color.White);
+            aSpriteBatch.DrawString(myFont, "HP Left: " + myPlayer.myHp.ToString(), new Vector2(400, 0), Color.White);
             aSpriteBatch.DrawString(myFont, "Score: " + myScore, new Vector2(200, 0), Color.White);
 
             int tempTextOffsetX = 100;
@@ -109,19 +110,25 @@ namespace ShootEmUp_1._0
                 string tempText = "PowerUp Time Left " + (int)myPowerUpCoolDownSeconds;
                 aSpriteBatch.DrawString(myFont, tempText, new Vector2((myGraphics.PreferredBackBufferWidth / 2 - tempTextOffsetX), myGraphics.PreferredBackBufferHeight / 2), Color.White);
             }
+            if(myUltimateCoolDown)
+            {
+                string tempText = "PowerUp Time Left " + (int)mySuperPowerCoolDownSeconds;
+                aSpriteBatch.DrawString(myFont, tempText, new Vector2((myGraphics.PreferredBackBufferWidth / 2 - tempTextOffsetX), myGraphics.PreferredBackBufferHeight / 2), Color.White);
+            }
             if (myShowText)
             {
                 string tempText = "You Got " + myPowerUp;
-                aSpriteBatch.DrawString(myFont, tempText, new Vector2((myGraphics.PreferredBackBufferWidth/2 - tempTextOffsetX), myGraphics.PreferredBackBufferHeight / 2 - tempTextOffsetY), Color.White);
+                aSpriteBatch.DrawString(myFont, tempText, new Vector2((myGraphics.PreferredBackBufferWidth / 2 - tempTextOffsetX), myGraphics.PreferredBackBufferHeight / 2 - tempTextOffsetY), Color.White);
             }
 
-            aSpriteBatch.DrawString(myFont, "Round: "+myRound, new Vector2(myGraphics.PreferredBackBufferWidth / 2 - 40, myGraphics.PreferredBackBufferHeight - 40), Color.White);
+            aSpriteBatch.DrawString(myFont, "Round: " + myRound, new Vector2(myGraphics.PreferredBackBufferWidth / 2 - 40, myGraphics.PreferredBackBufferHeight - 40), Color.White);
 
             aSpriteBatch.End();
         }
 
         public override bool Update(GameTime aGameTime)
         {
+            Console.Write(myPlayer.myBaseAttackSpeed);
             myDeltaTime = (float)aGameTime.ElapsedGameTime.TotalSeconds;
             myTotalGameTime += myDeltaTime;
             MouseState tempMouse = Mouse.GetState();
@@ -131,10 +138,10 @@ namespace ShootEmUp_1._0
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            SpawnBoss();
-            EnemySpawn(aGameTime);
-            PowerUpSpawn();
+            //SpawnBoss();
+            //EnemySpawn(aGameTime);
 
+            //PowerUpSpawn();
             if (mySuperPowerUpUnlocked)
             {
                 SuperUpSpawn();
@@ -149,9 +156,9 @@ namespace ShootEmUp_1._0
             {
                 PowerUpTimer(SmallPowerUps.myPowerType, myPlayer.myBaseAttackSpeed);
             }
-            if(myUltimateCoolDown)
+            if (myUltimateCoolDown)
             {
-                PowerUpTimer(3, myPlayer.myBaseAttackSpeed);
+                SuperPowerUpTimer(myPlayer.myBaseAttackSpeed);
             }
 
             #endregion
@@ -159,26 +166,26 @@ namespace ShootEmUp_1._0
             if (myShowText)
             {
                 myDisplayTextTimer -= myDeltaTime;
-                if(myDisplayTextTimer <= 0)
+                if (myDisplayTextTimer <= 0)
                 {
                     myShowText = false;
                     myDisplayTextTimer = 2;
                 }
             }
 
-            if(myScore <= 0)
+            if (myScore <= 0)
             {
                 myScore = 0;
             }
 
-            if(myPlayer.myHp <= 0)
+            if (myPlayer.myHp <= 0)
             {
                 myGame.ChangeState(new GameOverState(myGame, myGraphDevice, myContentManager, myScore, myGraphics));
             }
 
             for (int i = 0; i < myGameObjects.Count; i++)
             {
-                if(myGameObjects[i].myRemove)
+                if (myGameObjects[i].myRemove)
                 {
                     myGameObjects.RemoveAt(i);
                     i--;
@@ -191,11 +198,11 @@ namespace ShootEmUp_1._0
             {
                 CustomizeState.myFirst = true;
             }
-            if(myScore >= 50)
+            if (myScore >= 50)
             {
                 CustomizeState.mySecond = true;
             }
-            if(myWallsDestroyed >= 10)
+            if (myWallsDestroyed >= 10)
             {
                 CustomizeState.myThird = true;
             }
@@ -208,12 +215,13 @@ namespace ShootEmUp_1._0
         public void Reset()
         {
             myScore = 0;
-            myPowerUpSpawnTime = 2;
-            myCharachterPuSpawnTime = 20;
+            myPowerUpSpawnTime = 10;
+            myCharachterPuSpawnTime = 2;
             myDisplayTextTimer = 2;
             myShowText = false;
             myBossTimer = 10;
             myPowerUpCoolDownSeconds = 10;
+            mySuperPowerCoolDownSeconds = 8;
             myPowerUpCoolDown = false;
             myPowerUp = "";
             mySpawnWallsTimer = 5;
@@ -231,15 +239,15 @@ namespace ShootEmUp_1._0
             {
                 int tempType = myRng.Next(1, 3);
 
-                if(tempType == 1)
+                if (tempType == 1)
                 {
                     myGameObjects.Add(new EnemyEasy(myEnemyTexture, new Vector2(myRng.Next(0, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
                 }
-                if(tempType == 2)
+                if (tempType == 2)
                 {
                     myGameObjects.Add(new EnemyMoving(myEnemyTexture, new Vector2(myRng.Next(0, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
                 }
- 
+
                 myPreviousSpawnTime = aGameTime.TotalGameTime;
                 float tempSpawnSeconds = 0;
                 Rounds(tempSpawnSeconds);
@@ -271,7 +279,7 @@ namespace ShootEmUp_1._0
                 mySpawnWalls = true;
                 myRound = "3";
             }
-            else if(myScore >= 50 && myScore < 80)
+            else if (myScore >= 50 && myScore < 80)
             {
                 aSeconds = myRng.Next(1, 3);
                 myRound = "4";
@@ -281,20 +289,20 @@ namespace ShootEmUp_1._0
                 aSeconds = 1;
                 myRound = "5";
             }
-            else if(myScore >= 100 && myScore < 150)
+            else if (myScore >= 100 && myScore < 150)
             {
                 aSeconds = 0.5f;
                 myRound = "6";
                 for (int i = 0; i < myGameObjects.Count; i++)
                 {
-                    if(myGameObjects[i] is EnemyEasy || myGameObjects[i] is EnemyMoving)
+                    if (myGameObjects[i] is EnemyEasy || myGameObjects[i] is EnemyMoving)
                     {
-                        myGameObjects[i].mySpeed += (1*0.1f);
+                        myGameObjects[i].mySpeed += (1 * 0.1f);
                         (myGameObjects[i] as EnemyBase).myStartAttackTimer = 0.3f;
                     }
                 }
             }
-            else if(myScore >= 150)
+            else if (myScore >= 150)
             {
                 aSeconds = 0.3f;
                 myRound = "Endless";
@@ -341,7 +349,7 @@ namespace ShootEmUp_1._0
                         tempSpawnBoss = false;
                     }
                 }
-                if(tempSpawnBoss)
+                if (tempSpawnBoss)
                 {
                     myGameObjects.Add(new EnemyBoss(myEnemyTexture, tempStyle));
                 }
@@ -353,7 +361,7 @@ namespace ShootEmUp_1._0
         {
             for (int i = 0; i < myGameObjects.Count; i++)
             {
-                if (myGameObjects[i].myPosition.Y >= myGraphics.PreferredBackBufferHeight + myBullet.Height || myGameObjects[i].myPosition.Y <= 0 - myGameObjects[i].myTexture.Height || myGameObjects[i].myPosition.X >= myGraphics.PreferredBackBufferWidth + myGameObjects[i].myTexture.Width || myGameObjects[i].myPosition.X <= 0 - myGameObjects[i].myTexture.Width) 
+                if (myGameObjects[i].myPosition.Y >= myGraphics.PreferredBackBufferHeight + myBullet.Height || myGameObjects[i].myPosition.Y <= 0 - myGameObjects[i].myTexture.Height || myGameObjects[i].myPosition.X >= myGraphics.PreferredBackBufferWidth + myGameObjects[i].myTexture.Width || myGameObjects[i].myPosition.X <= 0 - myGameObjects[i].myTexture.Width)
                 {
                     myGameObjects[i].myRemove = true;
                 }
@@ -368,8 +376,8 @@ namespace ShootEmUp_1._0
             }
             if (myPowerUpSpawnTime <= 0)
             {
-                myGameObjects.Add(new SmallPowerUps(2f, myPowerupsTexture, new Vector2(myRng.Next(3,myGraphics.PreferredBackBufferWidth-myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight+20),myRng.Next(1,4) ,myPlayer, myGame));
-                myPowerUpSpawnTime = myRng.Next(15, 30);
+                myGameObjects.Add(new SmallPowerUps(2f, myPowerupsTexture, new Vector2(myRng.Next(3, myGraphics.PreferredBackBufferWidth - myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight + 20), myRng.Next(1, 4), myPlayer, myGame));
+                myPowerUpSpawnTime = myRng.Next(15, 20);
             }
         }
 
@@ -382,21 +390,21 @@ namespace ShootEmUp_1._0
             if (myCharachterPuSpawnTime <= 0)
             {
                 myGameObjects.Add(new WeaponPowerUp(2f, myCharachterPuTexture, new Vector2(myRng.Next(3, myGraphics.PreferredBackBufferWidth - myPowerupsTexture.Width), myGraphics.PreferredBackBufferHeight + 20), myRng.Next(1, 101), myPlayer, myGame));
-                myCharachterPuSpawnTime = myRng.Next(20, 51);
+                myCharachterPuSpawnTime = myRng.Next(2, 5);
             }
         }
 
         public void SpawnWalls()
         {
-            int tempSpawnWay = myRng.Next(1,3);
+            int tempSpawnWay = myRng.Next(1, 3);
 
-            if(tempSpawnWay == 1)
+            if (tempSpawnWay == 1)
             {
                 myGameObjects.Add(new Wall(myWallTexture, new Vector2(0, myGraphics.PreferredBackBufferHeight + 20)));
                 myGameObjects.Add(new Wall(myWallTexture, new Vector2(myWallTexture.Width, myGraphics.PreferredBackBufferHeight + 20)));
                 myGameObjects.Add(new Wall(myWallTexture, new Vector2(myWallTexture.Width * 2, myGraphics.PreferredBackBufferHeight + 20)));
             }
-            else if(tempSpawnWay == 2)
+            else if (tempSpawnWay == 2)
             {
                 myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - myWallTexture.Width, myGraphics.PreferredBackBufferHeight + 20)));
                 myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - (myWallTexture.Width * 2), myGraphics.PreferredBackBufferHeight + 20)));
@@ -418,12 +426,18 @@ namespace ShootEmUp_1._0
                 {
                     myPlayer.myAttackSpeed = aNormalFireSpeed;
                 }
-                if(aType == 3)
-                {
-                    myPlayer.myAttackSpeed = aNormalFireSpeed;
-                }
-                myUltimateCoolDown = false;
                 myPowerUpCoolDown = false;
+            }
+
+        }
+        public void SuperPowerUpTimer(float aNormalFireSpeed)
+        {
+            myPowerUpCoolDownSeconds -= myDeltaTime;
+
+            if (mySuperPowerCoolDownSeconds <= 0)
+            {
+                myPlayer.myAttackSpeed = aNormalFireSpeed;
+                myUltimateCoolDown = false;
             }
         }
     }
