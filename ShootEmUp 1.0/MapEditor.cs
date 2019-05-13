@@ -49,6 +49,7 @@ namespace ShootEmUp_1._0
                 Game1.myColor = Color.Black;
             }
         }
+
         public static void End()
         {
             string[] tempWrite = {""};

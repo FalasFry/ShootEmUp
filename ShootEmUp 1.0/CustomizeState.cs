@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace ShootEmUp_1._0
 {
@@ -26,6 +27,8 @@ namespace ShootEmUp_1._0
         public static bool myFirst;
         public static bool mySecond;
         public static bool myThird;
+        List<string> myPhrases;
+        Vector2 myPhrasePos;
 
         int mySelected = 0;
 
@@ -36,6 +39,7 @@ namespace ShootEmUp_1._0
             myGreen = aContent.Load<Texture2D>("PlayerShipGreen");
             myBasic = aContent.Load<Texture2D>("PlayerShip");
             myFont = aContent.Load<SpriteFont>("Font");
+            myPrevState = Keyboard.GetState();
 
             myTexture = myBasic;
             myGraphDevice = aGraphicsDevice;
@@ -55,6 +59,14 @@ namespace ShootEmUp_1._0
                 mySecond,
                 myThird
             };
+
+            myPhrases = new List<string>()
+            {
+                "",
+                "Collect 5 Powerups In A Game To Unlock",
+                "Get A Score Of 50 Points To Unlock",
+                "Destroy 10 Walls In A Game To Unlock",
+            };
         }
 
         public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
@@ -67,6 +79,19 @@ namespace ShootEmUp_1._0
                 if (mySelected == i)
                 {
                     aSpriteBatch.DrawString(myFont, "Unlocked " + myBools[i], myPos + new Vector2(-30, 200), Color.White);
+
+                    if(i == 1)
+                    {
+                        aSpriteBatch.DrawString(myFont, myPhrases[i], new Vector2(100, 395), Color.White);
+                    }
+                    if (i == 2)
+                    {
+                        aSpriteBatch.DrawString(myFont, myPhrases[i], new Vector2(100, 395), Color.White);
+                    }
+                    if (i == 3)
+                    {
+                        aSpriteBatch.DrawString(myFont, myPhrases[i], new Vector2(100, 395), Color.White);
+                    }
                 }
             }
             aSpriteBatch.DrawString(myFont, "Press ESCAPE For Back And ENTER To Select", myPos + new Vector2(-200, -100), Color.White);
@@ -77,16 +102,17 @@ namespace ShootEmUp_1._0
         {
             KeyboardState tempKeys = Keyboard.GetState();
             MoveSelection();
-
             Selection();
 
-            if (tempKeys.IsKeyDown(Keys.Escape))
+            if (tempKeys.IsKeyDown(Keys.Escape) && myPrevState.IsKeyUp(Keys.Escape))
             {
                 myTexture = myBasic;
                 myGame.PopStack();
             }
 
-            if (tempKeys.IsKeyDown(Keys.Enter))
+            Debug.Write(myPrevState.IsKeyUp(Keys.Enter));
+
+            if (tempKeys.IsKeyDown(Keys.Enter) && myPrevState.IsKeyUp(Keys.Enter))
             {
                 if(mySelected == 0)
                 {

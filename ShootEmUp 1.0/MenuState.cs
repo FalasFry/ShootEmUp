@@ -24,7 +24,9 @@ namespace ShootEmUp_1._0
         Texture2D myButtonTexture;
         GraphicsDeviceManager myManager;
 
-
+        List<string> myStrings;
+        List<Vector2> myPositions;
+        int mySelected = 0;
 
         public MenuState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
@@ -42,64 +44,21 @@ namespace ShootEmUp_1._0
             myMap = new MapEditor();
             mySkillTree = new SkillTree();
 
-            Button tempStartButton = new Button(myButtonFont, myButtonTexture)
+            myStrings = new List<string>()
             {
-                AccessText = "Start Game",
-                AccessPos = new Vector2(325, 90),
+                "Start Game",
+                "Customize",
+                "Skill Tree",
+                "Quit Game",
             };
-            tempStartButton.Click += StartButton_Click1;
-
-            Button tempCustomButtom = new Button(myButtonFont, myButtonTexture)
+            myPositions = new List<Vector2>()
             {
-                AccessText = "Customize",
-                AccessPos = new Vector2(325, 290),
+                new Vector2(325, 90),
+                new Vector2(325, 190),
+                new Vector2(325, 290),
+                new Vector2(325, 390),
+                new Vector2(325, 490),
             };
-            tempCustomButtom.Click += MyCustomButtom_Click;
-
-            Button tempSkillButton = new Button(myButtonFont, myButtonTexture)
-            {
-                AccessText = "SkillTree",
-                AccessPos = new Vector2(325, 390),
-            };
-            tempSkillButton.Click += TempSkillButton_Click;
-
-            Button tempQuitButton = new Button(myButtonFont, myButtonTexture)
-            {
-                AccessText = "Quit",
-                AccessPos = new Vector2(325, 190),
-            };
-            tempQuitButton.Click += QuitButton_Click;
-
-            myButtons = new List<Components>()
-            {
-                tempStartButton,
-                tempCustomButtom,
-                tempSkillButton,
-                tempQuitButton,
-            };
-        }
-
-        private void TempSkillButton_Click(object sender, EventArgs e)
-        {
-            myGame.ChangeState(new SkillTreeState(myGame, myGraphDevice, myContentManager));
-        }
-
-        private void MyCustomButtom_Click(object sender, EventArgs e)
-        {
-            myGame.ChangeState(new CustomizeState(myGame, myGraphDevice, myContentManager));
-        }
-
-        private void QuitButton_Click(object sender, EventArgs e)
-        {
-            SaveColors.End();
-            MapEditor.End();
-            SkillTree.Update();
-            myGame.Exit();
-        }
-
-        private void StartButton_Click1(object sender, EventArgs e)
-        {
-            myGame.ChangeState(new GameState(myGame, myGraphDevice, myContentManager, myManager));
         }
 
         public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
@@ -107,25 +66,70 @@ namespace ShootEmUp_1._0
             aSpriteBatch.Begin();
             aSpriteBatch.Draw(myMenuTexture, new Rectangle(0, 0, 800, 480), Color.White);
 
-            foreach(Button component in myButtons)
+            for (int i = 0; i < myStrings.Count; i++)
             {
-                component.Draw(aGameTime, aSpriteBatch);
+                if (mySelected != i)
+                {
+                    aSpriteBatch.DrawString(myButtonFont, myStrings[i], myPositions[i], Color.White);
+                }
+                else if (mySelected == i)
+                {
+                    aSpriteBatch.DrawString(myButtonFont, myStrings[i], myPositions[i], Color.Yellow);
+                }
             }
+
             aSpriteBatch.End();
         }
 
         public override bool Update(GameTime aGameTime)
         {
+            MoveSelection();
+            Selection();
+            return true;
+        }
+
+        void Selection()
+        {
             KeyboardState tempKeys = Keyboard.GetState();
-            for (int i = 0; i < myButtons.Count; i++)
+
+            if (tempKeys.IsKeyDown(Keys.Enter) && myPrevState.IsKeyUp(Keys.Enter))
             {
-                myButtons[i].Update(aGameTime);
+                if(mySelected == 0)
+                {
+                    myGame.ChangeState(new GameState(myGame, myGraphDevice, myContentManager, myManager));
+                }
+                if (mySelected == 1)
+                {
+                    myGame.ChangeState(new CustomizeState(myGame, myGraphDevice, myContentManager));
+                }
+                if (mySelected == 2)
+                {
+                    myGame.ChangeState(new SkillTreeState(myGame, myGraphDevice, myContentManager));
+                }
+                if (mySelected == 3)
+                {
+                    SaveColors.End();
+                    MapEditor.End();
+                    SkillTree.Update();
+                    myGame.Exit();
+                }
+            }
+            myPrevState = tempKeys;
+        }
+
+        void MoveSelection()
+        {
+            KeyboardState tempKeys = Keyboard.GetState();
+
+            if (tempKeys.IsKeyDown(Keys.Up) && mySelected > 0 && myPrevState.IsKeyUp(Keys.Up))
+            {
+                mySelected--;
             }
 
-
-
-            myPrevState = tempKeys;
-            return true;
+            if (tempKeys.IsKeyDown(Keys.Down) && mySelected < myStrings.Count() - 1 && myPrevState.IsKeyUp(Keys.Down))
+            {
+                mySelected++;
+            }
         }
     }
 }
