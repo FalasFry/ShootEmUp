@@ -15,7 +15,7 @@ namespace ShootEmUp_1._0
         MenuState myMenu;
         public States myCurState;
         Stack<States> myStateStack;
-        public static Color myColor = Color.White;
+        public static Color myColor = Color.Black;
 
 
         public Game1()

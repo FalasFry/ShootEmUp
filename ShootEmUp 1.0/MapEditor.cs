@@ -60,7 +60,7 @@ namespace ShootEmUp_1._0
             }
             else if(File.Exists(myPath))
             {
-                tempWrite[0] = "Background:" + Game1.myColor;
+                tempWrite[0] = "Background:" + Game1.myColor.ToString();
             }
             File.WriteAllLines(myPath, tempWrite);
         }

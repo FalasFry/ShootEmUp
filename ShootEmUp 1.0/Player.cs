@@ -27,8 +27,6 @@ namespace ShootEmUp_1._0
         public int myFireType;
         public float myBaseAttackSpeed;
 
-
-
         public Player(Texture2D aTexture)
         {
             myRotation = 0;
