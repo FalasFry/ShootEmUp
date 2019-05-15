@@ -24,7 +24,7 @@ namespace ShootEmUp_1._0
         public static Texture2D myEnemyBullet;
         public static List<GameObject> myGameObjects;
 
-        Player myPlayer;
+        public static Player myPlayer;
         Random myRng;
         SpriteFont myFont;
         ParticleGenerator myStars;
@@ -134,17 +134,17 @@ namespace ShootEmUp_1._0
             MouseState tempMouse = Mouse.GetState();
             KeyboardState tempKeys = Keyboard.GetState();
 
-            #region Updating
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            SpawnBoss();
+            //SpawnBoss();
             EnemySpawn(aGameTime);
 
             if (!myUltimateCoolDown)
             {
                 PowerUpSpawn();
             }
+
             if (mySuperPowerUpUnlocked && !myPowerUpCoolDown)
             {
                 SuperUpSpawn();
@@ -159,6 +159,7 @@ namespace ShootEmUp_1._0
             {
                 PowerUpTimer(SmallPowerUps.myPowerType, myPlayer.myBaseAttackSpeed);
             }
+
             if (myUltimateCoolDown)
             {
                 SuperPowerUpTimer(myPlayer.myBaseAttackSpeed);
@@ -167,10 +168,13 @@ namespace ShootEmUp_1._0
             if(SkillTree.myPointMeter <= 0)
             {
                 SkillTree.myPointsToSpend++;
-                SkillTree.myPointMeter = 100;
+                SkillTree.myPointMeter += 100;
             }
 
-            #endregion
+            if (myScore <= 0)
+            {
+                myScore = 0;
+            }
 
             if (myShowText)
             {
@@ -180,13 +184,6 @@ namespace ShootEmUp_1._0
                     myShowText = false;
                     myDisplayTextTimer = 2;
                 }
-            }
-
-
-
-            if (myScore <= 0)
-            {
-                myScore = 0;
             }
 
             if (myPlayer.myHp <= 0)
@@ -248,7 +245,16 @@ namespace ShootEmUp_1._0
         {
             if (aGameTime.TotalGameTime - myPreviousSpawnTime > myEnemySpawnTime)
             {
-                int tempType = myRng.Next(1, 3);
+                int tempType = 0;
+
+                if (myScore < 1)
+                {
+                    tempType = myRng.Next(1, 3);
+                }
+                else if(myScore >= 1)
+                {
+                    tempType = myRng.Next(3, 4);
+                }
 
                 if (tempType == 1)
                 {
@@ -257,6 +263,10 @@ namespace ShootEmUp_1._0
                 if (tempType == 2)
                 {
                     myGameObjects.Add(new EnemyMoving(myEnemyTexture, new Vector2(myRng.Next(0, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
+                }
+                if (tempType == 3)
+                {
+                    myGameObjects.Add(new EnemySmart(myEnemyTexture, new Vector2(myRng.Next(0, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
                 }
 
                 myPreviousSpawnTime = aGameTime.TotalGameTime;

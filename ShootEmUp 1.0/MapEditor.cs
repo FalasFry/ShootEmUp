@@ -13,6 +13,7 @@ namespace ShootEmUp_1._0
         static string myPath;
         string[] myText;
         string[] mySplitted;
+
         
         public MapEditor()
         {
@@ -53,6 +54,7 @@ namespace ShootEmUp_1._0
         public static void End()
         {
             string[] tempWrite = {""};
+            string tempColor = "";
 
             if (!File.Exists(myPath))
             {
@@ -60,7 +62,19 @@ namespace ShootEmUp_1._0
             }
             else if(File.Exists(myPath))
             {
-                tempWrite[0] = "Background:" + Game1.myColor.ToString();
+                if (Game1.myColor == Color.Red)
+                {
+                    tempColor = "red";
+                }
+                if (Game1.myColor == Color.CornflowerBlue)
+                {
+                    tempColor = "blue";
+                }
+                if (Game1.myColor == Color.Black)
+                {
+                    tempColor = "black";
+                }
+                tempWrite[0] = "Background:" + tempColor;
             }
             File.WriteAllLines(myPath, tempWrite);
         }

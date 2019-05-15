@@ -15,13 +15,14 @@ namespace ShootEmUp_1._0
         KeyboardState myPrevState;
         SpriteFont myFont;
         Texture2D myButtonTexture;
+        Vector2 myPointsPos;
+        Vector2 myToNextPoints;
 
         int mySelected = 0;
         int myPoints;
 
         List<string> myStrings;
         List<string> myValues;
-
         List<Vector2> myPos;
         List<Vector2> mySecondPos;
         List<Components> myButtons;
@@ -32,6 +33,7 @@ namespace ShootEmUp_1._0
             myButtonTexture = aContent.Load<Texture2D>("button");
             myGraphDevice = aGraphicsDevice;
             myPoints = SkillTree.myPointsToSpend;
+            myPrevState = Keyboard.GetState();
 
             myStrings = new List<string>()
             {
@@ -66,17 +68,20 @@ namespace ShootEmUp_1._0
                 new Vector2(25, 225),
             };
 
+            myPointsPos = new Vector2(450 - (myButtonTexture.Width / 2), 400 - myButtonTexture.Height);
+            myToNextPoints = new Vector2(410 - (myButtonTexture.Width / 2), 370 - myButtonTexture.Height);
+
             #region ResetButton
-            Button tempResetButton = new Button(myFont, myButtonTexture)
-            {
-                AccessText = "RESET",
-                AccessPos = new Vector2(400 - (myButtonTexture.Width / 2), 450 - myButtonTexture.Height),
-            };
-            tempResetButton.Click += TempResetButton_Click;
-            myButtons = new List<Components>()
-            {
-                //tempResetButton,
-            };
+            //Button tempResetButton = new Button(myFont, myButtonTexture)
+            //{
+            //    AccessText = "RESET",
+            //    AccessPos = new Vector2(400 - (myButtonTexture.Width / 2), 450 - myButtonTexture.Height),
+            //};
+            //tempResetButton.Click += TempResetButton_Click;
+            //myButtons = new List<Components>()
+            //{
+            //    tempResetButton,
+            //};
             #endregion
         }
 
@@ -102,7 +107,8 @@ namespace ShootEmUp_1._0
                 }
             }
 
-            aSpriteBatch.DrawString(myFont, "Points: " + myPoints, new Vector2(410 - (myButtonTexture.Width / 2), 400 - myButtonTexture.Height) ,Color.White);
+            aSpriteBatch.DrawString(myFont, "Points: " + myPoints, myPointsPos ,Color.White);
+            aSpriteBatch.DrawString(myFont, "Until Next Point: ", myToNextPoints, Color.White);
 
             for (int i = 0; i < myValues.Count; i++)
             {
@@ -117,10 +123,10 @@ namespace ShootEmUp_1._0
                 }
             }
 
-            for (int i = 0; i < myButtons.Count; i++)
-            {
-                myButtons[i].Draw(aGameTime, aSpriteBatch);
-            }
+            //for (int i = 0; i < myButtons.Count; i++)
+            //{
+            //    myButtons[i].Draw(aGameTime, aSpriteBatch);
+            //}
 
             aSpriteBatch.End();
         }
@@ -130,10 +136,10 @@ namespace ShootEmUp_1._0
             MoveSelection();
             Selection();
 
-            for (int i = 0; i < myButtons.Count; i++)
-            {
-                myButtons[i].Update(aGameTime);
-            }
+            //for (int i = 0; i < myButtons.Count; i++)
+            //{
+            //    myButtons[i].Update(aGameTime);
+            //}
 
             return true;
         }

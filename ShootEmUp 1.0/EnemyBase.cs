@@ -46,13 +46,14 @@ namespace ShootEmUp_1._0
                 {
                     GameState.myScore += 5;
                     GameState.myBossTimer = myRng.Next(15,20);
+                    SkillTree.myPointMeter -= 5;
                 }
                 else
                 {
                     GameState.myScore++;
-
+                    SkillTree.myPointMeter--;
                 }
-                SkillTree.myPointMeter--;
+
                 myRemove = true;
             }
         }
@@ -76,6 +77,18 @@ namespace ShootEmUp_1._0
         {
             GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
             myAttackTimer = myStartAttackTimer;
+        }
+
+        public void TypeTwoMove(Vector2 aPos, float aSpeed)
+        {
+            if (myPosition.X > 700 - myTexture.Width || myPosition.X > aPos.X + 100)
+            {
+                myDir.X = aSpeed * -1;
+            }
+            if (myPosition.X < 0 || myPosition.X < aPos.X - 100)
+            {
+                myDir.X = aSpeed;
+            }
         }
 
 

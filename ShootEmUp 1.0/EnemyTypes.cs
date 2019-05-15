@@ -62,7 +62,7 @@ namespace ShootEmUp_1._0
 
         public override void Update(GameTime aGameTime)
         {
-            TypeTwoMove(myStartPos);
+            TypeTwoMove(myStartPos, 1);
             Collision();
 
             myAttackTimer -= GameState.myDeltaTime;
@@ -73,18 +73,6 @@ namespace ShootEmUp_1._0
             StayAlive();
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
-        }
-        
-        public void TypeTwoMove(Vector2 aPos)
-        {
-            if (myPosition.X > 700 - myTexture.Width || myPosition.X > aPos.X + 100)
-            {
-                myDir.X = -1;
-            }
-            if (myPosition.X < 0 || myPosition.X < aPos.X - 100)
-            {
-                myDir.X = 1;
-            }
         }
     }
     class EnemyBoss : EnemyBase
@@ -97,7 +85,7 @@ namespace ShootEmUp_1._0
             myShootStyle = aShootWay;
             myPosition = new Vector2(270, 900);
             myHealth = 5;
-            mySpeed = 3;
+            mySpeed = 3 + mySlowerMovements;
             myScale = 2;
             myDir = new Vector2(0, -1);
             myTexture = aTexture;
@@ -164,6 +152,55 @@ namespace ShootEmUp_1._0
             }
             
             myBossAS = tempBossAS;
+        }
+    }
+
+    class EnemySmart : EnemyBase
+    {
+        Vector2 myShootDir;
+        float mySmartAS;
+        float mySmartStartAS = 0.3f;
+        public EnemySmart(Texture2D aTexture, Vector2 aPosition)
+        {
+            myRotation = 0;
+            myPosition = aPosition;
+            mySpeed = 5 + mySlowerMovements;
+            myStartPos = myPosition;
+            myTexture = aTexture;
+            myBulletTexture = GameState.myEnemyBullet;
+            myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
+            myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
+            myBulletColor = Color.Purple;
+            myColor = Color.Orange;
+            myOffset = ((myTexture.Bounds.Size.ToVector2() * 0.5f));
+
+            int tempRng = myRng.Next(1, 3);
+            myDir = new Vector2(tempRng, -1);
+        }
+
+        public override void Update(GameTime aGameTime)
+        {
+            Animation(myTexturesList);
+            StayAlive();
+            Collision();
+            TypeTwoMove(myStartPos, 1.5f);
+
+            myPosition += (myDir * mySpeed);
+            myRectangle.Location = myPosition.ToPoint();
+            mySmartAS -= GameState.myDeltaTime;
+
+            if (mySmartAS<= 0)
+            {
+                myShootDir = GameState.myPlayer.myPosition - (myPosition + myOffset);
+                myShootDir.Normalize();
+                SmartBullets(myShootDir);
+            }
+        }
+
+        void SmartBullets(Vector2 aShootDir)
+        {
+            GameState.myGameObjects.Add(new Bullet(7, aShootDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
+            mySmartAS = mySmartStartAS;
         }
     }
 }

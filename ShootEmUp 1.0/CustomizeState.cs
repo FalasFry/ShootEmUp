@@ -67,6 +67,7 @@ namespace ShootEmUp_1._0
                 "Get A Score Of 50 Points To Unlock",
                 "Destroy 10 Walls In A Game To Unlock",
             };
+            myPhrasePos = new Vector2(150, 395);
         }
 
         public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
@@ -82,15 +83,15 @@ namespace ShootEmUp_1._0
 
                     if(i == 1)
                     {
-                        aSpriteBatch.DrawString(myFont, myPhrases[i], new Vector2(100, 395), Color.White);
+                        aSpriteBatch.DrawString(myFont, myPhrases[i], myPhrasePos, Color.White);
                     }
                     if (i == 2)
                     {
-                        aSpriteBatch.DrawString(myFont, myPhrases[i], new Vector2(100, 395), Color.White);
+                        aSpriteBatch.DrawString(myFont, myPhrases[i], myPhrasePos, Color.White);
                     }
                     if (i == 3)
                     {
-                        aSpriteBatch.DrawString(myFont, myPhrases[i], new Vector2(100, 395), Color.White);
+                        aSpriteBatch.DrawString(myFont, myPhrases[i], myPhrasePos, Color.White);
                     }
                 }
             }
