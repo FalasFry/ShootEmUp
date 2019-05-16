@@ -62,7 +62,7 @@ namespace ShootEmUp_1._0
 
         public override void Update(GameTime aGameTime)
         {
-            TypeTwoMove(myStartPos, 1);
+            TypeTwoMove(myStartPos, 1, 100);
             Collision();
 
             myAttackTimer -= GameState.myDeltaTime;
@@ -164,6 +164,8 @@ namespace ShootEmUp_1._0
         {
             myRotation = 0;
             myPosition = aPosition;
+
+
             mySpeed = 5 + mySlowerMovements;
             myStartPos = myPosition;
             myTexture = aTexture;
@@ -183,7 +185,7 @@ namespace ShootEmUp_1._0
             Animation(myTexturesList);
             StayAlive();
             Collision();
-            TypeTwoMove(myStartPos, 1.5f);
+            TypeTwoMove(myStartPos, 2f, 50);
 
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
@@ -192,6 +194,10 @@ namespace ShootEmUp_1._0
             if (mySmartAS<= 0)
             {
                 myShootDir = GameState.myPlayer.myPosition - (myPosition + myOffset);
+                if(myShootDir.Y > 0)
+                {
+                    myShootDir.Y = 0;
+                }
                 myShootDir.Normalize();
                 SmartBullets(myShootDir);
             }
@@ -199,7 +205,7 @@ namespace ShootEmUp_1._0
 
         void SmartBullets(Vector2 aShootDir)
         {
-            GameState.myGameObjects.Add(new Bullet(7, aShootDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
+            GameState.myGameObjects.Add(new Bullet(8, aShootDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
             mySmartAS = mySmartStartAS;
         }
     }

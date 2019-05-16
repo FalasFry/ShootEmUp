@@ -79,13 +79,13 @@ namespace ShootEmUp_1._0
             myAttackTimer = myStartAttackTimer;
         }
 
-        public void TypeTwoMove(Vector2 aPos, float aSpeed)
+        public void TypeTwoMove(Vector2 aPos, float aSpeed, float aMaxMove)
         {
-            if (myPosition.X > 700 - myTexture.Width || myPosition.X > aPos.X + 100)
+            if (myPosition.X > 700 - myTexture.Width || myPosition.X > aPos.X + aMaxMove)
             {
                 myDir.X = aSpeed * -1;
             }
-            if (myPosition.X < 0 || myPosition.X < aPos.X - 100)
+            if (myPosition.X < 0 || myPosition.X < aPos.X - aMaxMove)
             {
                 myDir.X = aSpeed;
             }

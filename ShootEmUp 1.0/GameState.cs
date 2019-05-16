@@ -137,7 +137,7 @@ namespace ShootEmUp_1._0
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            //SpawnBoss();
+            SpawnBoss();
             EnemySpawn(aGameTime);
 
             if (!myUltimateCoolDown)
@@ -247,13 +247,13 @@ namespace ShootEmUp_1._0
             {
                 int tempType = 0;
 
-                if (myScore < 1)
+                if (myScore < 50)
                 {
-                    tempType = myRng.Next(1, 3);
+                    tempType = myRng.Next(1, 4);
                 }
-                else if(myScore >= 1)
+                else if(myScore >= 50)
                 {
-                    tempType = myRng.Next(3, 4);
+                    tempType = myRng.Next(1, 4);
                 }
 
                 if (tempType == 1)
@@ -266,7 +266,21 @@ namespace ShootEmUp_1._0
                 }
                 if (tempType == 3)
                 {
-                    myGameObjects.Add(new EnemySmart(myEnemyTexture, new Vector2(myRng.Next(0, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
+                    Random tempRng = new Random();
+                    int tempNumer = tempRng.Next(1, 3);
+                    Vector2 tempPos = new Vector2();
+
+                    if (tempNumer == 1)
+                    {
+                        tempPos = new Vector2(30 + myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
+                        myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
+                    }
+                    if (tempNumer == 2)
+                    {
+                        tempPos = new Vector2(myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
+                        myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
+                    }
+
                 }
 
                 myPreviousSpawnTime = aGameTime.TotalGameTime;
