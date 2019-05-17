@@ -21,7 +21,7 @@ namespace ShootEmUp_1._0
             myTexture = aTexture;
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
+            myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
             myBulletColor = Color.Cyan;
             myColor = Color.Cyan;
         }
@@ -53,7 +53,7 @@ namespace ShootEmUp_1._0
             myBulletTexture = GameState.myEnemyBullet;
             myTexture = aTexture;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
+            myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
             myColor = Color.Red;
 
             int tempRng = myRng.Next(1, 3);
@@ -91,7 +91,7 @@ namespace ShootEmUp_1._0
             myTexture = aTexture;
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
+            myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
 
             int tempRng = myRng.Next(1, 3);
 
@@ -159,22 +159,21 @@ namespace ShootEmUp_1._0
     {
         Vector2 myShootDir;
         float mySmartAS;
-        float mySmartStartAS = 0.3f;
+        float mySmartStartAS = 0.7f;
+
         public EnemySmart(Texture2D aTexture, Vector2 aPosition)
         {
             myRotation = 0;
             myPosition = aPosition;
-
 
             mySpeed = 5 + mySlowerMovements;
             myStartPos = myPosition;
             myTexture = aTexture;
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myBulletSpawn = new Vector2(myRectangle.Width * 0.5f, 0);
+            myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
             myBulletColor = Color.Purple;
             myColor = Color.Orange;
-            myOffset = ((myTexture.Bounds.Size.ToVector2() * 0.5f));
 
             int tempRng = myRng.Next(1, 3);
             myDir = new Vector2(tempRng, -1);
@@ -207,6 +206,47 @@ namespace ShootEmUp_1._0
         {
             GameState.myGameObjects.Add(new Bullet(8, aShootDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
             mySmartAS = mySmartStartAS;
+        }
+    }
+
+    class ChargeEnemy : EnemyBase
+    {
+        public ChargeEnemy(Texture2D aTexture, Vector2 aPosition)
+        {
+            myRotation = 0;
+            myPosition = aPosition;
+            mySpeed = 5 + mySlowerMovements;
+            myStartPos = myPosition;
+            myDir = new Vector2(0, -1);
+            myTexture = aTexture;
+            myBulletTexture = GameState.myEnemyLazer;
+            myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
+            myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
+            myBulletColor = Color.Cyan;
+            myColor = Color.Cyan;
+        }
+
+        public override void Update(GameTime aGameTime)
+        {
+            Collision();
+            Move();
+            StayAlive();
+            myPosition += (myDir * mySpeed);
+            myRectangle.Location = myPosition.ToPoint();
+
+            myAttackTimer -= GameState.myDeltaTime;
+
+            Animation(myTexturesList);
+
+            if (myAttackTimer <= 0)
+            {
+
+            }
+        }
+
+        void Move()
+        {
+
         }
     }
 }

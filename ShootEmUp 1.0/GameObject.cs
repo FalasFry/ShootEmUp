@@ -32,6 +32,7 @@ namespace ShootEmUp_1._0
         public void Draw(SpriteBatch aSpriteBatch)
         {
             aSpriteBatch.Draw(myTexture, myPosition, null, myColor, myRotation, myOffset, myScale, SpriteEffects.None, 1);
+            aSpriteBatch.Draw(myTexture, myRectangle, Color.Pink);
         }
 
         public void Animation(List<Texture2D> aList)

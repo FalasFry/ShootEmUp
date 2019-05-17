@@ -34,7 +34,7 @@ namespace ShootEmUp_1._0
 
             myPosition = new Vector2(300, myTexture.Height);
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myBulletsSpawn = new Vector2(myRectangle.Width * 0.5f, myRectangle.Height);
+            myBulletsSpawn = new Vector2((myTexture.Width - GameState.myBullet.Width) * 0.5f, myTexture.Height);
 
             mySpeedUpgrade = 0.5f * SkillTree.mySpeedMult;
             mySpeed = 7 + mySpeedUpgrade;

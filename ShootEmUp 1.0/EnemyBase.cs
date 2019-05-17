@@ -16,6 +16,7 @@ namespace ShootEmUp_1._0
         public Vector2 myBulletSpawn;
 
         public List<Texture2D> myTexturesList;
+        public List<Texture2D> myChargeTextures;
 
         public float myHealth;
         public float myShootStyle;
@@ -35,6 +36,14 @@ namespace ShootEmUp_1._0
             {
                 GameState.myEnemyTexture,
                 GameState.myEnemyTexture2,
+            };
+            myChargeTextures = new List<Texture2D>()
+            {
+                GameState.myEnemyTexture,
+                GameState.myEnemyTexture2,
+                GameState.myEnemyCharge1,
+                GameState.myEnemyCharge2,
+                GameState.myEnemyCharge3,
             };
         }
 

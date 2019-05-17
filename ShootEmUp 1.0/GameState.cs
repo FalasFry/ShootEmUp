@@ -13,47 +13,54 @@ namespace ShootEmUp_1._0
 {
     class GameState : States
     {
-        Texture2D myPowerupsTexture;
-        Texture2D myCharachterPuTexture;
+        #region Classes
+
         public static Texture2D myEnemyTexture;
         public static Texture2D myEnemyTexture2;
-        Texture2D myPlayerTexture;
-        Texture2D myWallTexture;
-
+        public static Texture2D myEnemyCharge1;
+        public static Texture2D myEnemyCharge2;
+        public static Texture2D myEnemyCharge3;
+        public static Texture2D myEnemyLazer;
         public static Texture2D myBullet;
         public static Texture2D myEnemyBullet;
         public static List<GameObject> myGameObjects;
-
         public static Player myPlayer;
+        Texture2D myPowerupsTexture;
+        Texture2D myPlayerTexture;
+        Texture2D myWallTexture;
+        Texture2D myCharachterPuTexture;
         Random myRng;
         SpriteFont myFont;
         ParticleGenerator myStars;
-
         TimeSpan myPreviousSpawnTime;
         TimeSpan myEnemySpawnTime;
         GraphicsDeviceManager myGraphics;
 
+        #endregion
+
+        #region Variables
+
         public static float myScore;
         public static float myDeltaTime;
-        float myTotalGameTime;
-        float myPowerUpSpawnTime;
-        float myCharachterPuSpawnTime;
         public static float myDisplayTextTimer;
-        public static bool myShowText;
         public static float myBossTimer;
         public static float myPowerUpCoolDownSeconds;
         public static float mySuperPowerCoolDownSeconds;
-        public static bool myPowerUpCoolDown;
         public static string myPowerUp;
+        public static int myPowerUpCount = 0;
+        public static int myWallsDestroyed = 0;
+        public static bool mySuperPowerUpUnlocked = false;
+        public static bool myShowText;
         public static bool myUltimateCoolDown;
+        public static bool myPowerUpCoolDown;
+        float myTotalGameTime;
+        float myPowerUpSpawnTime;
+        float myCharachterPuSpawnTime;
         float mySpawnWallsTimer;
         bool mySpawnWalls;
         string myRound;
 
-        public static int myPowerUpCount = 0;
-        public static int myWallsDestroyed = 0;
-
-        public static bool mySuperPowerUpUnlocked = false;
+        #endregion
 
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
@@ -65,6 +72,10 @@ namespace ShootEmUp_1._0
 
             myEnemyTexture = aContent.Load<Texture2D>("EnemyShip");
             myEnemyTexture2 = aContent.Load<Texture2D>("EnemyShip2");
+            myEnemyCharge1 = aContent.Load<Texture2D>("Charge1");
+            myEnemyCharge2 = aContent.Load<Texture2D>("Charge2");
+            myEnemyCharge3 = aContent.Load<Texture2D>("Charge3");
+
             myPowerupsTexture = aContent.Load<Texture2D>("PowerUp");
             myPlayerTexture = CustomizeState.myTexture;
             myBullet = aContent.Load<Texture2D>("BulletPixel");
@@ -306,11 +317,13 @@ namespace ShootEmUp_1._0
             else if (myScore >= 10 && myScore < 20)
             {
                 aSeconds = myRng.Next(3, 5);
+
                 myRound = "2";
             }
             else if (myScore >= 20 && myScore < 50)
             {
                 aSeconds = myRng.Next(2, 4);
+
                 mySpawnWalls = true;
                 myRound = "3";
             }
@@ -322,6 +335,7 @@ namespace ShootEmUp_1._0
             else if (myScore >= 80 && myScore < 100)
             {
                 aSeconds = 1;
+
                 myRound = "5";
             }
             else if (myScore >= 100 && myScore < 150)
