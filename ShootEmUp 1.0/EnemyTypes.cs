@@ -125,7 +125,7 @@ namespace ShootEmUp_1._0
             {
                 myDir.X = -1;
             }
-            else if (myPosition.X < 100)
+            else if (myPosition.X < 0)
             {
                 myDir.X = 1;
             }
@@ -184,7 +184,7 @@ namespace ShootEmUp_1._0
             Animation(myTexturesList);
             StayAlive();
             Collision();
-            TypeTwoMove(myStartPos, 2f, 50);
+            TypeTwoMove(myStartPos, 1.5f, 50);
 
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
@@ -198,6 +198,7 @@ namespace ShootEmUp_1._0
                     myShootDir.Y = 0;
                 }
                 myShootDir.Normalize();
+
                 SmartBullets(myShootDir);
             }
         }
@@ -211,41 +212,67 @@ namespace ShootEmUp_1._0
 
     class ChargeEnemy : EnemyBase
     {
+        float myChargeRate;
+        float mySmartStartAS = 2f;
+        float myTimer;
+        float myStartTimer;
+        Vector2 TargetDir;
         public ChargeEnemy(Texture2D aTexture, Vector2 aPosition)
         {
             myRotation = 0;
             myPosition = aPosition;
             mySpeed = 5 + mySlowerMovements;
             myStartPos = myPosition;
-            myDir = new Vector2(0, -1);
             myTexture = aTexture;
             myBulletTexture = GameState.myEnemyLazer;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
+            myBulletSpawn = new Vector2((myTexture.Width - myBulletTexture.Width) * 0.5f, 0);
             myBulletColor = Color.Cyan;
-            myColor = Color.Cyan;
+            myColor = Color.Brown;
+            myChargeRate = mySmartStartAS;
+            myTimer = (myChargeTextures.Count) * 0.5f;
+            myStartTimer = myTimer;
+            TargetDir = GameState.myPlayer.myPosition;
         }
 
         public override void Update(GameTime aGameTime)
         {
             Collision();
-            Move();
             StayAlive();
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
 
-            myAttackTimer -= GameState.myDeltaTime;
+            myChargeRate -= GameState.myDeltaTime;
 
-            Animation(myTexturesList);
-
-            if (myAttackTimer <= 0)
+            if (myChargeRate >= 0)
             {
-
+                Move();
             }
+            if(myChargeRate <= 0)
+            {
+                //Attack();
+            }
+            Attack();
         }
 
         void Move()
         {
+            myDir = new Vector2(0, -1);
+        }
+
+        void Attack()
+        {
+            //myDir = Vector2.Zero;
+
+            Animation(myChargeTextures);
+            myTimer -= GameState.myDeltaTime;
+
+            if(myTimer <= 0)
+            {
+                GameState.myGameObjects.Add(new Lazer(TargetDir, myBulletTexture,myPosition + myBulletSpawn, 2, myBulletColor));
+                myTimer = myStartTimer;
+            }
+            myChargeRate = mySmartStartAS;
 
         }
     }

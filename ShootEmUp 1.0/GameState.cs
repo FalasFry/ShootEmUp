@@ -25,8 +25,8 @@ namespace ShootEmUp_1._0
         public static Texture2D myEnemyBullet;
         public static List<GameObject> myGameObjects;
         public static Player myPlayer;
+        public static Texture2D myPlayerTexture;
         Texture2D myPowerupsTexture;
-        Texture2D myPlayerTexture;
         Texture2D myWallTexture;
         Texture2D myCharachterPuTexture;
         Random myRng;
@@ -83,6 +83,7 @@ namespace ShootEmUp_1._0
             myFont = aContent.Load<SpriteFont>("Font");
             myWallTexture = aContent.Load<Texture2D>("Walls");
             myCharachterPuTexture = aContent.Load<Texture2D>("MarioStar");
+            myEnemyLazer = aContent.Load<Texture2D>("Lazer");
 
             myRng = new Random();
             myStars = new ParticleGenerator(aContent.Load<Texture2D>("Star"), aManager.PreferredBackBufferWidth, 100);
@@ -148,7 +149,7 @@ namespace ShootEmUp_1._0
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            SpawnBoss();
+            //SpawnBoss();
             EnemySpawn(aGameTime);
 
             if (!myUltimateCoolDown)
@@ -199,7 +200,7 @@ namespace ShootEmUp_1._0
 
             if (myPlayer.myHp <= 0)
             {
-                myGame.ChangeState(new GameOverState(myGame, myGraphDevice, myContentManager, myScore, myGraphics));
+                //myGame.ChangeState(new GameOverState(myGame, myGraphDevice, myContentManager, myScore, myGraphics));
             }
 
             for (int i = 0; i < myGameObjects.Count; i++)
@@ -260,7 +261,7 @@ namespace ShootEmUp_1._0
 
                 if (myScore < 50)
                 {
-                    tempType = myRng.Next(1, 4);
+                    tempType = myRng.Next(4, 5);
                 }
                 else if(myScore >= 50)
                 {
@@ -291,7 +292,10 @@ namespace ShootEmUp_1._0
                         tempPos = new Vector2(myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
                         myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
                     }
-
+                }
+                if (tempType == 4)
+                {
+                    myGameObjects.Add(new ChargeEnemy(myEnemyTexture, new Vector2(myRng.Next(0, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20)));
                 }
 
                 myPreviousSpawnTime = aGameTime.TotalGameTime;
@@ -479,6 +483,7 @@ namespace ShootEmUp_1._0
             }
 
         }
+
         public void SuperPowerUpTimer(float aNormalFireSpeed)
         {
             mySuperPowerCoolDownSeconds -= myDeltaTime;

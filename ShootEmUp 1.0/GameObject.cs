@@ -19,20 +19,20 @@ namespace ShootEmUp_1._0
         public float myScale = 1;
         public bool myRemove = false;
         float myTimer;
-        float myStartTimr;
+        float myStartTimer;
 
         public GameObject()
         {
             myTimer = 0.5f;
-            myStartTimr = myTimer;
+            myStartTimer = myTimer;
         }
 
         public abstract void Update(GameTime aGameTime);
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Draw(myTexture, myPosition, null, myColor, myRotation, myOffset, myScale, SpriteEffects.None, 1);
             aSpriteBatch.Draw(myTexture, myRectangle, Color.Pink);
+            aSpriteBatch.Draw(myTexture, myPosition, null, myColor, myRotation, myOffset, myScale, SpriteEffects.None, 1);
         }
 
         public void Animation(List<Texture2D> aList)
@@ -41,7 +41,7 @@ namespace ShootEmUp_1._0
 
                 if (myTimer <= 0)
                 {
-                    myTimer = myStartTimr;
+                    myTimer = myStartTimer;
                     for (int i = 0; i < aList.Count; i++)
                     {
                         if (myTexture == aList[i])

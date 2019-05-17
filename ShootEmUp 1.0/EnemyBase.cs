@@ -40,7 +40,6 @@ namespace ShootEmUp_1._0
             myChargeTextures = new List<Texture2D>()
             {
                 GameState.myEnemyTexture,
-                GameState.myEnemyTexture2,
                 GameState.myEnemyCharge1,
                 GameState.myEnemyCharge2,
                 GameState.myEnemyCharge3,
