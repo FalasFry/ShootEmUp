@@ -20,12 +20,12 @@ namespace ShootEmUp_1._0
 
         int mySelected = 0;
         int myPoints;
+        int myTimeToNext;
 
         List<string> myStrings;
         List<string> myValues;
         List<Vector2> myPos;
         List<Vector2> mySecondPos;
-        List<Components> myButtons;
         
         public SkillTreeState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent) : base(aGame, aGraphicsDevice, aContent)
         {
@@ -33,6 +33,7 @@ namespace ShootEmUp_1._0
             myButtonTexture = aContent.Load<Texture2D>("button");
             myGraphDevice = aGraphicsDevice;
             myPoints = SkillTree.myPointsToSpend;
+            myTimeToNext= SkillTree.myPointMeter;
             myPrevState = Keyboard.GetState();
 
             myStrings = new List<string>()
@@ -70,19 +71,6 @@ namespace ShootEmUp_1._0
 
             myPointsPos = new Vector2(450 - (myButtonTexture.Width / 2), 400 - myButtonTexture.Height);
             myToNextPoints = new Vector2(410 - (myButtonTexture.Width / 2), 370 - myButtonTexture.Height);
-
-            #region ResetButton
-            //Button tempResetButton = new Button(myFont, myButtonTexture)
-            //{
-            //    AccessText = "RESET",
-            //    AccessPos = new Vector2(400 - (myButtonTexture.Width / 2), 450 - myButtonTexture.Height),
-            //};
-            //tempResetButton.Click += TempResetButton_Click;
-            //myButtons = new List<Components>()
-            //{
-            //    tempResetButton,
-            //};
-            #endregion
         }
 
         private void TempResetButton_Click(object sender, EventArgs e)
@@ -108,7 +96,7 @@ namespace ShootEmUp_1._0
             }
 
             aSpriteBatch.DrawString(myFont, "Points: " + myPoints, myPointsPos ,Color.White);
-            aSpriteBatch.DrawString(myFont, "Until Next Point: ", myToNextPoints, Color.White);
+            aSpriteBatch.DrawString(myFont, "Until Next Point: " + myTimeToNext, myToNextPoints, Color.White);
 
             for (int i = 0; i < myValues.Count; i++)
             {

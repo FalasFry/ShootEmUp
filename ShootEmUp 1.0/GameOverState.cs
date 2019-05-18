@@ -31,7 +31,7 @@ namespace ShootEmUp_1._0
                 AccessText = "Restart Game",
                 AccessPos = new Vector2(300, 280),
             };
-            tempRestartButton.Click += myRestartButton_Click1;
+            tempRestartButton.Click += MyRestartButton_Click1;
             
             Button tempQuitButton = new Button(myFont, myButtonTexture)
             {
@@ -55,7 +55,7 @@ namespace ShootEmUp_1._0
             myGame.Exit();
         }
 
-        private void myRestartButton_Click1(object sender, EventArgs e)
+        private void MyRestartButton_Click1(object sender, EventArgs e)
         {
             myManager.PreferredBackBufferHeight = 480;
             myManager.PreferredBackBufferWidth = 800;

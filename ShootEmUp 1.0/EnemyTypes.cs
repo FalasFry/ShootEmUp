@@ -155,6 +155,9 @@ namespace ShootEmUp_1._0
         }
     }
 
+    /// <summary>
+    /// Shooting Towards Player
+    /// </summary>
     class EnemySmart : EnemyBase
     {
         Vector2 myShootDir;
@@ -210,12 +213,15 @@ namespace ShootEmUp_1._0
         }
     }
 
+    /// <summary>
+    /// LAZEEEER
+    /// </summary>
     class ChargeEnemy : EnemyBase
     {
         float myChargeRate;
         float mySmartStartAS;
-        float myTimer;
-        float myStartTimer;
+        new float myTimer;
+        new float myStartTimer;
         bool mySetTarget;
         bool myHasAttacked = false;
 
@@ -224,7 +230,6 @@ namespace ShootEmUp_1._0
 
         public ChargeEnemy(Texture2D aTexture, Vector2 aPosition)
         {
-            myRotation = 0;
             myPosition = aPosition;
             mySpeed = 5 + mySlowerMovements;
             myStartPos = myPosition;
@@ -232,7 +237,7 @@ namespace ShootEmUp_1._0
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2((myTexture.Width - myBulletTexture.Width) * 0.5f, 0);
-            myBulletColor = Color.Cyan;
+            myBulletColor = Color.Orange;
             myColor = Color.Brown;
             mySmartStartAS = myRng.Next(1, 3);
             myChargeRate = mySmartStartAS;

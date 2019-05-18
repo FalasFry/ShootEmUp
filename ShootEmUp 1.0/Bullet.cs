@@ -8,7 +8,7 @@ namespace ShootEmUp_1._0
     class Bullet : GameObject
     {
         public float myOwner;
-        bool isLaser;
+        bool myIsLaser;
 
         public Bullet(float aSpeed, Vector2 aDir, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint, bool aSeeAsLaser)
         {
@@ -19,7 +19,7 @@ namespace ShootEmUp_1._0
             myPosition = aStartPos;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myColor = aPaint;
-            isLaser = aSeeAsLaser;
+            myIsLaser = aSeeAsLaser;
         }
 
         public override void Update(GameTime aGameTime)
@@ -43,7 +43,7 @@ namespace ShootEmUp_1._0
                 }
                 else if (GameState.myGameObjects[i] is Player)
                 {
-                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2 && !isLaser)
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2 && !myIsLaser)
                     {
                         (GameState.myGameObjects[i] as Player).myHp--;
                         myRemove = true;
@@ -65,7 +65,6 @@ namespace ShootEmUp_1._0
     {
         List<Bullet> myParts;
         float myRemoveTime;
-        bool myDelete;
         float myHP;
 
         public Lazer(Vector2 aTarget, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint)
@@ -75,7 +74,6 @@ namespace ShootEmUp_1._0
             myTexture = aTexture;
             myPosition = new Vector2(0, 900+myTexture.Height);
             myRemoveTime = 1;
-            myDelete = false;
             myHP = GameState.myPlayer.myHp;
             for (int i = 1; i < 51; i++)
             {

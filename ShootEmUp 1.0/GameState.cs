@@ -54,7 +54,6 @@ namespace ShootEmUp_1._0
         public static bool myShowText;
         public static bool myUltimateCoolDown;
         public static bool myPowerUpCoolDown;
-        float myTotalGameTime;
         float myPowerUpSpawnTime;
         float myCharachterPuSpawnTime;
         float mySpawnWallsTimer;
@@ -65,7 +64,6 @@ namespace ShootEmUp_1._0
 
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
-
             Reset();
 
             #region WindowSize
@@ -91,7 +89,6 @@ namespace ShootEmUp_1._0
             myEnemyLazer = aContent.Load<Texture2D>("Lazer");
             myStarsTexture = aContent.Load<Texture2D>("Star");
             #endregion
-
 
             myRng = new Random();
             myStars = new ParticleGenerator(myStarsTexture, aManager.PreferredBackBufferWidth, 100);
@@ -149,10 +146,6 @@ namespace ShootEmUp_1._0
         public override bool Update(GameTime aGameTime)
         {
             myDeltaTime = (float)aGameTime.ElapsedGameTime.TotalSeconds;
-            myTotalGameTime += myDeltaTime;
-            MouseState tempMouse = Mouse.GetState();
-            KeyboardState tempKeys = Keyboard.GetState();
-
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
@@ -239,6 +232,9 @@ namespace ShootEmUp_1._0
             return true;
         }
 
+        /// <summary>
+        /// Resets All The Values
+        /// </summary>
         public void Reset()
         {
             myScore = 0;
@@ -252,7 +248,6 @@ namespace ShootEmUp_1._0
             myPowerUpCoolDown = false;
             myPowerUp = "";
             mySpawnWallsTimer = 5;
-            myTotalGameTime = 0;
             mySpawnWalls = false;
             myRound = "1";
             myPowerUpCount = 0;
@@ -260,6 +255,10 @@ namespace ShootEmUp_1._0
             mySuperPowerUpUnlocked = false;
         }
 
+        /// <summary>
+        /// Spawns In the enemies
+        /// </summary>
+        /// <param name="aGameTime"></param>
         public void EnemySpawn(GameTime aGameTime)
         {
             if (aGameTime.TotalGameTime - myPreviousSpawnTime > myEnemySpawnTime)
@@ -291,16 +290,15 @@ namespace ShootEmUp_1._0
                 {
                     Random tempRng = new Random();
                     int tempNumer = tempRng.Next(1, 3);
-                    Vector2 tempPos = new Vector2();
 
                     if (tempNumer == 1)
                     {
-                        tempPos = new Vector2(30 + myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
+                        Vector2 tempPos = new Vector2(30 + myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
                         myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
                     }
                     if (tempNumer == 2)
                     {
-                        tempPos = new Vector2(myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
+                        Vector2 tempPos = new Vector2(myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
                         myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
                     }
                 }
@@ -321,6 +319,10 @@ namespace ShootEmUp_1._0
             }
         }
 
+        /// <summary>
+        /// Creates The Rounds
+        /// </summary>
+        /// <param name="aSeconds"></param>
         public void Rounds(float aSeconds)
         {
             if (myScore < 10)
@@ -382,6 +384,9 @@ namespace ShootEmUp_1._0
             myEnemySpawnTime = TimeSpan.FromSeconds(aSeconds);
         }
 
+        /// <summary>
+        /// Rounds For How Walls Spawn
+        /// </summary>
         public void WallsRounds()
         {
             if (myScore >= 20 && myScore < 50)
@@ -398,6 +403,9 @@ namespace ShootEmUp_1._0
             }
         }
 
+        /// <summary>
+        /// Spawns A Boss
+        /// </summary>
         public void SpawnBoss()
         {
             myBossTimer -= myDeltaTime;
@@ -421,6 +429,9 @@ namespace ShootEmUp_1._0
 
         }
 
+        /// <summary>
+        /// Removes Shit When Out Of Screen
+        /// </summary>
         public void OutOfBounds()
         {
             for (int i = 0; i < myGameObjects.Count; i++)
@@ -432,6 +443,11 @@ namespace ShootEmUp_1._0
             }
         }
 
+        #region PowerUp
+
+        /// <summary>
+        /// Spawn A PowerUp
+        /// </summary>
         public void PowerUpSpawn()
         {
             if (myPowerUpSpawnTime > 0)
@@ -445,6 +461,9 @@ namespace ShootEmUp_1._0
             }
         }
 
+        /// <summary>
+        /// Spawn a SuperUp
+        /// </summary>
         public void SuperUpSpawn()
         {
             if (myCharachterPuSpawnTime > 0)
@@ -458,24 +477,11 @@ namespace ShootEmUp_1._0
             }
         }
 
-        public void SpawnWalls()
-        {
-            int tempSpawnWay = myRng.Next(1, 3);
-
-            if (tempSpawnWay == 1)
-            {
-                myGameObjects.Add(new Wall(myWallTexture, new Vector2(0, myGraphics.PreferredBackBufferHeight + 20)));
-                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myWallTexture.Width, myGraphics.PreferredBackBufferHeight + 20)));
-                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myWallTexture.Width * 2, myGraphics.PreferredBackBufferHeight + 20)));
-            }
-            else if (tempSpawnWay == 2)
-            {
-                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - myWallTexture.Width, myGraphics.PreferredBackBufferHeight + 20)));
-                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - (myWallTexture.Width * 2), myGraphics.PreferredBackBufferHeight + 20)));
-                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - (myWallTexture.Width * 3), myGraphics.PreferredBackBufferHeight + 20)));
-            }
-        }
-
+        /// <summary>
+        /// Timer For Powerups
+        /// </summary>
+        /// <param name="aType"></param>
+        /// <param name="aNormalFireSpeed"></param>
         public void PowerUpTimer(int aType, float aNormalFireSpeed)
         {
             myPowerUpCoolDownSeconds -= myDeltaTime;
@@ -494,7 +500,10 @@ namespace ShootEmUp_1._0
             }
 
         }
-
+        /// <summary>
+        /// Timer For SuperUps
+        /// </summary>
+        /// <param name="aNormalFireSpeed"></param>
         public void SuperPowerUpTimer(float aNormalFireSpeed)
         {
             mySuperPowerCoolDownSeconds -= myDeltaTime;
@@ -503,6 +512,29 @@ namespace ShootEmUp_1._0
             {
                 myPlayer.myAttackSpeed = aNormalFireSpeed;
                 myUltimateCoolDown = false;
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Spawn Walls
+        /// </summary>
+        public void SpawnWalls()
+        {
+            int tempSpawnWay = myRng.Next(1, 3);
+
+            if (tempSpawnWay == 1)
+            {
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(0, myGraphics.PreferredBackBufferHeight + 20)));
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myWallTexture.Width, myGraphics.PreferredBackBufferHeight + 20)));
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myWallTexture.Width * 2, myGraphics.PreferredBackBufferHeight + 20)));
+            }
+            else if (tempSpawnWay == 2)
+            {
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - myWallTexture.Width, myGraphics.PreferredBackBufferHeight + 20)));
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - (myWallTexture.Width * 2), myGraphics.PreferredBackBufferHeight + 20)));
+                myGameObjects.Add(new Wall(myWallTexture, new Vector2(myGraphics.PreferredBackBufferWidth - (myWallTexture.Width * 3), myGraphics.PreferredBackBufferHeight + 20)));
             }
         }
     }
