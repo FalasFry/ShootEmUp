@@ -68,8 +68,8 @@ namespace ShootEmUp_1._0
 
         Vector2 v;
         Vector2 v1;
+        Vector2 v2;
         Vector2 v3;
-        Vector2 v4;
         Vector2 p;
         Vector2 p1;
         Vector2 p2;
@@ -92,22 +92,28 @@ namespace ShootEmUp_1._0
             myAngle = (float)Math.Atan2(myDir.X, myDir.Y) * -1;
             myRotation = myAngle;
 
-            v = myPosition.Rotate(myAngle);
-            v1 = new Vector2(myPosition.X + myTexture.Width, myPosition.Y).Rotate(myAngle);
-            v3 = new Vector2(myPosition.X, myPosition.Y + myTexture.Height).Rotate(myAngle);
-            v4 = new Vector2(myPosition.X + myTexture.Width, myPosition.Y + myTexture.Height).Rotate(myAngle);
+            v = myPosition;
+            v1 = new Vector2(myPosition.X + myTexture.Width, myPosition.Y);
+            v2 = new Vector2(myPosition.X, myPosition.Y + myTexture.Height);
+            v3 = new Vector2(myPosition.X + myTexture.Width, myPosition.Y + myTexture.Height);
 
             p = GameState.myPlayer.myPosition;
             p1 = new Vector2(GameState.myPlayer.myPosition.X + GameState.myPlayer.myTexture.Width, GameState.myPlayer.myPosition.Y);
             p2 = new Vector2(GameState.myPlayer.myPosition.X, GameState.myPlayer.myPosition.Y + GameState.myPlayer.myTexture.Height);
             p3 = new Vector2(GameState.myPlayer.myPosition.X + GameState.myPlayer.myTexture.Width, GameState.myPlayer.myPosition.Y + GameState.myPlayer.myTexture.Height);
 
+            //v = Vector2.Transform(v, Matrix.CreateRotationZ(myAngle));
+            myRectangle.X = (int)v.X;
+            myRectangle.Y = (int)v.Y;
+            myRectangle.Width = myTexture.Height;
+            myRectangle.Height = myTexture.Width;
+
             list1 = new List<Vector2>()
             {
                 v,
                 v1,
+                v2,
                 v3,
-                v4,
             };
             list2 = new List<Vector2>()
             {
@@ -123,6 +129,7 @@ namespace ShootEmUp_1._0
         {
             Collision(GameState.myPlayer.myHp);
             myTimer -= GameState.myDeltaTime;
+
             if (myTimer <= 0)
             {
                 myRemove = true;
@@ -136,11 +143,11 @@ namespace ShootEmUp_1._0
             {
                 if (GameState.myGameObjects[i] is Player)
                 {
-                    //if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2)
-                    //{
-                    //    (GameState.myGameObjects[i] as Player).myHp--;
-                    //    myRemove = true;
-                    //}
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2)
+                    {
+                        (GameState.myGameObjects[i] as Player).myHp--;
+                        //myRemove = true;
+                    }
 
                     //for (int j = 0; j < list1.Count; j++)
                     //{
@@ -164,19 +171,4 @@ namespace ShootEmUp_1._0
             }
         }
     }
-    public static class Vector2Extension
-    {
-        public static Vector2 Rotate(this Vector2 v, float degrees)
-        {
-            float sin = (float)Math.Sin(degrees);
-            float cos = (float)Math.Cos(degrees);
-
-            float tx = v.X;
-            float ty = v.Y;
-            v.X = (cos * tx) - (sin * ty);
-            v.Y = (sin * tx) + (cos * ty);
-            return v;
-        }
-    }
-
 }
