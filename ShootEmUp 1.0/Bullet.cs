@@ -8,8 +8,9 @@ namespace ShootEmUp_1._0
     class Bullet : GameObject
     {
         public float myOwner;
+        bool isLaser;
 
-        public Bullet(float aSpeed, Vector2 aDir, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint)
+        public Bullet(float aSpeed, Vector2 aDir, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint, bool aSeeAsLaser)
         {
             myOwner = aOwner;
             mySpeed = aSpeed;
@@ -18,6 +19,7 @@ namespace ShootEmUp_1._0
             myPosition = aStartPos;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myColor = aPaint;
+            isLaser = aSeeAsLaser;
         }
 
         public override void Update(GameTime aGameTime)
@@ -41,7 +43,7 @@ namespace ShootEmUp_1._0
                 }
                 else if (GameState.myGameObjects[i] is Player)
                 {
-                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2)
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2 && !isLaser)
                     {
                         (GameState.myGameObjects[i] as Player).myHp--;
                         myRemove = true;
@@ -62,16 +64,22 @@ namespace ShootEmUp_1._0
     class Lazer : GameObject
     {
         List<Bullet> myParts;
+        float myRemoveTime;
+        bool myDelete;
+        float myHP;
 
         public Lazer(Vector2 aTarget, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint)
         {
             myParts = new List<Bullet>();
             Vector2 tempPos = aStartPos;
-
-            for (int i = 1; i < 21; i++)
+            myTexture = aTexture;
+            myPosition = new Vector2(0, 900+myTexture.Height);
+            myRemoveTime = 1;
+            myDelete = false;
+            myHP = GameState.myPlayer.myHp;
+            for (int i = 1; i < 51; i++)
             {
-                //tempPos += tempSpace;
-                myParts.Add(new Bullet(0, tempPos, aTexture, tempPos, aOwner, aPaint));
+                myParts.Add(new Bullet(0, tempPos, aTexture, tempPos, aOwner, aPaint, true));
                 Vector2 tempSpace = new Vector2(aTexture.Width, aTexture.Height) * aTarget;
                 tempPos += tempSpace;
             }
@@ -84,10 +92,19 @@ namespace ShootEmUp_1._0
 
         public override void Update(GameTime aGameTime)
         {
-            Collision();
+            Collision(myHP);
+            myRemoveTime -= GameState.myDeltaTime;
+            if (myRemoveTime <= 0)
+            {
+                for (int k = 0; k < myParts.Count; k++)
+                {
+                    myParts[k].myRemove = true;
+                }
+                myRemove = true;
+            }
         }
 
-        public void Collision()
+        public void Collision(float aCurHealth)
         {
             for (int i = 0; i < GameState.myGameObjects.Count; i++)
             {
@@ -95,12 +112,9 @@ namespace ShootEmUp_1._0
                 {
                     for (int j = 0; j < myParts.Count; j++)
                     {
-                        if (GameState.myGameObjects[i].myRectangle.Intersects(myParts[j].myRectangle) && myParts[i].myOwner == 2)
+                        if (GameState.myGameObjects[i].myRectangle.Intersects(myParts[j].myRectangle))
                         {
-                            for (int k = 0; k < myParts.Count; k++)
-                            {
-                                myParts[k].myRemove = true;
-                            }
+                            (GameState.myGameObjects[i] as Player).myHp = aCurHealth -1;
                         }
                     }
                 }

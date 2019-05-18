@@ -29,6 +29,7 @@ namespace ShootEmUp_1._0
         Texture2D myPowerupsTexture;
         Texture2D myWallTexture;
         Texture2D myCharachterPuTexture;
+        Texture2D myStarsTexture;
         Random myRng;
         SpriteFont myFont;
         ParticleGenerator myStars;
@@ -64,18 +65,22 @@ namespace ShootEmUp_1._0
 
         public GameState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent, GraphicsDeviceManager aManager) : base(aGame, aGraphicsDevice, aContent)
         {
+
+            Reset();
+
+            #region WindowSize
             myGraphics = aManager;
             aManager.PreferredBackBufferHeight = 900;
             aManager.PreferredBackBufferWidth = 700;
             aManager.ApplyChanges();
-            Reset();
+            #endregion
 
+            #region LoadContent
             myEnemyTexture = aContent.Load<Texture2D>("EnemyShip");
             myEnemyTexture2 = aContent.Load<Texture2D>("EnemyShip2");
             myEnemyCharge1 = aContent.Load<Texture2D>("Charge1");
             myEnemyCharge2 = aContent.Load<Texture2D>("Charge2");
             myEnemyCharge3 = aContent.Load<Texture2D>("Charge3");
-
             myPowerupsTexture = aContent.Load<Texture2D>("PowerUp");
             myPlayerTexture = CustomizeState.myTexture;
             myBullet = aContent.Load<Texture2D>("BulletPixel");
@@ -84,10 +89,12 @@ namespace ShootEmUp_1._0
             myWallTexture = aContent.Load<Texture2D>("Walls");
             myCharachterPuTexture = aContent.Load<Texture2D>("MarioStar");
             myEnemyLazer = aContent.Load<Texture2D>("Lazer");
+            myStarsTexture = aContent.Load<Texture2D>("Star");
+            #endregion
+
 
             myRng = new Random();
-            myStars = new ParticleGenerator(aContent.Load<Texture2D>("Star"), aManager.PreferredBackBufferWidth, 100);
-
+            myStars = new ParticleGenerator(myStarsTexture, aManager.PreferredBackBufferWidth, 100);
             myGameObjects = new List<GameObject>();
 
             if (myPlayerTexture != null)
@@ -149,7 +156,7 @@ namespace ShootEmUp_1._0
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            //SpawnBoss();
+            SpawnBoss();
             EnemySpawn(aGameTime);
 
             if (!myUltimateCoolDown)
@@ -200,7 +207,7 @@ namespace ShootEmUp_1._0
 
             if (myPlayer.myHp <= 0)
             {
-                //myGame.ChangeState(new GameOverState(myGame, myGraphDevice, myContentManager, myScore, myGraphics));
+                myGame.ChangeState(new GameOverState(myGame, myGraphDevice, myContentManager, myScore, myGraphics));
             }
 
             for (int i = 0; i < myGameObjects.Count; i++)
@@ -261,11 +268,15 @@ namespace ShootEmUp_1._0
 
                 if (myScore < 50)
                 {
-                    tempType = myRng.Next(4, 5);
+                    tempType = myRng.Next(1, 3);
                 }
-                else if(myScore >= 50)
+                else if(myScore >= 50 && myScore < 100)
                 {
                     tempType = myRng.Next(1, 4);
+                }
+                else if (myScore >= 100)
+                {
+                    tempType = myRng.Next(1, 5);
                 }
 
                 if (tempType == 1)
@@ -414,7 +425,7 @@ namespace ShootEmUp_1._0
         {
             for (int i = 0; i < myGameObjects.Count; i++)
             {
-                if (myGameObjects[i].myPosition.Y >= myGraphics.PreferredBackBufferHeight + myBullet.Height || myGameObjects[i].myPosition.Y <= 0 - myGameObjects[i].myTexture.Height || myGameObjects[i].myPosition.X >= myGraphics.PreferredBackBufferWidth + myGameObjects[i].myTexture.Width || myGameObjects[i].myPosition.X <= 0 - myGameObjects[i].myTexture.Width)
+                if (myGameObjects[i].myPosition.Y >= myGraphics.PreferredBackBufferHeight + myGameObjects[i].myTexture.Height + 50 || myGameObjects[i].myPosition.Y <= 0 - myGameObjects[i].myTexture.Height || myGameObjects[i].myPosition.X >= myGraphics.PreferredBackBufferWidth + myGameObjects[i].myTexture.Width || myGameObjects[i].myPosition.X <= 0 - myGameObjects[i].myTexture.Width)
                 {
                     myGameObjects[i].myRemove = true;
                 }

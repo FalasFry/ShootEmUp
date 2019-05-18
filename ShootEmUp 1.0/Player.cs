@@ -142,22 +142,22 @@ namespace ShootEmUp_1._0
 
         public void Shoot(int aDirX)
         {
-            GameState.myGameObjects.Add(new Bullet(7, new Vector2(aDirX, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+            GameState.myGameObjects.Add(new Bullet(7, new Vector2(aDirX, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White, false));
         }
 
         public void ShootAllAtOnce(int aRandom)
         {
             if (aRandom == 1)
             {
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(-1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White, false));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(-1, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White,false));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White,false));
             }
             else if(aRandom == 2)
             {
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(-50, 0)) , 1, Color.White));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(50, 0)), 1, Color.White));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(-50, 0)) , 1, Color.White, false));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn + new Vector2(50, 0)), 1, Color.White,false));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, 1), GameState.myBullet, (myPosition + myBulletsSpawn), 1, Color.White,false));
             }
         }
     }

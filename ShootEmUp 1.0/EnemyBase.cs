@@ -83,7 +83,7 @@ namespace ShootEmUp_1._0
 
         public void EnemyShoot()
         {
-            GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
+            GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor, false));
             myAttackTimer = myStartAttackTimer;
         }
 

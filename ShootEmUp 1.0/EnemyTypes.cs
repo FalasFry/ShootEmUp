@@ -140,15 +140,15 @@ namespace ShootEmUp_1._0
 
             if (myShootStyle == 1)
             {
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, Color.Aqua));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(1, -1), myBulletTexture, myPosition + myBulletSpawn, 2, Color.Aqua));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(-1, -1), myBulletTexture, myPosition + myBulletSpawn, 2, Color.Aqua));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, Color.Aqua,false));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(1, -1), myBulletTexture, myPosition + myBulletSpawn, 2, Color.Aqua,false));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(-1, -1), myBulletTexture, myPosition + myBulletSpawn, 2, Color.Aqua,false));
             }
             else if (myShootStyle == 2)
             {
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn + new Vector2(50, 0), 2, Color.Aqua));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn + new Vector2(-50, 0), 2, Color.Aqua));
-                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, Color.Aqua));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn + new Vector2(50, 0), 2, Color.Aqua,false));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn + new Vector2(-50, 0), 2, Color.Aqua,false));
+                GameState.myGameObjects.Add(new Bullet(7, new Vector2(0, -1), myBulletTexture, myPosition + myBulletSpawn, 2, Color.Aqua,false));
             }
             
             myBossAS = tempBossAS;
@@ -205,7 +205,7 @@ namespace ShootEmUp_1._0
 
         void SmartBullets(Vector2 aShootDir)
         {
-            GameState.myGameObjects.Add(new Bullet(8, aShootDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor));
+            GameState.myGameObjects.Add(new Bullet(8, aShootDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor, false));
             mySmartAS = mySmartStartAS;
         }
     }
@@ -213,11 +213,15 @@ namespace ShootEmUp_1._0
     class ChargeEnemy : EnemyBase
     {
         float myChargeRate;
-        float mySmartStartAS = 2f;
+        float mySmartStartAS;
         float myTimer;
         float myStartTimer;
         bool mySetTarget;
+        bool myHasAttacked = false;
+
         Vector2 TargetDir;
+        Lazer laser;
+
         public ChargeEnemy(Texture2D aTexture, Vector2 aPosition)
         {
             myRotation = 0;
@@ -230,6 +234,7 @@ namespace ShootEmUp_1._0
             myBulletSpawn = new Vector2((myTexture.Width - myBulletTexture.Width) * 0.5f, 0);
             myBulletColor = Color.Cyan;
             myColor = Color.Brown;
+            mySmartStartAS = myRng.Next(1, 3);
             myChargeRate = mySmartStartAS;
             myTimer = (myChargeTextures.Count) * 0.5f;
             myStartTimer = myTimer;
@@ -249,14 +254,8 @@ namespace ShootEmUp_1._0
             {
                 Move();
             }
-            if(myChargeRate <= 0)
+            if(myChargeRate <= 0 && !myHasAttacked)
             {
-                if (mySetTarget)
-                {
-                    TargetDir = GameState.myPlayer.myPosition - (myPosition + myOffset);
-                    TargetDir.Normalize();
-                    mySetTarget = false;
-                }
                 Attack();
             }
         }
@@ -270,15 +269,25 @@ namespace ShootEmUp_1._0
         {
             myDir = Vector2.Zero;
 
+
             Animation(myChargeTextures);
             myTimer -= GameState.myDeltaTime;
 
-            if(myTimer <= 0)
+            if (mySetTarget && myTimer <= 1f)
             {
-                GameState.myGameObjects.Add(new Lazer(TargetDir, myBulletTexture,myPosition + myBulletSpawn, 2, myBulletColor));
+                TargetDir = GameState.myPlayer.myPosition - (myPosition + myOffset);
+                TargetDir.Normalize();
+                mySetTarget = false;
+            }
+
+            if (myTimer <= 0)
+            {
+                laser = new Lazer(TargetDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor);
+                GameState.myGameObjects.Add(laser);
                 myTimer = myStartTimer;
                 myChargeRate = mySmartStartAS;
                 mySetTarget = true;
+                myHasAttacked = true;
             }
         }
     }

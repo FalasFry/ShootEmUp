@@ -17,8 +17,8 @@ namespace ShootEmUp_1._0
         public Color myColor = Color.White;
         public float myScale = 1;
         public bool myRemove = false;
-        float myTimer;
-        float myStartTimer;
+        protected float myTimer;
+        protected float myStartTimer;
 
         public GameObject()
         {
@@ -30,7 +30,7 @@ namespace ShootEmUp_1._0
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Draw(GameState.myEnemyLazer, myRectangle, Color.Pink);
+            //aSpriteBatch.Draw(GameState.myEnemyLazer, myRectangle, Color.Pink);
             aSpriteBatch.Draw(myTexture, myPosition, null, myColor, myRotation, myOffset, myScale, SpriteEffects.None, 1);
         }
 
