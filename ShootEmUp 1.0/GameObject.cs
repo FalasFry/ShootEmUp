@@ -14,7 +14,6 @@ namespace ShootEmUp_1._0
         public Vector2 myDir, myPosition, myOffset;
         public Texture2D myTexture;
         public Rectangle myRectangle;
-        public float myDamage = 1;
         public Color myColor = Color.White;
         public float myScale = 1;
         public bool myRemove = false;
@@ -31,7 +30,7 @@ namespace ShootEmUp_1._0
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Draw(myTexture, myRectangle, Color.Pink);
+            aSpriteBatch.Draw(GameState.myEnemyLazer, myRectangle, Color.Pink);
             aSpriteBatch.Draw(myTexture, myPosition, null, myColor, myRotation, myOffset, myScale, SpriteEffects.None, 1);
         }
 

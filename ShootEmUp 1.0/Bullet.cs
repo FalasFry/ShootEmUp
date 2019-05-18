@@ -61,112 +61,48 @@ namespace ShootEmUp_1._0
     }
     class Lazer : GameObject
     {
-        public float myOwner;
-        float myAngle;
-        float myTimer = 1f;
-        Vector2 myOrigin;
-
-        Vector2 v;
-        Vector2 v1;
-        Vector2 v2;
-        Vector2 v3;
-        Vector2 p;
-        Vector2 p1;
-        Vector2 p2;
-        Vector2 p3;
-
-        List<Vector2> list1;
-        List<Vector2> list2;
+        List<Bullet> myParts;
 
         public Lazer(Vector2 aTarget, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint)
         {
-            myOwner = aOwner;
-            myDir = aTarget;
-            myTexture = aTexture;
-            myPosition = aStartPos;
-            myOrigin = new Vector2((float)myTexture.Width / 2, (float)myTexture.Height / 2);
-            myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myColor = aPaint;
-            myDir = (aTarget + new Vector2(0, GameState.myPlayer.myTexture.Height * 0.5f)) - (myPosition + myOffset);
-            myDir.Normalize();
-            myAngle = (float)Math.Atan2(myDir.X, myDir.Y) * -1;
-            myRotation = myAngle;
+            myParts = new List<Bullet>();
+            Vector2 tempPos = aStartPos;
 
-            v = myPosition;
-            v1 = new Vector2(myPosition.X + myTexture.Width, myPosition.Y);
-            v2 = new Vector2(myPosition.X, myPosition.Y + myTexture.Height);
-            v3 = new Vector2(myPosition.X + myTexture.Width, myPosition.Y + myTexture.Height);
-
-            p = GameState.myPlayer.myPosition;
-            p1 = new Vector2(GameState.myPlayer.myPosition.X + GameState.myPlayer.myTexture.Width, GameState.myPlayer.myPosition.Y);
-            p2 = new Vector2(GameState.myPlayer.myPosition.X, GameState.myPlayer.myPosition.Y + GameState.myPlayer.myTexture.Height);
-            p3 = new Vector2(GameState.myPlayer.myPosition.X + GameState.myPlayer.myTexture.Width, GameState.myPlayer.myPosition.Y + GameState.myPlayer.myTexture.Height);
-
-            //v = Vector2.Transform(v, Matrix.CreateRotationZ(myAngle));
-            myRectangle.X = (int)v.X;
-            myRectangle.Y = (int)v.Y;
-            myRectangle.Width = myTexture.Height;
-            myRectangle.Height = myTexture.Width;
-
-            list1 = new List<Vector2>()
+            for (int i = 1; i < 21; i++)
             {
-                v,
-                v1,
-                v2,
-                v3,
-            };
-            list2 = new List<Vector2>()
-            {
-                p,
-                p1,
-                p2,
-                p3,
-            };
+                //tempPos += tempSpace;
+                myParts.Add(new Bullet(0, tempPos, aTexture, tempPos, aOwner, aPaint));
+                Vector2 tempSpace = new Vector2(aTexture.Width, aTexture.Height) * aTarget;
+                tempPos += tempSpace;
+            }
 
+            for (int i = 0; i < myParts.Count; i++)
+            {
+                GameState.myGameObjects.Add(myParts[i]);
+            }
         }
 
         public override void Update(GameTime aGameTime)
         {
-            Collision(GameState.myPlayer.myHp);
-            myTimer -= GameState.myDeltaTime;
-
-            if (myTimer <= 0)
-            {
-                myRemove = true;
-            }
-
+            Collision();
         }
 
-        public void Collision(float aCurrentHP)
+        public void Collision()
         {
             for (int i = 0; i < GameState.myGameObjects.Count; i++)
             {
                 if (GameState.myGameObjects[i] is Player)
                 {
-                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 2)
+                    for (int j = 0; j < myParts.Count; j++)
                     {
-                        (GameState.myGameObjects[i] as Player).myHp--;
-                        //myRemove = true;
+                        if (GameState.myGameObjects[i].myRectangle.Intersects(myParts[j].myRectangle) && myParts[i].myOwner == 2)
+                        {
+                            for (int k = 0; k < myParts.Count; k++)
+                            {
+                                myParts[k].myRemove = true;
+                            }
+                        }
                     }
-
-                    //for (int j = 0; j < list1.Count; j++)
-                    //{
-                    //    for (int k = 0; k < list2.Count; k++)
-                    //    {
-                    //        if (list2[k].X < list1[k].X || list2[k].Y < list1[k].Y)
-                    //        {
-                    //            (GameState.myGameObjects[i] as Player).myHp = aCurrentHP--;
-                    //            //myRemove = true;
-                    //        }
-                    //    }
-                    //}
-
-                    //if (list2[0].X > list1[0].X && list2[0].X > list1[1].X && list2[0].Y > list1[0].Y && list2[0].Y < list1[1].Y)
-                    //{
-                    //    (GameState.myGameObjects[i] as Player).myHp = aCurrentHP--;
-                    //    //myRemove = true;
-                    //}
-
                 }
             }
         }

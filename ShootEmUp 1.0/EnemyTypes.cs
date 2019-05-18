@@ -216,6 +216,7 @@ namespace ShootEmUp_1._0
         float mySmartStartAS = 2f;
         float myTimer;
         float myStartTimer;
+        bool mySetTarget;
         Vector2 TargetDir;
         public ChargeEnemy(Texture2D aTexture, Vector2 aPosition)
         {
@@ -224,7 +225,7 @@ namespace ShootEmUp_1._0
             mySpeed = 5 + mySlowerMovements;
             myStartPos = myPosition;
             myTexture = aTexture;
-            myBulletTexture = GameState.myEnemyLazer;
+            myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2((myTexture.Width - myBulletTexture.Width) * 0.5f, 0);
             myBulletColor = Color.Cyan;
@@ -232,7 +233,7 @@ namespace ShootEmUp_1._0
             myChargeRate = mySmartStartAS;
             myTimer = (myChargeTextures.Count) * 0.5f;
             myStartTimer = myTimer;
-            TargetDir = GameState.myPlayer.myPosition;
+            mySetTarget = true;
         }
 
         public override void Update(GameTime aGameTime)
@@ -250,9 +251,14 @@ namespace ShootEmUp_1._0
             }
             if(myChargeRate <= 0)
             {
-                //Attack();
+                if (mySetTarget)
+                {
+                    TargetDir = GameState.myPlayer.myPosition - (myPosition + myOffset);
+                    TargetDir.Normalize();
+                    mySetTarget = false;
+                }
+                Attack();
             }
-            Attack();
         }
 
         void Move()
@@ -262,7 +268,7 @@ namespace ShootEmUp_1._0
 
         void Attack()
         {
-            //myDir = Vector2.Zero;
+            myDir = Vector2.Zero;
 
             Animation(myChargeTextures);
             myTimer -= GameState.myDeltaTime;
@@ -271,9 +277,9 @@ namespace ShootEmUp_1._0
             {
                 GameState.myGameObjects.Add(new Lazer(TargetDir, myBulletTexture,myPosition + myBulletSpawn, 2, myBulletColor));
                 myTimer = myStartTimer;
+                myChargeRate = mySmartStartAS;
+                mySetTarget = true;
             }
-            myChargeRate = mySmartStartAS;
-
         }
     }
 }

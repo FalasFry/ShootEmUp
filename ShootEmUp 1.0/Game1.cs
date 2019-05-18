@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
+using System;
 
 namespace ShootEmUp_1._0
 {
@@ -83,6 +84,17 @@ namespace ShootEmUp_1._0
         {
             myCurState = aState;
             myStateStack.Push(aState);
+        }
+    }
+
+    public static class Vector2Extensions
+    {
+        public static Vector2 Rotate(this Vector2 v, double degrees)
+        {
+            return new Vector2(
+                (float)(v.X * Math.Cos(degrees) - v.Y * Math.Sin(degrees)),
+                (float)(v.X * Math.Sin(degrees) + v.Y * Math.Cos(degrees))
+            );
         }
     }
 }
