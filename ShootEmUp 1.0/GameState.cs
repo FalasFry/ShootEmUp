@@ -149,7 +149,7 @@ namespace ShootEmUp_1._0
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            SpawnBoss();
+            //SpawnBoss();
             EnemySpawn(aGameTime);
 
             if (!myUltimateCoolDown)
@@ -169,7 +169,7 @@ namespace ShootEmUp_1._0
 
             if (myPowerUpCoolDown)
             {
-                PowerUpTimer(SmallPowerUps.myPowerType, myPlayer.myBaseAttackSpeed);
+                PowerUpTimer(SmallPowerUps.myPowerType, myPlayer.myBaseAttackSpeed, myPlayer.myNormalSpeed);
             }
 
             if (myUltimateCoolDown)
@@ -267,7 +267,7 @@ namespace ShootEmUp_1._0
 
                 if (myScore < 50)
                 {
-                    tempType = myRng.Next(1, 3);
+                    tempType = myRng.Next(4,5);
                 }
                 else if(myScore >= 50 && myScore < 100)
                 {
@@ -426,7 +426,6 @@ namespace ShootEmUp_1._0
                     myGameObjects.Add(new EnemyBoss(myEnemyTexture, tempStyle));
                 }
             }
-
         }
 
         /// <summary>
@@ -482,7 +481,7 @@ namespace ShootEmUp_1._0
         /// </summary>
         /// <param name="aType"></param>
         /// <param name="aNormalFireSpeed"></param>
-        public void PowerUpTimer(int aType, float aNormalFireSpeed)
+        public void PowerUpTimer(int aType, float aNormalFireSpeed, float aNormalSpeed)
         {
             myPowerUpCoolDownSeconds -= myDeltaTime;
 
@@ -490,7 +489,7 @@ namespace ShootEmUp_1._0
             {
                 if (aType == 2)
                 {
-                    myPlayer.mySpeed = 7;
+                    myPlayer.mySpeed = aNormalSpeed;
                 }
                 if (aType == 1)
                 {
@@ -498,7 +497,6 @@ namespace ShootEmUp_1._0
                 }
                 myPowerUpCoolDown = false;
             }
-
         }
         /// <summary>
         /// Timer For SuperUps

@@ -66,6 +66,8 @@ namespace ShootEmUp_1._0
         List<Bullet> myParts;
         float myRemoveTime;
         float myHP;
+        bool myHit;
+        float myTimer;
 
         public Lazer(Vector2 aTarget, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint)
         {
@@ -75,6 +77,7 @@ namespace ShootEmUp_1._0
             myPosition = new Vector2(0, 900+myTexture.Height);
             myRemoveTime = 1;
             myHP = GameState.myPlayer.myHp;
+            myTimer = 0.1f;
             for (int i = 1; i < 51; i++)
             {
                 myParts.Add(new Bullet(0, tempPos, aTexture, tempPos, aOwner, aPaint, true));
@@ -92,6 +95,7 @@ namespace ShootEmUp_1._0
         {
             Collision(myHP);
             myRemoveTime -= GameState.myDeltaTime;
+
             if (myRemoveTime <= 0)
             {
                 for (int k = 0; k < myParts.Count; k++)
@@ -99,6 +103,19 @@ namespace ShootEmUp_1._0
                     myParts[k].myRemove = true;
                 }
                 myRemove = true;
+            }
+            if(myHit)
+            {
+                myTimer -= GameState.myDeltaTime;
+                if (myTimer <= 0)
+                {
+                    for (int k = 0; k < myParts.Count; k++)
+                    {
+                        myParts[k].myRemove = true;
+                    }
+                    GameState.myPlayer.myHp--;
+                    myRemove = true;
+                }
             }
         }
 
@@ -112,7 +129,7 @@ namespace ShootEmUp_1._0
                     {
                         if (GameState.myGameObjects[i].myRectangle.Intersects(myParts[j].myRectangle))
                         {
-                            (GameState.myGameObjects[i] as Player).myHp = aCurHealth -1;
+                            myHit = true;
                         }
                     }
                 }

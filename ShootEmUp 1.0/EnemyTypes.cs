@@ -53,7 +53,7 @@ namespace ShootEmUp_1._0
             myBulletTexture = GameState.myEnemyBullet;
             myTexture = aTexture;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
+            myBulletSpawn = new Vector2((myRectangle.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
             myColor = Color.Red;
 
             int tempRng = myRng.Next(1, 3);

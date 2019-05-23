@@ -24,6 +24,7 @@ namespace ShootEmUp_1._0
         public Vector2 myBulletsSpawn;
         public bool myNormalFire = true;
         public bool myUltimate = false;
+        public float myNormalSpeed;
         public int myFireType;
         public float myBaseAttackSpeed;
 
@@ -38,6 +39,7 @@ namespace ShootEmUp_1._0
 
             mySpeedUpgrade = 0.5f * SkillTree.mySpeedMult;
             mySpeed = 7 + mySpeedUpgrade;
+            myNormalSpeed = mySpeed;
 
             myHealthUpgrade = 10 * SkillTree.myHealthUpgrade;
             myHp = 100 + myHealthUpgrade;
