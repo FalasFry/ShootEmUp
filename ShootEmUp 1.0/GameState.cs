@@ -231,10 +231,7 @@ namespace ShootEmUp_1._0
 
             return true;
         }
-
-        /// <summary>
-        /// Resets All The Values
-        /// </summary>
+        
         public void Reset()
         {
             myScore = 0;
@@ -254,11 +251,7 @@ namespace ShootEmUp_1._0
             myWallsDestroyed = 0;
             mySuperPowerUpUnlocked = false;
         }
-
-        /// <summary>
-        /// Spawns In the enemies
-        /// </summary>
-        /// <param name="aGameTime"></param>
+        
         public void EnemySpawn(GameTime aGameTime)
         {
             if (aGameTime.TotalGameTime - myPreviousSpawnTime > myEnemySpawnTime)
@@ -319,10 +312,7 @@ namespace ShootEmUp_1._0
             }
         }
 
-        /// <summary>
-        /// Creates The Rounds
-        /// </summary>
-        /// <param name="aSeconds"></param>
+        
         public void Rounds(float aSeconds)
         {
             if (myScore < 10)
@@ -384,9 +374,7 @@ namespace ShootEmUp_1._0
             myEnemySpawnTime = TimeSpan.FromSeconds(aSeconds);
         }
 
-        /// <summary>
-        /// Rounds For How Walls Spawn
-        /// </summary>
+        
         public void WallsRounds()
         {
             if (myScore >= 20 && myScore < 50)
@@ -403,9 +391,7 @@ namespace ShootEmUp_1._0
             }
         }
 
-        /// <summary>
-        /// Spawns A Boss
-        /// </summary>
+        
         public void SpawnBoss()
         {
             myBossTimer -= myDeltaTime;
@@ -428,9 +414,7 @@ namespace ShootEmUp_1._0
             }
         }
 
-        /// <summary>
-        /// Removes Shit When Out Of Screen
-        /// </summary>
+        
         public void OutOfBounds()
         {
             for (int i = 0; i < myGameObjects.Count; i++)
@@ -443,10 +427,7 @@ namespace ShootEmUp_1._0
         }
 
         #region PowerUp
-
-        /// <summary>
-        /// Spawn A PowerUp
-        /// </summary>
+        
         public void PowerUpSpawn()
         {
             if (myPowerUpSpawnTime > 0)
@@ -459,10 +440,7 @@ namespace ShootEmUp_1._0
                 myPowerUpSpawnTime = myRng.Next(15, 20);
             }
         }
-
-        /// <summary>
-        /// Spawn a SuperUp
-        /// </summary>
+        
         public void SuperUpSpawn()
         {
             if (myCharachterPuSpawnTime > 0)
@@ -475,12 +453,7 @@ namespace ShootEmUp_1._0
                 myCharachterPuSpawnTime = myRng.Next(35, 50);
             }
         }
-
-        /// <summary>
-        /// Timer For Powerups
-        /// </summary>
-        /// <param name="aType"></param>
-        /// <param name="aNormalFireSpeed"></param>
+        
         public void PowerUpTimer(int aType, float aNormalFireSpeed, float aNormalSpeed)
         {
             myPowerUpCoolDownSeconds -= myDeltaTime;
@@ -498,10 +471,7 @@ namespace ShootEmUp_1._0
                 myPowerUpCoolDown = false;
             }
         }
-        /// <summary>
-        /// Timer For SuperUps
-        /// </summary>
-        /// <param name="aNormalFireSpeed"></param>
+        
         public void SuperPowerUpTimer(float aNormalFireSpeed)
         {
             mySuperPowerCoolDownSeconds -= myDeltaTime;
@@ -514,10 +484,7 @@ namespace ShootEmUp_1._0
         }
 
         #endregion
-
-        /// <summary>
-        /// Spawn Walls
-        /// </summary>
+        
         public void SpawnWalls()
         {
             int tempSpawnWay = myRng.Next(1, 3);
