@@ -149,7 +149,7 @@ namespace ShootEmUp_1._0
 
             myStars.Update(aGameTime, myGraphDevice);
             OutOfBounds();
-            //SpawnBoss();
+            SpawnBoss();
             EnemySpawn(aGameTime);
 
             if (!myUltimateCoolDown)
