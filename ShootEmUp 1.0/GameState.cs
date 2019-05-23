@@ -267,7 +267,7 @@ namespace ShootEmUp_1._0
 
                 if (myScore < 50)
                 {
-                    tempType = myRng.Next(4,5);
+                    tempType = myRng.Next(1,3);
                 }
                 else if(myScore >= 50 && myScore < 100)
                 {
