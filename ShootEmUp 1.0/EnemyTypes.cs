@@ -54,7 +54,7 @@ namespace ShootEmUp_1._0
             myTexture = aTexture;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2((myRectangle.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
-            myColor = Color.Red;
+            myColor = Color.Yellow;
 
             int tempRng = myRng.Next(1, 3);
             myDir = new Vector2(tempRng, -1);
@@ -92,6 +92,7 @@ namespace ShootEmUp_1._0
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2((myTexture.Width *(int)myScale - GameState.myEnemyBullet.Width) * 0.5f, 0);
+            myColor = Color.Lerp(Color.Blue, Color.Red, 0.5f);
 
             int tempRng = myRng.Next(1, 3);
 
@@ -173,7 +174,7 @@ namespace ShootEmUp_1._0
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
             myBulletColor = Color.Cyan;
-            myColor = Color.Orange;
+            myColor = Color.Lime;
 
             int tempRng = myRng.Next(1, 3);
             myDir = new Vector2(tempRng, -1);
@@ -184,7 +185,7 @@ namespace ShootEmUp_1._0
             Animation(myTexturesList);
             StayAlive();
             Collision();
-            TypeTwoMove(myStartPos, 1.5f, 50);
+            TypeTwoMove(myStartPos, 1.5f, 100);
 
             myPosition += (myDir * mySpeed);
             myRectangle.Location = myPosition.ToPoint();
@@ -233,7 +234,7 @@ namespace ShootEmUp_1._0
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2((myTexture.Width - myBulletTexture.Width) * 0.5f, 0);
             myBulletColor = Color.Cyan;
-            myColor = Color.Brown;
+            myColor = Color.HotPink;
             mySmartStartAS = myRng.Next(1, 3);
             myChargeRate = mySmartStartAS;
             myTimer = (myChargeTextures.Count) * 0.5f;

@@ -260,7 +260,7 @@ namespace ShootEmUp_1._0
 
                 if (myScore < 50)
                 {
-                    tempType = myRng.Next(1,3);
+                    tempType = myRng.Next(1,5);
                 }
                 else if(myScore >= 50 && myScore < 100)
                 {
@@ -281,19 +281,8 @@ namespace ShootEmUp_1._0
                 }
                 if (tempType == 3)
                 {
-                    Random tempRng = new Random();
-                    int tempNumer = tempRng.Next(1, 3);
-
-                    if (tempNumer == 1)
-                    {
-                        Vector2 tempPos = new Vector2(0 + myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
-                        myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
-                    }
-                    if (tempNumer == 2)
-                    {
-                        Vector2 tempPos = new Vector2(myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
-                        myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
-                    }
+                    Vector2 tempPos = new Vector2(myRng.Next(0, myGraphics.PreferredBackBufferWidth - myEnemyTexture.Width), myGraphics.PreferredBackBufferHeight + 20);
+                    myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
                 }
                 if (tempType == 4)
                 {
