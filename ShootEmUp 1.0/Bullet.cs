@@ -65,7 +65,6 @@ namespace ShootEmUp_1._0
     {
         List<Bullet> myParts;
         float myRemoveTime;
-        float myHP;
         bool myHit;
         new float myTimer;
         float myDamage;
@@ -77,7 +76,6 @@ namespace ShootEmUp_1._0
             myTexture = aTexture;
             myPosition = new Vector2(0, 900+myTexture.Height);
             myRemoveTime = 0.5f;
-            myHP = GameState.myPlayer.myHp;
             myTimer = 0.1f;
             myDamage = aDamage;
             
