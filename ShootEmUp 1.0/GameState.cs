@@ -286,7 +286,7 @@ namespace ShootEmUp_1._0
 
                     if (tempNumer == 1)
                     {
-                        Vector2 tempPos = new Vector2(30 + myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
+                        Vector2 tempPos = new Vector2(0 + myEnemyTexture.Width, myGraphics.PreferredBackBufferHeight + 20);
                         myGameObjects.Add(new EnemySmart(myEnemyTexture, tempPos));
                     }
                     if (tempNumer == 2)

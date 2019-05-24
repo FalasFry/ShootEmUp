@@ -35,7 +35,7 @@ namespace ShootEmUp_1._0
             {
                 if (GameState.myGameObjects[i] is EnemyBase)
                 {
-                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 1)
+                    if (GameState.myGameObjects[i].myRectangle.Intersects(myRectangle) && myOwner == 1 && !myIsLaser)
                     {
                         (GameState.myGameObjects[i] as EnemyBase).myHealth--;
                         myRemove = true;
@@ -67,17 +67,20 @@ namespace ShootEmUp_1._0
         float myRemoveTime;
         float myHP;
         bool myHit;
-        float myTimer;
+        new float myTimer;
+        float myDamage;
 
-        public Lazer(Vector2 aTarget, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint)
+        public Lazer(Vector2 aTarget, Texture2D aTexture, Vector2 aStartPos, float aOwner, Color aPaint, float aDamage)
         {
             myParts = new List<Bullet>();
             Vector2 tempPos = aStartPos;
             myTexture = aTexture;
             myPosition = new Vector2(0, 900+myTexture.Height);
-            myRemoveTime = 1;
+            myRemoveTime = 0.5f;
             myHP = GameState.myPlayer.myHp;
             myTimer = 0.1f;
+            myDamage = aDamage;
+            
             for (int i = 1; i < 51; i++)
             {
                 myParts.Add(new Bullet(0, tempPos, aTexture, tempPos, aOwner, aPaint, true));
@@ -93,7 +96,7 @@ namespace ShootEmUp_1._0
 
         public override void Update(GameTime aGameTime)
         {
-            Collision(myHP);
+            Collision();
             myRemoveTime -= GameState.myDeltaTime;
 
             if (myRemoveTime <= 0)
@@ -104,7 +107,7 @@ namespace ShootEmUp_1._0
                 }
                 myRemove = true;
             }
-            if(myHit)
+            if(myHit && myDamage > 0)
             {
                 myTimer -= GameState.myDeltaTime;
                 if (myTimer <= 0)
@@ -113,13 +116,13 @@ namespace ShootEmUp_1._0
                     {
                         myParts[k].myRemove = true;
                     }
-                    GameState.myPlayer.myHp--;
+                    GameState.myPlayer.myHp -= myDamage;
                     myRemove = true;
                 }
             }
         }
 
-        public void Collision(float aCurHealth)
+        public void Collision()
         {
             for (int i = 0; i < GameState.myGameObjects.Count; i++)
             {

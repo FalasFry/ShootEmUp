@@ -14,7 +14,6 @@ namespace ShootEmUp_1._0
         string[] myText;
         string[] mySplitted;
 
-        
         public MapEditor()
         {
             myPath = Path.GetFullPath("Map.txt");
@@ -58,7 +57,7 @@ namespace ShootEmUp_1._0
 
             if (!File.Exists(myPath))
             {
-               tempWrite[0] = "Background:black";
+               tempWrite[0] = "Background:red";
             }
             else if(File.Exists(myPath))
             {

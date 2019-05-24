@@ -91,7 +91,7 @@ namespace ShootEmUp_1._0
             myTexture = aTexture;
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
-            myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
+            myBulletSpawn = new Vector2((myTexture.Width *(int)myScale - GameState.myEnemyBullet.Width) * 0.5f, 0);
 
             int tempRng = myRng.Next(1, 3);
 
@@ -155,9 +155,6 @@ namespace ShootEmUp_1._0
         }
     }
 
-    /// <summary>
-    /// Shooting Towards Player
-    /// </summary>
     class EnemySmart : EnemyBase
     {
         Vector2 myShootDir;
@@ -175,7 +172,7 @@ namespace ShootEmUp_1._0
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2((myTexture.Width - GameState.myEnemyBullet.Width) * 0.5f, 0);
-            myBulletColor = Color.Purple;
+            myBulletColor = Color.Cyan;
             myColor = Color.Orange;
 
             int tempRng = myRng.Next(1, 3);
@@ -213,9 +210,6 @@ namespace ShootEmUp_1._0
         }
     }
 
-    /// <summary>
-    /// LAZEEEER
-    /// </summary>
     class ChargeEnemy : EnemyBase
     {
         float myChargeRate;
@@ -224,6 +218,7 @@ namespace ShootEmUp_1._0
         new float myStartTimer;
         bool mySetTarget;
         bool myHasAttacked = false;
+        bool mySecondPre;
 
         Vector2 TargetDir;
         Lazer laser;
@@ -237,13 +232,14 @@ namespace ShootEmUp_1._0
             myBulletTexture = GameState.myEnemyBullet;
             myRectangle = new Rectangle(0, 0, myTexture.Width * (int)myScale, myTexture.Height * (int)myScale);
             myBulletSpawn = new Vector2((myTexture.Width - myBulletTexture.Width) * 0.5f, 0);
-            myBulletColor = Color.Orange;
+            myBulletColor = Color.Cyan;
             myColor = Color.Brown;
             mySmartStartAS = myRng.Next(1, 3);
             myChargeRate = mySmartStartAS;
             myTimer = (myChargeTextures.Count) * 0.5f;
             myStartTimer = myTimer;
             mySetTarget = true;
+            mySecondPre = true;
         }
 
         public override void Update(GameTime aGameTime)
@@ -274,7 +270,6 @@ namespace ShootEmUp_1._0
         {
             myDir = Vector2.Zero;
 
-
             Animation(myChargeTextures);
             myTimer -= GameState.myDeltaTime;
 
@@ -283,11 +278,19 @@ namespace ShootEmUp_1._0
                 TargetDir = GameState.myPlayer.myPosition - (myPosition + myOffset);
                 TargetDir.Normalize();
                 mySetTarget = false;
+                laser = new Lazer(TargetDir, myBulletTexture, myPosition + myBulletSpawn, 2, Color.White * 0.2f, 0);
+                GameState.myGameObjects.Add(laser);
+            }
+            if (myTimer <= 0.5f && mySecondPre)
+            {
+                laser = new Lazer(TargetDir, myBulletTexture, myPosition + myBulletSpawn, 2, Color.White * 0.6f, 0);
+                GameState.myGameObjects.Add(laser);
+                mySecondPre = false;
             }
 
             if (myTimer <= 0)
             {
-                laser = new Lazer(TargetDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor);
+                laser = new Lazer(TargetDir, myBulletTexture, myPosition + myBulletSpawn, 2, myBulletColor, 1);
                 GameState.myGameObjects.Add(laser);
                 myTimer = myStartTimer;
                 myChargeRate = mySmartStartAS;

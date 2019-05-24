@@ -11,10 +11,12 @@ namespace ShootEmUp_1._0
     {
         static string myPath;
         string[] myText;
+        string[] mySplitted;
+        public static int mySelected;
 
         public SaveColors()
         {
-            myPath = Path.GetFullPath("test.txt");
+            myPath = Path.GetFullPath("Custom.txt");
 
             if (File.Exists(myPath))
             {
@@ -33,33 +35,22 @@ namespace ShootEmUp_1._0
                 {
                     CustomizeState.myThird = true;
                 }
+
+                mySplitted = tempLines[3].Split(':');
+                mySelected = Convert.ToInt32(mySplitted[1]);
             }
         }
 
         public static void End()
         {
-            List<string> tempLines = new List<string>();
-
-            if(CustomizeState.myFirst)
-            {
-                tempLines.Add("First True");
-            }
-            if (CustomizeState.mySecond)
-            {
-                tempLines.Add("Second True");
-            }
-            if (CustomizeState.myThird)
-            {
-                tempLines.Add("Third True");
-            }
-            File.WriteAllLines(myPath, tempLines.ToArray());
-
-            if (tempLines.Count == 0)
-            {
-                string[] tempArray = { "First False", "Second False", "Third False" };
-
-                File.WriteAllLines(myPath, tempArray);
-            }
+            string[] tempArray =
+            {   
+                "First " +CustomizeState.myFirst,
+                "Second " +CustomizeState.mySecond,
+                "Third " +CustomizeState.myThird,
+                "Selected:" +CustomizeState.mySelected,
+            };
+            File.WriteAllLines(myPath, tempArray);
         }
     }
 }

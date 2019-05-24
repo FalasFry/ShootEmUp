@@ -15,13 +15,12 @@ namespace ShootEmUp_1._0
         KeyboardState myPrevState;
 
         Texture2D myMenuTexture;
-        List<Components> myButtons;
         SaveColors myUnlockables;
         MapEditor myMap;
         SkillTree mySkillTree;
+        CustomizeState myCustom;
 
         SpriteFont myButtonFont;
-        Texture2D myButtonTexture;
         GraphicsDeviceManager myManager;
 
         List<string> myStrings;
@@ -32,8 +31,6 @@ namespace ShootEmUp_1._0
         {
             myManager = aManager;
             myButtonFont = aContent.Load<SpriteFont>("Font");
-            myButtonTexture = aContent.Load<Texture2D>("Button");
-
             myMenuTexture = aContent.Load<Texture2D>("MenuTexture");
 
             myManager.PreferredBackBufferHeight = 480;
@@ -42,6 +39,7 @@ namespace ShootEmUp_1._0
 
             myUnlockables = new SaveColors();
             myMap = new MapEditor();
+            myCustom = new CustomizeState(aGame, aGraphicsDevice, aContent);
             mySkillTree = new SkillTree();
 
             myStrings = new List<string>()

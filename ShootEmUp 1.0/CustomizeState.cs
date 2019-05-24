@@ -30,7 +30,7 @@ namespace ShootEmUp_1._0
         List<string> myPhrases;
         Vector2 myPhrasePos;
 
-        int mySelected = 0;
+        public static int mySelected;
 
         public CustomizeState(Game1 aGame, GraphicsDevice aGraphicsDevice, ContentManager aContent) : base(aGame, aGraphicsDevice, aContent)
         {
@@ -40,8 +40,8 @@ namespace ShootEmUp_1._0
             myBasic = aContent.Load<Texture2D>("PlayerShip");
             myFont = aContent.Load<SpriteFont>("Font");
             myPrevState = Keyboard.GetState();
+            mySelected = SaveColors.mySelected;
 
-            myTexture = myBasic;
             myGraphDevice = aGraphicsDevice;
             myPos = new Vector2(325, 150);
             myTextures = new List<Texture2D>()
@@ -52,6 +52,7 @@ namespace ShootEmUp_1._0
                 myGreen
             };
 
+            myTexture = myTextures[mySelected];
             myBools = new List<bool>()
             {
                 myBaseBool,
