@@ -2,10 +2,6 @@
 
 This game is a space shooter. You will be set in space and in need to fight of as many aliens as you can.
 
-### Download
-
-* [Download link](https://www.mediafire.com/file/d3yyf73c1g15ezd/ShootEmUp_By_Falas.zip/file ) - Click here to download the game
-
 ### Installing
 
 ```
